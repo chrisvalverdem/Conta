@@ -11,7 +11,7 @@ public class PruebaPrincipal {
 		Colaborador colaborador2 = new Colaborador("Esteban Irias Q.",222222222);	
 		
 		Edificio edificio=new Edificio ();
-		edificio.crearListas();
+		edificio.crearListas(1);
 		edificio.agregarColaboradorList(colaborador1);
 		edificio.agregarColaboradorList(colaborador2);		
 		

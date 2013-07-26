@@ -9,8 +9,6 @@ public class Edificio {
 	CopyOnWriteArrayList listColaboradores = null; 
 	CopyOnWriteArrayList listActivos = null;
 	
-	//CopyOnWriteArrayList listColaboradores = new CopyOnWriteArrayList ();		  
-	  
 	public Edificio() {
 		
 	}
@@ -46,8 +44,13 @@ public class Edificio {
 	public void agregarColaboradorList(Object colaborador) {		
 		this.listColaboradores.add (colaborador);		
 	}	
-	public void crearListas(){		
-		listColaboradores=new CopyOnWriteArrayList ();		
+	public void crearListas(int opcion){	
+		switch (opcion){		
+		case 1:
+			listColaboradores=new CopyOnWriteArrayList ();
+		case 2:				
+			listActivos=new CopyOnWriteArrayList ();
+		}		
 	}		
 	public void setListActivos(CopyOnWriteArrayList listActivos) {			
 		this.listActivos=listActivos;		
