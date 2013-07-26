@@ -14,8 +14,7 @@ public class Edificio {
 	}
 	
 	public Edificio(String nombre, String direccion,
-			CopyOnWriteArrayList listColaboradores, CopyOnWriteArrayList listActivos) {
-		
+			CopyOnWriteArrayList listColaboradores, CopyOnWriteArrayList listActivos) {		
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.listColaboradores = listColaboradores;

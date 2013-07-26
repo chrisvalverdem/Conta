@@ -9,8 +9,7 @@ public class Proyecto {
 	int fechaFin;
 	CopyOnWriteArrayList listEquipo = null;
 	
-	public Proyecto() {
-	
+	public Proyecto() {	
 		
 	}
 	

@@ -118,5 +118,6 @@ public class Colaborador {
 		this.salarioInicial = salarioInicial;
 	}	
 	
+	
 }//fin clase
 

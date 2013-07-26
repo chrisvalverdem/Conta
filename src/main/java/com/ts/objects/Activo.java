@@ -12,8 +12,7 @@ public class Activo {
 	}
 	
 	public Activo(String nombre, String estado, String ubicacion,
-			int numeroPlaca) {
-		
+			int numeroPlaca) {		
 		this.nombre = nombre;
 		this.estado = estado;
 		this.ubicacion = ubicacion;

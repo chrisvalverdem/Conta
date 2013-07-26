@@ -15,8 +15,7 @@ public class PruebaPrincipal {
 		edificio.agregarColaboradorList(colaborador1);
 		edificio.agregarColaboradorList(colaborador2);		
 		
-		System.out.println(" Lista: "+edificio.listColaboradores); 
-		
+		System.out.println(" Lista: "+edificio.listColaboradores); 		
 		//for (int contador=0; contador < edificio.listColaboradores.size(); contador++)
 			
 			//System.out.println(edificio.listColaboradores.get(contador));

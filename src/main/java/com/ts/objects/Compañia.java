@@ -16,8 +16,7 @@ public class Compañia {
 	}
      
 	public Compañia(String nombreCompania, String direccionCompania,
-			int telefonoCompania, int faxCompañia) {
-		
+			int telefonoCompania, int faxCompañia) {		
 		this.nombreCompania = nombreCompania;
 		this.direccionCompania = direccionCompania;
 		this.telefonoCompania = telefonoCompania;
