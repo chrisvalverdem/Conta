@@ -11,6 +11,7 @@ public class Repo  {
 		
 	public static void AgregarColaborador(String nombre, int numeroCedula ){		
 		Colaborador nuevoColaborador=null;		
+		@SuppressWarnings("unused")
 		boolean indicador;
 		for (int contador=0; contador <= listColaboradores.size(); contador++){
 			
@@ -25,6 +26,7 @@ public class Repo  {
 	}
 	public static void AgregarEdificio(String nombre){		
 		Edificio nuevoEdificio=null;
+		@SuppressWarnings("unused")
 		boolean indicador;
 		for (int contador=0; contador <=listEdificios.size(); contador++){
 			
@@ -39,6 +41,7 @@ public class Repo  {
 	}
 	public static void AgregarProyecto(String nombre){		
 		Proyecto nuevoProyecto=null;
+		@SuppressWarnings("unused")
 		boolean indicador;
 		for (int contador=0; contador <=listProyectos.size(); contador++){
 			
@@ -53,6 +56,7 @@ public class Repo  {
 	}
 	public static void AgregarActivo(String nombre, int numeroPlaca){		
 		Activo nuevoActivo=null;	
+		@SuppressWarnings("unused")
 		boolean indicador;
 		for (int contador=0; contador <=listActivos.size(); contador++){
 			

@@ -22,6 +22,7 @@ public class CalculaSalario extends ComandoImp {
 	colaborador=colabora;
 	}
 	
+	@SuppressWarnings("unused")
 	public static boolean calcular(){
 		
 		double horasTotales;
@@ -29,7 +30,7 @@ public class CalculaSalario extends ComandoImp {
 		double salarioExtra = 0 ;
 		double salarioLaborado =0;
 		
-		horasExtras= colaborador.getHorasExtra();
+		/*horasExtras= colaborador.getHorasExtra();
 		horasTotales= colaborador.getHorasLaboradas();
 		horasLaboradas= horasTotales - horasExtras;
 		valorHora= colaborador.getValorHora();
@@ -49,12 +50,10 @@ public class CalculaSalario extends ComandoImp {
 			
 			return true;
 		}else{
-			
+		}*/	
 			return false;
 		}
 		
-	}
-	
 	public static Colaborador retorna(){
 	return colaborador;
 	}
