@@ -9,6 +9,20 @@ public class Proyecto {
 	int fechaFin;
 	CopyOnWriteArrayList listEquipo = null;
 	
+	public Proyecto() {
+	
+		
+	}
+	
+	public Proyecto(String nombreProyecto, int fechainicio, int fechaFin,
+			CopyOnWriteArrayList listEquipo) {
+	
+		this.nombreProyecto = nombreProyecto;
+		this.fechainicio = fechainicio;
+		this.fechaFin = fechaFin;
+		this.listEquipo = listEquipo;
+	}
+
 	public String getNombreProyecto() {
 		return nombreProyecto;
 	}
@@ -41,10 +55,10 @@ public class Proyecto {
 		this.listEquipo = listEquipo;
 	}
 	
-	public void setListEmpleados(Object colaborador) {		
+	public void agregarColaboradorList(Object colaborador) {		
 		
 		this.listEquipo.add (colaborador);		
 	}			
 
-}//fin de la clase
+}//fin clase
 

@@ -2,35 +2,24 @@ package com.ts.objects;
 
 public class PruebaPrincipal {
 	
-	Colaborador colaborador = null;
-	Edificio edificio= null;
+	public static void main(String[] args){	
+		
+		Colaborador colaborador1 = new Colaborador();
+		colaborador1.setNombreCompleto("Laura Quesada B.");
+		colaborador1.setNumeroCedula(111880703);	
+		//
+		Colaborador colaborador2 = new Colaborador("Esteban Irias Q.",222222222);	
+		
+		Edificio edificio=new Edificio ();
+		edificio.crearListas();
+		edificio.agregarColaboradorList(colaborador1);
+		edificio.agregarColaboradorList(colaborador2);		
+		
+		System.out.println(" Lista: "+edificio.listColaboradores); 
+		
+		//for (int contador=0; contador < edificio.listColaboradores.size(); contador++)
 			
-	public void crearColaborador () {		
-		colaborador = new Colaborador();
-		colaborador.setNombreCompleto("Laura Quesada B.");
-		colaborador.setNumeroCedula(111880703);		
-		
-	}
-	
-	public void crearEdificio () {
-		edificio = new Edificio ();
-		edificio.setNombre("San Ramon");
-		edificio.setDireccion("San Ramon,Costa Rica");
-		edificio.setListColabotadores(colaborador);
-				
-	}
-	public void mostrarDatos () {
-		
-		System.out.println(" Lista " + edificio.listColaboradores.size() + 
-				" Colaboradores"); 
-		
-		//edificio.listColaboradores.get(1);
-		
-	}
-	
-	public static void main(String[] args){
-		
-		 
+			//System.out.println(edificio.listColaboradores.get(contador));
 	}
 
 }

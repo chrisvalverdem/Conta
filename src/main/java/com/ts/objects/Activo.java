@@ -7,6 +7,19 @@ public class Activo {
 	String ubicacion;
 	int numeroPlaca;
 	
+	public Activo() {
+	
+	}
+	
+	public Activo(String nombre, String estado, String ubicacion,
+			int numeroPlaca) {
+		
+		this.nombre = nombre;
+		this.estado = estado;
+		this.ubicacion = ubicacion;
+		this.numeroPlaca = numeroPlaca;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}

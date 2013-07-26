@@ -25,7 +25,7 @@ public class Colaborador {
 			int telefonoCelular, int telefonoCasa, Date fechaIngreso,
 			Date fechaSalida, Date fechaNacimiento, int numeroHijos,
 			int salarioInicial) {
-		//super();
+		
 		this.nombreCompleto = nombreCompleto;
 		this.direccion = direccion;
 		this.estadoCivil = estadoCivil;
@@ -38,6 +38,11 @@ public class Colaborador {
 		this.FechaNacimiento = fechaNacimiento;
 		this.numeroHijos = numeroHijos;
 		this.salarioInicial = salarioInicial;
+	}
+	
+	public Colaborador(String nombreCompleto, int numeroCedula) {		
+		this.nombreCompleto = nombreCompleto;		
+		this.numeroCedula = numeroCedula;		
 	}	
 		
 	public String getNombreCompleto() {
@@ -113,5 +118,5 @@ public class Colaborador {
 		this.salarioInicial = salarioInicial;
 	}	
 	
-}//fin de la clase
+}//fin clase
 
