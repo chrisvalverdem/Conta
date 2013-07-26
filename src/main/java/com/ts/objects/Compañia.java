@@ -4,48 +4,49 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Compañia {
 	
-	String nombreCompania;
-	String direccionCompania;
-	int	telefonoCompania;
-    int faxCompañia;
+	String nombre;
+	String direccion;
+	int	telefono;
+    int fax;
     CopyOnWriteArrayList listEdificios = null; 
 	CopyOnWriteArrayList listProyectos = null;
     
-    public Compañia() {
+    public Compañia(String nombre) {
+    	this.nombre = nombre;
 		
 	}
      
-	public Compañia(String nombreCompania, String direccionCompania,
-			int telefonoCompania, int faxCompañia) {		
-		this.nombreCompania = nombreCompania;
-		this.direccionCompania = direccionCompania;
-		this.telefonoCompania = telefonoCompania;
-		this.faxCompañia = faxCompañia;
+	public Compañia(String nombre, String direccion,
+			int telefono, int fax) {		
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.fax = fax;
 	}
 	
-	public String getNombreCompania() {
-		return nombreCompania;
+	public String getNombre() {
+		return nombre;
 	}
-	public void setNombreCompania(String nombreCompania) {
-		this.nombreCompania = nombreCompania;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
-	public String getDireccionCompania() {
-		return direccionCompania;
+	public String getDireccion() {
+		return direccion;
 	}
-	public void setDireccionCompania(String direccionCompania) {
-		this.direccionCompania = direccionCompania;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
-	public int getTelefonoCompania() {
-		return telefonoCompania;
+	public int getTelefono() {
+		return telefono;
 	}
-	public void setTelefonoCompania(int telefonoCompania) {
-		this.telefonoCompania = telefonoCompania;
+	public void setTelefono(int telefono) {
+		this.telefono= telefono;
 	}
-	public int getFaxCompañia() {
-		return faxCompañia;
+	public int getFax() {
+		return fax;
 	}
-	public void setFaxCompañia(int faxCompañia) {
-		this.faxCompañia = faxCompañia;
+	public void setFax(int fax) {
+		this.fax = fax;
 	}
 	public void setListEdificios(CopyOnWriteArrayList listEdificios) {			
 		this.listEdificios=listEdificios;		
@@ -64,6 +65,5 @@ public class Compañia {
 	}
 	public void agregarProyectosList(Object proyecto) {			
 		this.listProyectos.add (proyecto);		
-	}
-	
+	}	
 }//fin de la clase

@@ -7,8 +7,9 @@ public class Activo {
 	String ubicacion;
 	int numeroPlaca;
 	
-	public Activo() {
-	
+	public Activo(String nombre,int numeroPlaca) {
+		this.nombre = nombre;
+		this.numeroPlaca = numeroPlaca;
 	}
 	
 	public Activo(String nombre, String estado, String ubicacion,
@@ -42,6 +43,5 @@ public class Activo {
 	}
 	public void setNumeroPlaca(int numeroPlaca) {
 		this.numeroPlaca = numeroPlaca;
-	}
-	
+	}	
 }//fin de la clase

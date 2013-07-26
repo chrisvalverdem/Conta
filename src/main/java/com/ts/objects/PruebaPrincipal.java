@@ -4,13 +4,10 @@ public class PruebaPrincipal {
 	
 	public static void main(String[] args){	
 		
-		Colaborador colaborador1 = new Colaborador();
-		colaborador1.setNombreCompleto("Laura Quesada B.");
-		colaborador1.setNumeroCedula(111880703);	
-		//
+		Colaborador colaborador1 = new Colaborador("Laura Quesada B.",111880703);	
 		Colaborador colaborador2 = new Colaborador("Esteban Irias Q.",222222222);	
 		
-		Edificio edificio=new Edificio ();
+		Edificio edificio=new Edificio ("San Ramon");
 		edificio.crearListas(1);
 		edificio.agregarColaboradorList(colaborador1);
 		edificio.agregarColaboradorList(colaborador2);		

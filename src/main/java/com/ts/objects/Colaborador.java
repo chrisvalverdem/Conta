@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Colaborador {
 	
-	String nombreCompleto;
+	String nombre;
 	String direccion;
 	String estadoCivil;
 	int numeroCedula;
@@ -15,18 +15,15 @@ public class Colaborador {
 	Date fechaSalida;
 	Date FechaNacimiento;
 	int numeroHijos;
-	int salarioInicial;
-	
-	public Colaborador() {
+	int salarioInicial;	
 		
-	}		
-	public Colaborador(String nombreCompleto, String direccion,
+	public Colaborador(String nombre, String direccion,
 			String estadoCivil, int numeroCedula, int codigo,
 			int telefonoCelular, int telefonoCasa, Date fechaIngreso,
 			Date fechaSalida, Date fechaNacimiento, int numeroHijos,
 			int salarioInicial) {
 		
-		this.nombreCompleto = nombreCompleto;
+		this.nombre = nombre;
 		this.direccion = direccion;
 		this.estadoCivil = estadoCivil;
 		this.numeroCedula = numeroCedula;
@@ -40,16 +37,16 @@ public class Colaborador {
 		this.salarioInicial = salarioInicial;
 	}
 	
-	public Colaborador(String nombreCompleto, int numeroCedula) {		
-		this.nombreCompleto = nombreCompleto;		
+	public Colaborador(String nombre, int numeroCedula) {		
+		this.nombre = nombre;		
 		this.numeroCedula = numeroCedula;		
 	}	
 		
-	public String getNombreCompleto() {
-		return nombreCompleto;
+	public String getNombre() {
+		return nombre;
 	}
-	public void setNombreCompleto(String nombreCompleto) {
-		this.nombreCompleto = nombreCompleto;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	public String getDireccion() {
 		return direccion;
@@ -116,8 +113,6 @@ public class Colaborador {
 	}
 	public void setSalarioInicial(int salarioInicial) {
 		this.salarioInicial = salarioInicial;
-	}	
-	
-	
+	}		
 }//fin clase
 

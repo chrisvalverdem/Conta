@@ -9,8 +9,8 @@ public class Edificio {
 	CopyOnWriteArrayList listColaboradores = null; 
 	CopyOnWriteArrayList listActivos = null;
 	
-	public Edificio() {
-		
+	public Edificio(String nombre) {
+		this.nombre = nombre;
 	}
 	
 	public Edificio(String nombre, String direccion,
@@ -59,6 +59,5 @@ public class Edificio {
 	}
 	public void agregarActivosList(Object activo) {			
 		this.listActivos.add (activo);		
-	}
-		
+	}		
 }//fin clase

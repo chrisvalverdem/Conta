@@ -4,30 +4,30 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Proyecto {
 	
-	String nombreProyecto;	
+	String nombre;	
 	int fechainicio;
 	int fechaFin;
 	CopyOnWriteArrayList listEquipo = null;
 	
-	public Proyecto() {	
-		
+	public Proyecto(String nombre) {
+		this.nombre= nombre;		
 	}
 	
-	public Proyecto(String nombreProyecto, int fechainicio, int fechaFin,
+	public Proyecto(String nombre, int fechainicio, int fechaFin,
 			CopyOnWriteArrayList listEquipo) {
 	
-		this.nombreProyecto = nombreProyecto;
+		this.nombre= nombre;
 		this.fechainicio = fechainicio;
 		this.fechaFin = fechaFin;
 		this.listEquipo = listEquipo;
 	}
 
-	public String getNombreProyecto() {
-		return nombreProyecto;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setNombreProyecto(String nombreProyecto) {
-		this.nombreProyecto = nombreProyecto;
+	public void setNombre(String nombre) {
+		this.nombre= nombre;
 	}
 	
 	public int getFechainicio() {
@@ -57,7 +57,6 @@ public class Proyecto {
 	public void agregarColaboradorList(Object colaborador) {		
 		
 		this.listEquipo.add (colaborador);		
-	}			
-
+	}	
 }//fin clase
 
