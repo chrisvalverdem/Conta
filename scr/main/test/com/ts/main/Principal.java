@@ -4,6 +4,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.ts.comands.CalculaSalario;
 import com.ts.objects.Colaborador;
+import com.ts.objects.Edificio;
+import com.ts.objects.Repo;
 
 public class Principal {
 
@@ -37,9 +39,6 @@ public class Principal {
 	}
 
 	public static void main(String[] args) {
-		new Principal();
-		
-	
+		new Principal();	
 	}
-
 }

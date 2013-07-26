@@ -15,12 +15,10 @@ public class Colaborador {
 	Date fechaSalida;
 	Date FechaNacimiento;
 	int numeroHijos;
-	double salarioInicial;	
-	
-	double horasExtra;
+	double salarioInicial;
 	double horasLaboradas;
-	double valorHora;
-		
+	double horasExtra;	
+	double valorHora;	
 
 
 	public Colaborador(String nombre, String direccion,
