@@ -3,13 +3,33 @@ package com.ts.main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import com.ts.objects.Repo;
 
 
 
 public class InterpreteMandatos {
-
+	 	static String comando="";
+	 	static String[] parametros;
+	 	
+	public static void asignaComando(String cadena){
+		int contador=0; 
+				
+		StringTokenizer tokens=new StringTokenizer(cadena);
+		int cantidadP = tokens.countTokens();
+		parametros = new String[cantidadP];
+		comando= tokens.nextToken();	
+		while(tokens.hasMoreTokens()){
+			parametros[contador]= tokens.nextToken().toString();
+			System.out.println(contador + " " + parametros[contador]);
+				 
+			contador++; 
+			 }//while
+			 }//asigna
+	 	
+	 	
+	 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 			ArchivoLog archivo = new ArchivoLog();
@@ -17,15 +37,15 @@ public class InterpreteMandatos {
 		   	InputStreamReader isr = new InputStreamReader(System.in);
 	        BufferedReader br = new BufferedReader(isr);
 	        String dato="";
-	        String comando="";
-	        System.out.println("Introducir un Comando:");
-	        String[] prueba = {"axel", "206530838"};
+	        String cadena="";
+	        System.out.println("Introducir un Comando:");    
 	            
 	 do{
 		 try {
 	        	dato = br.readLine();
-	            comando= dato.toLowerCase().toString();
-	   		 	System.out.println("El comando introducido fue: "+ comando);
+	            cadena= dato.toLowerCase().toString();
+	   		 	System.out.println("La cadena introducida fue: "+ cadena + "\n");
+	   		 	asignaComando(cadena);
 	            
 	   		 switch(comando){
 	   		 
@@ -35,8 +55,11 @@ public class InterpreteMandatos {
 	   		 break; 
 	   		 
 	   		 case "crear_colaborador": 
-	   			System.err.print("Comando real:" + comando + "\n");
-	   			ArchivoLog.crearLog(comando + " " + prueba[0].toString() + " " + prueba[1].toString());
+	   			System.out.print("Comando real:" + comando + "\n");
+	   			
+	   			Repo.AgregarColaborador(parametros[0], Integer.parseInt(parametros[1].toString()));
+	   			
+	   			ArchivoLog.crearLog(comando + " " + parametros[0].toString() + " " + parametros[1].toString());
 	   			
 	   		 break;
 	   		 
@@ -80,7 +103,7 @@ public class InterpreteMandatos {
 	        } //catch
 		 
 	 }while(true);
-			       
+			
 	
 	}//main
 }//class
