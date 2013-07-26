@@ -2,16 +2,15 @@ package com.ts.main;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.ts.comands.calculaSalario;
+import com.ts.comands.CalculaSalario;
 import com.ts.objects.Colaborador;
 
 public class Principal {
 
-	@SuppressWarnings("rawtypes")
-	CopyOnWriteArrayList colaboradores = new CopyOnWriteArrayList();
+	
+	CopyOnWriteArrayList<Colaborador> colaboradores = new CopyOnWriteArrayList();
 	static Colaborador selec= null;
 	
-	@SuppressWarnings({ "unchecked", "static-access" })
 	public Principal(){
 				
 
@@ -25,12 +24,12 @@ public class Principal {
 		this.selec= (Colaborador) colaboradores.get(0);
 
 		
-		calculaSalario.asigna(selec);
+		CalculaSalario.asigna(selec);
 		
-		Colaborador colaModi= calculaSalario.retorna();
+		Colaborador colaModi= CalculaSalario.retorna();
 		colaboradores.add(0, colaModi);
 		
-		if(calculaSalario.calcular()){
+		if(CalculaSalario.calcular()){
 			System.err.print("\n" + "YES.");
 		}else{
 			System.err.print("\n" + "NO.");

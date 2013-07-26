@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public class vincularColaboradorProyecto extends comandoImp {
+public class VincularColaboradorProyecto extends ComandoImp {
 
 	
 	public void execute(){}

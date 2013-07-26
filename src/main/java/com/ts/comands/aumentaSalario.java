@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public class aumentaSalario extends comandoImp {
+public class AumentaSalario extends ComandoImp {
 
 	
 	public void execute(){}

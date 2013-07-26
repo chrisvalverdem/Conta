@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public class crearEdificios extends comandoImp {
+public class CrearEdificios extends ComandoImp {
 
 	
 	public void execute(){}

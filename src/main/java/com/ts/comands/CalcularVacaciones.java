@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public class CalcularVacaciones extends comandoImp {
+public class CalcularVacaciones extends ComandoImp {
 
 	
 	public void execute(){}

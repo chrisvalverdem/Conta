@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public class calcularRetencionesFuente extends comandoImp {
+public class CalcularRetencionesFuente extends ComandoImp {
 
 	
 	public void execute(){}

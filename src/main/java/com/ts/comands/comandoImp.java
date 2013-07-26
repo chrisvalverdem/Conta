@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public abstract class comandoImp {
+public abstract class ComandoImp {
 
 	
 	public void execute(){

@@ -2,7 +2,7 @@ package com.ts.comands;
 
 import com.ts.objects.Colaborador;
 
-public class calculaSalario extends comandoImp {
+public class CalculaSalario extends ComandoImp {
 
 	static double horasLaboradas;
 	static double horasExtras;

@@ -1,6 +1,6 @@
 package com.ts.comands;
 
-public class devincularColaboradorProyecto extends comandoImp {
+public class DevincularColaboradorProyecto extends ComandoImp {
 
 	
 	public void execute(){}
