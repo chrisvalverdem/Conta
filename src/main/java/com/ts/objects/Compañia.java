@@ -8,7 +8,9 @@ public class Compañia {
 	String direccion;
 	int	telefono;
     int fax;
-    CopyOnWriteArrayList listEdificios = null; 
+    @SuppressWarnings("rawtypes")
+	CopyOnWriteArrayList listEdificios = null; 
+	@SuppressWarnings("rawtypes")
 	CopyOnWriteArrayList listProyectos = null;
     
     public Compañia(String nombre) {

@@ -15,8 +15,14 @@ public class Colaborador {
 	Date fechaSalida;
 	Date FechaNacimiento;
 	int numeroHijos;
-	int salarioInicial;	
+	double salarioInicial;	
+	
+	double horasExtra;
+	double horasLaboradas;
+	double valorHora;
 		
+
+
 	public Colaborador(String nombre, String direccion,
 			String estadoCivil, int numeroCedula, int codigo,
 			int telefonoCelular, int telefonoCasa, Date fechaIngreso,
@@ -108,11 +114,35 @@ public class Colaborador {
 	public void setNumeroHijos(int numeroHijos) {
 		this.numeroHijos = numeroHijos;
 	}
-	public int getSalarioInicial() {
+	public double getSalarioInicial() {
 		return salarioInicial;
 	}
-	public void setSalarioInicial(int salarioInicial) {
+	public void setSalarioInicial(double salarioInicial) {
 		this.salarioInicial = salarioInicial;
 	}		
+	public double getHorasExtra() {
+		return horasExtra;
+	}
+
+	public void setHorasExtra(double horasExtra) {
+		this.horasExtra = horasExtra;
+	}
+
+	public double getHorasLaboradas() {
+		return horasLaboradas;
+	}
+
+	public void setHorasLaboradas(double horasLaboradas) {
+		this.horasLaboradas = horasLaboradas;
+	}
+
+	public double getValorHora() {
+		return valorHora;
+	}
+
+	public void setValorHora(double valorHora) {
+		this.valorHora = valorHora;
+	}
+	
 }//fin clase
 
