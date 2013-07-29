@@ -1,43 +1,54 @@
 package com.ts.objects;
 
+import java.util.Date;
+
 public class Compania {
 	
 	String nombre;
 	int cedulaJuridica;
-	String direccion;
+	Date fechaCreacion;
+	String direccion;	
 	int	telefono;
     int fax;
     
-    public Compania(String nombre,int cedulaJuridica) {		
+    public Compania(String nombre,int cedulaJuridica,Date fechaCreacion) {		
 		this.nombre = nombre;
-		this.cedulaJuridica=cedulaJuridica;		
+		this.cedulaJuridica=cedulaJuridica;
+		this.fechaCreacion=fechaCreacion;		
 	}
+    public Compania(String nombre,int cedulaJuridica) {
+    	this.nombre = nombre;
+    	this.cedulaJuridica=cedulaJuridica;    	
+	} 
     public Compania(String nombre, String direccion, int cedulaJuridica,
-			int telefono, int fax) {		
+			Date fechaCreacion, int telefono, int fax) {		
 		this.nombre = nombre;
-		this.cedulaJuridica=cedulaJuridica;		
+		this.cedulaJuridica=cedulaJuridica;
+		this.fechaCreacion=fechaCreacion;
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.fax = fax;
+	}	    
+   
+    public String getNombre() {
+		return nombre;
 	}
-	
+    public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}	
 	public int getCedulaJuridica() {
 		return cedulaJuridica;
 	}
 	public void setCedulaJuridica(int cedulaJuridica) {
 		this.cedulaJuridica = cedulaJuridica;
-	}		
-    
-    public Compania(String nombre) {
-    	this.nombre = nombre;		
-	}    
+	}	   
 	
-	public String getNombre() {
-		return nombre;
+	public Date getFechaCreacion() {
+		return fechaCreacion;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}	
 	public String getDireccion() {
 		return direccion;
 	}

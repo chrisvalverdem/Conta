@@ -1,23 +1,30 @@
 package com.ts.objects;
 
+import java.util.Date;
+
 public class Activo {
 	
 	String nombre;
 	String estado;
 	String ubicacion;
 	int numeroPlaca;
+	Date fechaIngreso;
+	Date fechaSalida;	
 	
+
 	public Activo(String nombre,int numeroPlaca) {
 		this.nombre = nombre;
 		this.numeroPlaca = numeroPlaca;
 	}
 	
-	public Activo(String nombre, String estado, String ubicacion,
-			int numeroPlaca) {		
+	public Activo(String nombre, int numeroPlaca, String estado, String ubicacion,
+			Date fechaIngreso, Date fechaSalida) {		
 		this.nombre = nombre;
-		this.estado = estado;
-		this.ubicacion = ubicacion;
 		this.numeroPlaca = numeroPlaca;
+		this.estado = estado;
+		this.ubicacion = ubicacion;		
+		this.fechaIngreso=fechaIngreso;
+		this.fechaSalida=fechaSalida;
 	}
 	
 	public String getNombre() {

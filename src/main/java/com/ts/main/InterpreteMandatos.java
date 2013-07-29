@@ -10,23 +10,27 @@ import com.ts.objects.Repo;
 
 
 public class InterpreteMandatos {
+	
 	 	static String comando="";
+	 	static String valor="";
 	 	static String[] parametros;
 	 	public static boolean estadoFuncion= false;	
 	 	static ArchivoLog archivo = null;
 	 	
-	public static void ObtenerParametros(String cadena){
-		int contador=0; 				
-		StringTokenizer tokens=new StringTokenizer(cadena);
-		int cantidadP = tokens.countTokens();
-		parametros = new String[cantidadP];
-		comando= tokens.nextToken();	
-		while(tokens.hasMoreTokens()){
-			parametros[contador]= tokens.nextToken().toString();
-			System.out.println("Token " + contador + " valor: " + parametros[contador]);
-			contador++; 
-			}//while
-		}//asigna	 	
+	 	public static void interpretarCadena(String cadena){
+			int contador=0; 				
+			StringTokenizer tokens=new StringTokenizer(cadena);
+			int cantidadP = tokens.countTokens();
+			parametros = new String[cantidadP];
+			comando= tokens.nextToken();		
+				
+			while(tokens.hasMoreTokens()){		
+				valor= tokens.nextToken().toString();
+				parametros[contador]=valor.substring(0, valor.length()-1);							
+				System.out.println("Token " + contador + " valor: " + parametros[contador]);
+				contador++; 
+				}//while
+			}//interpreta 	
 	 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -42,7 +46,7 @@ public class InterpreteMandatos {
 	        	dato = br.readLine();
 	            cadena= dato.toLowerCase().toString();
 	   		 	System.out.println("La cadena introducida fue: "+ cadena);
-	   		 	ObtenerParametros(cadena);
+	   		    interpretarCadena(cadena);
 	   		 	System.out.print("Comando Real:" + comando + "\n");	
 	   		 
 	   		 switch(comando){	   		 
@@ -177,8 +181,7 @@ public class InterpreteMandatos {
 	            e.printStackTrace();
 	        } //catch
 		 
-	 }while(true);
-			
+	 }while(true);			
 	
 	}//main
 }//class
