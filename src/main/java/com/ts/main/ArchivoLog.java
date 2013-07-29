@@ -28,7 +28,6 @@ public class ArchivoLog {
             archivo.close(); //Se cierra el archivo
     }//Fin del metodo crearLog
    
-    //Como ejemplo ponemos el caso que se este agregando nombres de personas a un vector
-    //y queremos guardar en el Log cada vez que ocurre el evento, seria así:
+    public static void leeLog(){}
 
 }
