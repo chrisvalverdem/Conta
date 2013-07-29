@@ -17,12 +17,12 @@ public class Colaborador {
 	int numeroHijos;
 	double salarioInicial;
 
-
 	public Colaborador(String nombre, String direccion,
 			String estadoCivil, int numeroCedula, int codigo,
 			int telefonoCelular, int telefonoCasa, Date fechaIngreso,
 			Date fechaSalida, Date fechaNacimiento, int numeroHijos,
 			int salarioInicial) {
+		
 		
 		this.nombre = nombre;
 		this.direccion = direccion;
@@ -36,6 +36,7 @@ public class Colaborador {
 		this.FechaNacimiento = fechaNacimiento;
 		this.numeroHijos = numeroHijos;
 		this.salarioInicial = salarioInicial;
+		
 	}
 	
 	public Colaborador(String nombre, int numeroCedula) {		
