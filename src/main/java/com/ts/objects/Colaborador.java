@@ -3,7 +3,7 @@ package com.ts.objects;
 import java.util.Date;
 
 public class Colaborador {
-	
+	//Declaracion de atributos
 	String nombre;
 	String direccion;
 	String estadoCivil;
