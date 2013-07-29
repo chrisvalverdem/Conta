@@ -80,7 +80,7 @@ public class Repo  {
 			InterpreteMandatos.estadoFuncion=true;
 		}	
 	}
-	public static void AgregarCompania(int cedulaJuridica,String nombre){				
+	public static void AgregarCompañia(int cedulaJuridica,String nombre){				
 		boolean indicador=false;
 		if(!listCompania.isEmpty()){
 			for (Compañia compañia: listCompania){							
