@@ -26,14 +26,11 @@ public class InterpreteMandatos {
 				 
 			contador++; 
 			 }//while
-			 }//asigna
-	 	
-	 	
+			 }//asigna	 	
 	 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-			ArchivoLog archivo = new ArchivoLog();
-		
+			ArchivoLog archivo = new ArchivoLog();		
 		   	InputStreamReader isr = new InputStreamReader(System.in);
 	        BufferedReader br = new BufferedReader(isr);
 	        String dato="";
@@ -47,32 +44,35 @@ public class InterpreteMandatos {
 	   		 	System.out.println("La cadena introducida fue: "+ cadena + "\n");
 	   		 	asignaComando(cadena);
 	            
-	   		 switch(comando){
-	   		 
+	   		 switch(comando){	   		 
 	   		 case "exit": 
 	   			 ArchivoLog.crearLog(comando);
 	   			 System.exit(0);
-	   		 break; 
-	   		 
+	   		 break; 	   		 
 	   		 case "crear_colaborador": 
-	   			System.out.print("Comando real:" + comando + "\n");
-	   			
-	   			Repo.AgregarColaborador(parametros[0], Integer.parseInt(parametros[1].toString()));
-	   			
+	   			System.out.print("Comando real:" + comando + "\n");	   			
+	   			Repo.AgregarColaborador(parametros[0], Integer.parseInt(parametros[1].toString()));	   			
+	   			ArchivoLog.crearLog(comando + " " + parametros[0].toString() + " " + parametros[1].toString());	   			
+	   		 break;	   		 
+	   		 case "crear_edificio": 
+	   			 System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");	   			 
+	   			 Repo.AgregarEdificio(parametros[0]);	   			
+	   			 ArchivoLog.crearLog(comando + " " + parametros[0].toString());	   		 	   		 
+	   		 break;	   		 
+	   		 case "crear_proyecto": 
+	   			 System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
+	   			 Repo.AgregarProyecto(parametros[0]);	   			
+	   			 ArchivoLog.crearLog(comando + " " + parametros[0].toString());	 
+	   		 break;	   		 
+	   		 case "crear_compañia":
+	   			 System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
+	   			Repo.AgregarCompania(parametros[0], Integer.parseInt(parametros[1].toString()));	   			
 	   			ArchivoLog.crearLog(comando + " " + parametros[0].toString() + " " + parametros[1].toString());
-	   			
-	   		 break;
-	   		 
-	   		 case "crear_edificio": System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
-	   		 break;
-	   		 
-	   		 case "crear_proyecto": System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
-	   		 break;
-	   		 
-	   		 case "crear_compañia": System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
-	   		 break;
-	   		 
-	   		 case "crear_activo":   System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
+	   		 break;	   		 
+	   		 case "crear_activo":   
+	   			 System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
+	   			Repo.AgregarActivo(parametros[0], Integer.parseInt(parametros[1].toString()));	   			
+	   			ArchivoLog.crearLog(comando + " " + parametros[0].toString() + " " + parametros[1].toString());
 	   		 break;
 	   		 
 	   		 case "aumentar_salario": System.out.println("El comando introducido no se encuentra implementado aun: "+ comando +"\n");
