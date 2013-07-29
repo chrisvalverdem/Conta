@@ -2,6 +2,8 @@ package com.ts.objects;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.ts.main.InterpreteMandatos;
+
 public class Repo  {
 	
 	public static CopyOnWriteArrayList<Colaborador> listColaboradores =new CopyOnWriteArrayList<Colaborador> ();
@@ -9,70 +11,89 @@ public class Repo  {
 	public static CopyOnWriteArrayList<Proyecto> listProyectos =new CopyOnWriteArrayList<Proyecto> ();
 	public static CopyOnWriteArrayList<Activo> listActivos =new CopyOnWriteArrayList<Activo> ();
 	public static CopyOnWriteArrayList<Compania> listCompania =new CopyOnWriteArrayList<Compania> ();
-		
+	
+	
+	
 	public static void AgregarColaborador(String nombre, int numeroCedula ){
-		boolean indicador;			
-		if(!listColaboradores.isEmpty()){			
+		boolean indicador=false;		
+		
+		if(!listColaboradores.isEmpty()){
+			System.err.print("Cantidad en la lista:" + listColaboradores.size() +"\n");
 			for (Colaborador colaborador : listColaboradores){		
 				if (colaborador.getNumeroCedula() == numeroCedula)
 				 indicador=true;
+				 InterpreteMandatos.estadoFuncion=false;
 			}
 		}
-		if(indicador=false){
+		if(indicador==false){
 			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);	
-		    listColaboradores.add(nuevoColaborador);			
-		}					
+		    listColaboradores.add(nuevoColaborador);
+		    System.out.print("El Colaborador: " + nombre + " se agrego exitosamente" + "\n");
+		    InterpreteMandatos.estadoFuncion=true;
+		}
+		
 	}
 	public static void AgregarEdificio(String nombre){			
-		boolean indicador;
+		boolean indicador= false;
 		if(!listEdificios.isEmpty()){
 			for (Edificio edificio : listEdificios){						
 				if (edificio.getNombre().equalsIgnoreCase(nombre))
-					 indicador=true;						
+					 indicador=true;
+					 InterpreteMandatos.estadoFuncion=false;
 			}			
 		}			
-		if(indicador=false){
+		if(indicador==false){
 			Edificio nuevoEdificio = new Edificio(nombre);
-		    listEdificios.add(nuevoEdificio);			
+		    listEdificios.add(nuevoEdificio);	
+		    System.out.print("El Edificio: " + nombre + " se agrego exitosamente");
+		    InterpreteMandatos.estadoFuncion=true;
 		}					
 	}
 	public static void AgregarProyecto(String nombre){				
-		boolean indicador;
+		boolean indicador = false;
 		if(!listProyectos.isEmpty()){
 			for (Proyecto proyecto : listProyectos){							
 				if (proyecto.getNombre().equalsIgnoreCase(nombre))
-					 indicador=true;						
+					 indicador=true;
+					 InterpreteMandatos.estadoFuncion=false;
 			}			
 		}				
-		if(indicador=false){
+		if(indicador==false){
 			Proyecto nuevoProyecto = new Proyecto(nombre);
-			listProyectos.add(nuevoProyecto);			
+			listProyectos.add(nuevoProyecto);	
+			System.out.print("El Proyecto: " + nombre + " se agrego exitosamente");
+			InterpreteMandatos.estadoFuncion=true;
 		}					
 	}
 	public static void AgregarActivo(String nombre, int numeroPlaca){				
-		boolean indicador;
+		boolean indicador=false;
 		if(!listProyectos.isEmpty()){
 			for (Activo activo : listActivos){							
 				if ( activo.getNumeroPlaca() == numeroPlaca )
-					 indicador=true;		
+					 indicador=true;
+					 InterpreteMandatos.estadoFuncion=false;
 			}			
 		}				
-		if(indicador=false){
+		if(indicador==false){
 			Activo nuevoActivo = new Activo(nombre,numeroPlaca);
-			listActivos.add(nuevoActivo);			
+			listActivos.add(nuevoActivo);	
+			InterpreteMandatos.estadoFuncion=true;
 		}	
 	}
 	public static void AgregarCompania(String nombre,  int cedulaJuridica){				
-		boolean indicador;
+		boolean indicador=false;
 		if(!listCompania.isEmpty()){
 			for (Compania compania: listCompania){							
 				if (compania.getCedulaJuridica() == cedulaJuridica )
-					 indicador=true;		
+					 indicador=true;
+					 InterpreteMandatos.estadoFuncion=false;
 			}			
 		}				
-		if(indicador=false){
+		if(indicador==false){
 			Compania nuevaCompania = new Compania(nombre,cedulaJuridica);
-			listCompania.add(nuevaCompania);			
+			listCompania.add(nuevaCompania);
+			System.out.print("La Compañia: " + nombre + " se agrego exitosamente");
+			InterpreteMandatos.estadoFuncion=true;
 		}	
 	}
 }//fin clase
