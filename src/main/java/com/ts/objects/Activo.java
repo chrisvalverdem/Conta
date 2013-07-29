@@ -9,8 +9,8 @@ public class Activo {
 	String ubicacion;
 	int numeroPlaca;
 	Date fechaIngreso;
-	Date fechaSalida;	
-	
+	Date fechaSalida;
+	public static String comandosValidos[] ={"nuevoActivo"};	
 
 	public Activo(String nombre,int numeroPlaca) {
 		this.nombre = nombre;

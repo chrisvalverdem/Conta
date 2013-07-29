@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.ts.objects.Colaborador;
+import com.ts.objects.Compañia;
 import com.ts.objects.Repo;
 
-
-
 public class InterpreteMandatos {
+	
 		static String dato="";
 	 	static String comando="";
 	 	static String valor="";
@@ -62,10 +64,8 @@ public class InterpreteMandatos {
 		            e.printStackTrace();
 		        } //catch
 			}while(true);
-        	  
-            			
-	}//main
-	
+			}//interpreta	 	
+
 	public static void ejecutaComando(String dato) throws IOException{
 
         String cadena= dato.toLowerCase().toString();
@@ -108,7 +108,7 @@ public class InterpreteMandatos {
 				   	}   
 		   		 break;	   		 
 		   		 case "crear_compañia":
-		   			Repo.AgregarCompania(parametros[0], Integer.parseInt(parametros[1].toString()));	   			
+		   			Repo.AgregarCompañia(Integer.parseInt(parametros[0].toString()),parametros[1]);	   			
 		   			
 		   			//Se guarda en archivo solo en su ejecucion exitosa
 		   			if(estadoFuncion){
@@ -210,4 +210,4 @@ public class InterpreteMandatos {
 		   		
 		   		 }//switch	  		
 	}//ejecutaComando	
-}//class
+}//class 

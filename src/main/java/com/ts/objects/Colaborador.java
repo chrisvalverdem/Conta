@@ -3,7 +3,7 @@ package com.ts.objects;
 import java.util.Date;
 
 public class Colaborador {
-	//Declaracion de atributos
+	
 	String nombre;
 	String direccion;
 	String estadoCivil;
@@ -16,14 +16,14 @@ public class Colaborador {
 	Date FechaNacimiento;
 	int numeroHijos;
 	double salarioInicial;
+	String correoElectronico;	
+	public static String comandosValidos[] ={"nuevoColaborador"};
 
 	public Colaborador(String nombre, String direccion,
 			String estadoCivil, int numeroCedula, int codigo,
 			int telefonoCelular, int telefonoCasa, Date fechaIngreso,
 			Date fechaSalida, Date fechaNacimiento, int numeroHijos,
-			int salarioInicial) {
-		
-		
+			int salarioInicial) {			
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.estadoCivil = estadoCivil;
@@ -35,8 +35,7 @@ public class Colaborador {
 		this.fechaSalida = fechaSalida;
 		this.FechaNacimiento = fechaNacimiento;
 		this.numeroHijos = numeroHijos;
-		this.salarioInicial = salarioInicial;
-		
+		this.salarioInicial = salarioInicial;		
 	}
 	
 	public Colaborador(String nombre, int numeroCedula) {		
@@ -115,7 +114,14 @@ public class Colaborador {
 	}
 	public void setSalarioInicial(double salarioInicial) {
 		this.salarioInicial = salarioInicial;
-	}		
+	}
+	public String getCorreoElectronico() {
+		return correoElectronico;
+	}
+
+	public void setCorreoElectronico(String correoElectronico) {
+		this.correoElectronico = correoElectronico;
+	}
 	
 }//fin clase
 

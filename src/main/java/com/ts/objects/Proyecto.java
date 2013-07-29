@@ -5,6 +5,7 @@ public class Proyecto {
 	String nombre;	
 	int fechainicio;
 	int fechaFin;
+	public static String comandosValidos[] ={"nuevoProyecto,agregarColaborador"};
 
 	public Proyecto(String nombre) {
 		this.nombre= nombre;		

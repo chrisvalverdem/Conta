@@ -10,7 +10,7 @@ public class Repo  {
 	public static CopyOnWriteArrayList<Edificio> listEdificios=new CopyOnWriteArrayList<Edificio> ();
 	public static CopyOnWriteArrayList<Proyecto> listProyectos =new CopyOnWriteArrayList<Proyecto> ();
 	public static CopyOnWriteArrayList<Activo> listActivos =new CopyOnWriteArrayList<Activo> ();
-	public static CopyOnWriteArrayList<Compania> listCompania =new CopyOnWriteArrayList<Compania> ();
+	public static CopyOnWriteArrayList<Compañia> listCompania =new CopyOnWriteArrayList<Compañia> ();
 	
 	
 	
@@ -80,18 +80,18 @@ public class Repo  {
 			InterpreteMandatos.estadoFuncion=true;
 		}	
 	}
-	public static void AgregarCompania(String nombre,  int cedulaJuridica){				
+	public static void AgregarCompania(int cedulaJuridica,String nombre){				
 		boolean indicador=false;
 		if(!listCompania.isEmpty()){
-			for (Compania compania: listCompania){							
-				if (compania.getCedulaJuridica() == cedulaJuridica )
+			for (Compañia compañia: listCompania){							
+				if (compañia.getCedulaJuridica() == cedulaJuridica )
 					 indicador=true;
 					 InterpreteMandatos.estadoFuncion=false;
 			}			
 		}				
 		if(indicador==false){
-			Compania nuevaCompania = new Compania(nombre,cedulaJuridica);
-			listCompania.add(nuevaCompania);
+			Compañia nuevaCompañia = new Compañia(cedulaJuridica,nombre);
+			listCompania.add(nuevaCompañia);
 			System.out.print("La Compañia: " + nombre + " se agrego exitosamente");
 			InterpreteMandatos.estadoFuncion=true;
 		}	

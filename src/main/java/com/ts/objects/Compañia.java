@@ -2,7 +2,7 @@ package com.ts.objects;
 
 import java.util.Date;
 
-public class Compania {
+public class Compañia {
 	
 	String nombre;
 	int cedulaJuridica;
@@ -10,17 +10,14 @@ public class Compania {
 	String direccion;	
 	int	telefono;
     int fax;
+    public static String comandosValidos[] ={"nuevaCompañia,gregarColaborador,agregarEdificio"};
     
-    public Compania(String nombre,int cedulaJuridica,Date fechaCreacion) {		
-		this.nombre = nombre;
-		this.cedulaJuridica=cedulaJuridica;
-		this.fechaCreacion=fechaCreacion;		
-	}
-    public Compania(String nombre,int cedulaJuridica) {
-    	this.nombre = nombre;
-    	this.cedulaJuridica=cedulaJuridica;    	
+  
+    public Compañia(int cedulaJuridica, String nombre) {
+    	this.cedulaJuridica=cedulaJuridica;  
+    	this.nombre = nombre;    	  	
 	} 
-    public Compania(String nombre, String direccion, int cedulaJuridica,
+    public Compañia(String nombre, String direccion, int cedulaJuridica,
 			Date fechaCreacion, int telefono, int fax) {		
 		this.nombre = nombre;
 		this.cedulaJuridica=cedulaJuridica;

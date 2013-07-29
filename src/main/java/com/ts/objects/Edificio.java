@@ -4,6 +4,7 @@ public class Edificio {
 	
 	String nombre;
 	String direccion;
+	public static String comandosValidos[] ={"nuevoEdificio,agregarActivo"};
 
 	public Edificio(String nombre) {
 		this.nombre = nombre;
