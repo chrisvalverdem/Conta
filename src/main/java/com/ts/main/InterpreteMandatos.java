@@ -13,9 +13,8 @@ public class InterpreteMandatos {
 	 	static String comando="";
 	 	static String[] parametros;
 	 	
-	public static void asignaComando(String cadena){
-		int contador=0; 
-				
+	public static void ObtenerParametros(String cadena){
+		int contador=0; 				
 		StringTokenizer tokens=new StringTokenizer(cadena);
 		int cantidadP = tokens.countTokens();
 		parametros = new String[cantidadP];
@@ -23,10 +22,9 @@ public class InterpreteMandatos {
 		while(tokens.hasMoreTokens()){
 			parametros[contador]= tokens.nextToken().toString();
 			System.out.println(contador + " " + parametros[contador]);
-				 
 			contador++; 
-			 }//while
-			 }//asigna	 	
+			}//while
+		}//asigna	 	
 	 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -42,7 +40,7 @@ public class InterpreteMandatos {
 	        	dato = br.readLine();
 	            cadena= dato.toLowerCase().toString();
 	   		 	System.out.println("La cadena introducida fue: "+ cadena + "\n");
-	   		 	asignaComando(cadena);
+	   		 	ObtenerParametros(cadena);
 	            
 	   		 switch(comando){	   		 
 	   		 case "exit": 
