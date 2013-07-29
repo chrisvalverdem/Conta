@@ -13,6 +13,7 @@ public class InterpreteMandatos {
 	 	static String comando="";
 	 	static String[] parametros;
 	 	public static boolean estadoFuncion= false;	
+	 	static ArchivoLog archivo = null;
 	 	
 	public static void ObtenerParametros(String cadena){
 		int contador=0; 				
@@ -29,7 +30,7 @@ public class InterpreteMandatos {
 	 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-			ArchivoLog archivo = new ArchivoLog();		
+			archivo = new ArchivoLog();		
 		   	InputStreamReader isr = new InputStreamReader(System.in);
 	        BufferedReader br = new BufferedReader(isr);
 	        String dato="";
