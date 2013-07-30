@@ -2,98 +2,110 @@ package com.ts.objects;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.ts.main.InterpreteMandatos;
-
 public class Repo  {
 	
 	public static CopyOnWriteArrayList<Colaborador> listColaboradores =new CopyOnWriteArrayList<Colaborador> ();
 	public static CopyOnWriteArrayList<Edificio> listEdificios=new CopyOnWriteArrayList<Edificio> ();
 	public static CopyOnWriteArrayList<Proyecto> listProyectos =new CopyOnWriteArrayList<Proyecto> ();
 	public static CopyOnWriteArrayList<Activo> listActivos =new CopyOnWriteArrayList<Activo> ();
-	public static CopyOnWriteArrayList<Compañia> listCompania =new CopyOnWriteArrayList<Compañia> ();
+	public static CopyOnWriteArrayList<Compannia> listCompania =new CopyOnWriteArrayList<Compannia> ();
 	
 	
 	
-	public static void AgregarColaborador(String nombre, int numeroCedula ){
-		boolean indicador=false;		
+	public static void AgregarColaborador(String nombre, int numeroCedula ) throws CommandException{
 		
-		if(!listColaboradores.isEmpty()){
-			System.err.print("Cantidad en la lista:" + listColaboradores.size() +"\n");
-			for (Colaborador colaborador : listColaboradores){		
+		boolean revisarSiElColaboradorYaExiste = !listColaboradores.isEmpty();		
+		
+		if( revisarSiElColaboradorYaExiste )
+		{
+			for (Colaborador colaborador : listColaboradores)
+			{		
 				if (colaborador.getNumeroCedula() == numeroCedula)
-				 indicador=true;
-				 InterpreteMandatos.estadoFuncion=false;
+				{
+					throw new CommandException("El colaborador " + colaborador.getNombre() + ", ya tiene el numero de c�dula "+numeroCedula);
+				}
 			}
 		}
-		if(indicador==false){
+		else
+		{
 			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);	
 		    listColaboradores.add(nuevoColaborador);
-		    System.out.print("El Colaborador: " + nombre + " se agrego exitosamente" + "\n");
-		    InterpreteMandatos.estadoFuncion=true;
+		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");
 		}
 		
 	}
-	public static void AgregarEdificio(String nombre){			
-		boolean indicador= false;
-		if(!listEdificios.isEmpty()){
+	public static void AgregarEdificio(String nombre) throws CommandException{			
+		boolean revisarSiElEdificioYaExiste= ! listEdificios.isEmpty();
+		
+		if(revisarSiElEdificioYaExiste)
+		{
 			for (Edificio edificio : listEdificios){						
 				if (edificio.getNombre().equalsIgnoreCase(nombre))
-					 indicador=true;
-					 InterpreteMandatos.estadoFuncion=false;
+				{
+					throw new CommandException("El edificio " + nombre+ " ya existe.");
+				}
 			}			
 		}			
-		if(indicador==false){
+		else
+		{
 			Edificio nuevoEdificio = new Edificio(nombre);
 		    listEdificios.add(nuevoEdificio);	
-		    System.out.print("El Edificio: " + nombre + " se agrego exitosamente");
-		    InterpreteMandatos.estadoFuncion=true;
+		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");
 		}					
 	}
-	public static void AgregarProyecto(String nombre){				
-		boolean indicador = false;
-		if(!listProyectos.isEmpty()){
+	public static void AgregarProyecto(String nombre) throws CommandException{	
+		boolean revisarSiElproyectoYaExiste= ! listProyectos.isEmpty();
+
+		if( revisarSiElproyectoYaExiste ){
 			for (Proyecto proyecto : listProyectos){							
 				if (proyecto.getNombre().equalsIgnoreCase(nombre))
-					 indicador=true;
-					 InterpreteMandatos.estadoFuncion=false;
+				{
+					throw new CommandException("El proyecto " + nombre+ " ya existe.");
+				}
 			}			
 		}				
-		if(indicador==false){
+		else
+		{
 			Proyecto nuevoProyecto = new Proyecto(nombre);
 			listProyectos.add(nuevoProyecto);	
-			System.out.print("El Proyecto: " + nombre + " se agrego exitosamente");
-			InterpreteMandatos.estadoFuncion=true;
+			System.out.println("El Proyecto: " + nombre + " se agrego exitosamente");
 		}					
 	}
-	public static void AgregarActivo(String nombre, int numeroPlaca){				
-		boolean indicador=false;
-		if(!listProyectos.isEmpty()){
+	public static void AgregarActivo(String nombre, int numeroPlaca) throws CommandException
+	{				
+		boolean revisarSiElActivoYaExiste = ! listProyectos.isEmpty();
+		
+		if(revisarSiElActivoYaExiste){
 			for (Activo activo : listActivos){							
 				if ( activo.getNumeroPlaca() == numeroPlaca )
-					 indicador=true;
-					 InterpreteMandatos.estadoFuncion=false;
+				{
+					throw new CommandException("El Activo " + nombre+ " ya existe.");
+				}
 			}			
 		}				
-		if(indicador==false){
+		else
+		{
 			Activo nuevoActivo = new Activo(nombre,numeroPlaca);
 			listActivos.add(nuevoActivo);	
-			InterpreteMandatos.estadoFuncion=true;
 		}	
 	}
-	public static void AgregarCompañia(int cedulaJuridica,String nombre){				
-		boolean indicador=false;
+
+	public static void AgregarCompannia(int cedulaJuridica,String nombre) throws CommandException {
+		
 		if(!listCompania.isEmpty()){
-			for (Compañia compañia: listCompania){							
-				if (compañia.getCedulaJuridica() == cedulaJuridica )
-					 indicador=true;
-					 InterpreteMandatos.estadoFuncion=false;
+			for (Compannia compannia: listCompania){							
+				if (compannia.getCedulaJuridica() == cedulaJuridica )
+				{
+					throw new CommandException("La Compannia " + compannia.getNombre()+ " tiene el mismo numero de cedula juridica.");
+				}
 			}			
 		}				
-		if(indicador==false){
-			Compañia nuevaCompañia = new Compañia(cedulaJuridica,nombre);
-			listCompania.add(nuevaCompañia);
+		else
+		{
+			Compannia nuevaCompannia = new Compannia(cedulaJuridica,nombre);
+			listCompania.add(nuevaCompannia);
 			System.out.print("La Compañia: " + nombre + " se agrego exitosamente");
-			InterpreteMandatos.estadoFuncion=true;
 		}	
+		
 	}
 }//fin clase

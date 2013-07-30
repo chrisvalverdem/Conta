@@ -7,61 +7,57 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ArchivoLog {
    
-	static FileWriter archivo; //nuestro archivo log
+	private FileWriter archivo; 
+	private final static String LOG_NAME="log.txt";
 
-    public static void crearRegistroLog(String operacion) throws IOException {
+    public void crearRegistroLog(String operacion) throws IOException {
 
-            Calendar fechaActual = Calendar.getInstance();
-            
-          //Empieza a escribir en el archivo
-            archivo.write(String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH))
-                    +"/"+String.valueOf(fechaActual.get(Calendar.MONTH)+1)
-                    +"/"+String.valueOf(fechaActual.get(Calendar.YEAR))
-                    +" "+String.valueOf(fechaActual.get(Calendar.HOUR_OF_DAY))
-                    +":"+String.valueOf(fechaActual.get(Calendar.MINUTE))
-                    +":"+String.valueOf(fechaActual.get(Calendar.SECOND))+ " " + operacion+ "\r\n");
-            archivo.close(); //Se cierra el archivo
-    }//Fin del metodo crearLog
+    	creaArchivoDeLogParaComandosEjecutadosSiNoExiste();
+    	Calendar fechaActual = Calendar.getInstance();
+        
+        archivo.write(String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH))
+                +"/"+String.valueOf(fechaActual.get(Calendar.MONTH)+1)
+                +"/"+String.valueOf(fechaActual.get(Calendar.YEAR))
+                +" "+String.valueOf(fechaActual.get(Calendar.HOUR_OF_DAY))
+                +":"+String.valueOf(fechaActual.get(Calendar.MINUTE))
+                +":"+String.valueOf(fechaActual.get(Calendar.SECOND))+ " " + operacion+ "\r\n");
+        archivo.close(); 
+    }
    
-    public static boolean lecturaLog(){
+    public ArrayList<String> getAllCommandsFromLog() throws IOException{
+    	
+    	FileInputStream fstream = new FileInputStream(LOG_NAME);
+        DataInputStream entrada = new DataInputStream(fstream);
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
+        String linea;
+        ArrayList<String> resultado = new ArrayList<String>();
 
-        try{
-            // Abrimos el archivo
-            FileInputStream fstream = new FileInputStream("log.txt");
-            // Creamos el objeto de entrada
-            DataInputStream entrada = new DataInputStream(fstream);
-            // Creamos el Buffer de Lectura
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
-            String linea;
-            // Leer el archivo linea por linea
-            while ((linea = buffer.readLine()) != null)   {
-                int tamaño= linea.length();
-                InterpreteMandatos.ejecutaComando(linea.substring(19, tamaño));
-                }
-            // Cerramos el archivo
-            entrada.close();
-            return true;
-        }catch (Exception e){ //Catch de excepciones
-            System.err.println("Ocurrio un error a la hora de cargar los datos: " + e.getMessage());
+        while ((linea = buffer.readLine()) != null)
+        {
+            int tamanno= linea.length();
+            resultado.add(linea.substring(19, tamanno));
         }
-        return false;
+
+        entrada.close();
+        return resultado;
     }
 
     
-    public static boolean gestionArchivo() throws IOException {
-        //Pregunta el archivo existe, caso contrario crea uno con el nombre log.txt
-        if (new File("log.txt").exists()== false){
-     	   	   archivo=new FileWriter(new File("log.txt"),false);
-     	   	   return true;
-     	   }else{
-     		   archivo = new FileWriter(new File("log.txt"), true);  
-     		   return false;
-     	   }
- 	
+    private void creaArchivoDeLogParaComandosEjecutadosSiNoExiste() throws IOException 
+    {
+    	boolean hagaAppendDeLosComandosEjecutados = true;
+        File logDeComandosEjecutados = new File(LOG_NAME);
+        archivo = new FileWriter(logDeComandosEjecutados, hagaAppendDeLosComandosEjecutados);
     }
     
-}//Fin clase
+    public boolean existeUnLogPrevio() throws IOException 
+    {
+    	return new File(LOG_NAME).exists();
+    }
+    
+}
