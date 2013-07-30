@@ -25,6 +25,7 @@ public class Comandos {
 	@BeforeTest
 	public void setUp() throws IOException
 	{
+		System.setOut(new PrintStream(new File(ArchivoLog.LOG_NAME)));
 		new File(ArchivoLog.LOG_NAME).delete();
 		interpreteMandatos = new InterpreteMandatos(false);	
 	}
