@@ -1,4 +1,4 @@
-package com.ts.main;
+﻿package com.ts.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,8 @@ public class InterpreteMandatos {
 	
 		private String comando="";
 	 	private ArchivoLog log = new ArchivoLog();
-        
+        	private boolean esCargaDeDatos;
+
 	 	public InterpreteMandatos() throws IOException
 	 	{
 
@@ -30,10 +31,11 @@ public class InterpreteMandatos {
 	 	{
 	 		if(log.existeUnLogPrevio())
 			{
+				esCargaDeDatos=true;
 				ArrayList<String> comandos = log.getAllCommandsFromLog();
 	            for(String comando : comandos)
 	            {   
-	            	cargaInformacion(comando);
+	            	ejecutaComando(comando);
 	            }
 				
 				System.out.println("Se realizo el proceso de carga exitosamente");
@@ -41,7 +43,8 @@ public class InterpreteMandatos {
 	 		
 	 		if(listenTheConsole)
 	 		{
-	 			InputStreamReader isr = new InputStreamReader(System.in);
+				esCargaDeDatos=false;	 			
+				InputStreamReader isr = new InputStreamReader(System.in);
 	 			BufferedReader br = new BufferedReader(isr);
 				do{
 					System.out.println("Introducir un Comando:"); 
@@ -108,7 +111,9 @@ public class InterpreteMandatos {
 			   	default:
 			   		throw new CommandException("Comando desconocido. Favor introducirlo nuevamente:");   		
 			}
-			log.crearRegistroLog(cadena);
+				if(!esCargaDeDatos){
+				log.crearRegistroLog(cadena);
+			}
 		}
 		catch(CommandException commandException)
 		{
@@ -116,48 +121,6 @@ public class InterpreteMandatos {
 		}
 		
 		
-	}
-	private void cargaInformacion(String cadena){
-
-        String[] parametros = interpretarCadena(cadena);
-		
-			switch(comando){	   		 
-				case "exit": 
-					System.exit(0);
-			   	break; 	   		 
-			   	case "crear_colaborador":   			
-			   		Repo.listColaboradores.add(new Colaborador(parametros[0], Integer.parseInt(parametros[1].toString())));
-			   	break;	   		 
-			   	case "crear_edificio": 	   			 
-			   		Repo.listEdificios.add(new Edificio(parametros[0]));
-				
-			   	case "crear_proyecto": 
-			   		Repo.listProyectos.add(new Proyecto(parametros[0]));	
-			   	break;	   		 
-			   	case "crear_compannia":
-			   		Repo.listCompania.add(new Compannia((Integer.parseInt(parametros[0].toString())),parametros[1]));
-			   	break;	   		 
-			   	case "crear_activo":   
-			   		Repo.listActivos.add(new Activo(parametros[0], (Integer.parseInt(parametros[1].toString()))));
-			   	break;
-			    case "cargar_log":	
-				try {
-					if(log.existeUnLogPrevio())
-			    	{
-			    		System.out.println("Se realizo el proceso de carga exitosamente");
-			   		}else{
-			   			System.out.println("No se realizo el proceso de carga de forma debida");	
-			   		}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			   	break;
-			   	default:
-			   		System.out.println("Archivo Dañado, Comandos irreconocibles");	
-			}
-		
-		
-
-}
+	}			
+	
 }
