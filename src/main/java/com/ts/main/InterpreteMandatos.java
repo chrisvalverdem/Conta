@@ -6,7 +6,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import com.ts.objects.Activo;
+import com.ts.objects.Colaborador;
 import com.ts.objects.CommandException;
+import com.ts.objects.Compannia;
+import com.ts.objects.Edificio;
+import com.ts.objects.Proyecto;
 import com.ts.objects.Repo;
 
 public class InterpreteMandatos {
@@ -27,8 +32,8 @@ public class InterpreteMandatos {
 			{
 				ArrayList<String> comandos = log.getAllCommandsFromLog();
 	            for(String comando : comandos)
-	            {
-	            	ejecutaComando(comando);
+	            {   
+	            	cargaInformacion(comando);
 	            }
 				
 				System.out.println("Se realizo el proceso de carga exitosamente");
@@ -77,11 +82,11 @@ public class InterpreteMandatos {
 				case "exit": 
 					System.exit(0);
 			   	break; 	   		 
-			   	case "crear_colaborador":   			
+				case "crear_colaborador":   			
 			   		Repo.AgregarColaborador(parametros[0], Integer.parseInt(parametros[1].toString()));	   
 			   	break;	   		 
 			   	case "crear_edificio": 	   			 
-			   		Repo.AgregarEdificio(parametros[0]); 
+			   		Repo.AgregarEdificio(parametros[0]);   		 
 			   	break;	   		 
 			   	case "crear_proyecto": 
 			   		 Repo.AgregarProyecto(parametros[0]);	
@@ -111,5 +116,48 @@ public class InterpreteMandatos {
 		}
 		
 		
-	}	
-} 
+	}
+	private void cargaInformacion(String cadena){
+
+        String[] parametros = interpretarCadena(cadena);
+		
+			switch(comando){	   		 
+				case "exit": 
+					System.exit(0);
+			   	break; 	   		 
+			   	case "crear_colaborador":   			
+			   		Repo.listColaboradores.add(new Colaborador(parametros[0], Integer.parseInt(parametros[1].toString())));
+			   	break;	   		 
+			   	case "crear_edificio": 	   			 
+			   		Repo.listEdificios.add(new Edificio(parametros[0]));
+				
+			   	case "crear_proyecto": 
+			   		Repo.listProyectos.add(new Proyecto(parametros[0]));	
+			   	break;	   		 
+			   	case "crear_compannia":
+			   		Repo.listCompania.add(new Compannia((Integer.parseInt(parametros[0].toString())),parametros[1]));
+			   	break;	   		 
+			   	case "crear_activo":   
+			   		Repo.listActivos.add(new Activo(parametros[0], (Integer.parseInt(parametros[1].toString()))));
+			   	break;
+			    case "cargar_log":	
+				try {
+					if(log.existeUnLogPrevio())
+			    	{
+			    		System.out.println("Se realizo el proceso de carga exitosamente");
+			   		}else{
+			   			System.out.println("No se realizo el proceso de carga de forma debida");	
+			   		}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			   	break;
+			   	default:
+			   		System.out.println("Archivo Dañado, Comandos irreconocibles");	
+			}
+		
+		
+
+}
+}
