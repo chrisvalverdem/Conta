@@ -30,7 +30,7 @@ public class Repo  {
 		{
 			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);	
 		    listColaboradores.add(nuevoColaborador);
-		    System.out.printlnln("El Colaborador: " + nombre + " se agrego exitosamente.");
+		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");
 		}
 		
 	}
@@ -46,7 +46,7 @@ public class Repo  {
 		{
 			Edificio nuevoEdificio = new Edificio(nombre);
 		    listEdificios.add(nuevoEdificio);	
-		    System.out.printlnln("El Edificio: " + nombre + " se agrego exitosamente.");
+		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");
 		}					
 	}
 	public static Edificio getEdificio(String nombre) throws CommandException{			
@@ -79,7 +79,7 @@ public class Repo  {
 		{
 			Proyecto nuevoProyecto = new Proyecto(nombre);
 			listProyectos.add(nuevoProyecto);	
-			System.out.printlnln("El Proyecto: " + nombre + " se agrego exitosamente");
+			System.out.println("El Proyecto: " + nombre + " se agrego exitosamente");
 		}					
 	}
 	public static void AgregarActivo(String nombre, int numeroPlaca) throws CommandException
