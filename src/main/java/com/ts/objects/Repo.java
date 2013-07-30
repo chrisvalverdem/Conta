@@ -30,28 +30,39 @@ public class Repo  {
 		{
 			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);	
 		    listColaboradores.add(nuevoColaborador);
-		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");
+		    System.out.printlnln("El Colaborador: " + nombre + " se agrego exitosamente.");
 		}
 		
 	}
 	public static void AgregarEdificio(String nombre) throws CommandException{			
-		boolean revisarSiElEdificioYaExiste= ! listEdificios.isEmpty();
+		boolean revisarSiElEdificioYaExiste= getEdificio(nombre) != null;
+		
 		
 		if(revisarSiElEdificioYaExiste)
 		{
-			for (Edificio edificio : listEdificios){						
-				if (edificio.getNombre().equalsIgnoreCase(nombre))
-				{
-					throw new CommandException("El edificio " + nombre+ " ya existe.");
-				}
-			}			
+			throw new CommandException("El edificio " + nombre+ " ya existe.");		
 		}			
 		else
 		{
 			Edificio nuevoEdificio = new Edificio(nombre);
 		    listEdificios.add(nuevoEdificio);	
-		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");
+		    System.out.printlnln("El Edificio: " + nombre + " se agrego exitosamente.");
 		}					
+	}
+	public static Edificio getEdificio(String nombre) throws CommandException{			
+		boolean existeAlgunEdificio = ! listEdificios.isEmpty();
+		
+		if(existeAlgunEdificio)
+		{
+			for (Edificio edificio : listEdificios){						
+				if (edificio.getNombre().equalsIgnoreCase(nombre))
+				{
+					return edificio;
+				}
+			}			
+		}			
+
+		return null;
 	}
 	public static void AgregarProyecto(String nombre) throws CommandException{	
 		boolean revisarSiElproyectoYaExiste= ! listProyectos.isEmpty();
@@ -68,7 +79,7 @@ public class Repo  {
 		{
 			Proyecto nuevoProyecto = new Proyecto(nombre);
 			listProyectos.add(nuevoProyecto);	
-			System.out.println("El Proyecto: " + nombre + " se agrego exitosamente");
+			System.out.printlnln("El Proyecto: " + nombre + " se agrego exitosamente");
 		}					
 	}
 	public static void AgregarActivo(String nombre, int numeroPlaca) throws CommandException
@@ -91,21 +102,34 @@ public class Repo  {
 	}
 
 	public static void AgregarCompannia(int cedulaJuridica,String nombre) throws CommandException {
+		boolean revisarSiElActivoYaExiste = getCompannia(cedulaJuridica) != null;
 		
-		if(!listCompania.isEmpty()){
-			for (Compannia compannia: listCompania){							
-				if (compannia.getCedulaJuridica() == cedulaJuridica )
-				{
-					throw new CommandException("La Compannia " + compannia.getNombre()+ " tiene el mismo numero de cedula juridica.");
-				}
-			}			
+		if(revisarSiElActivoYaExiste){
+			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		
 		}				
 		else
 		{
 			Compannia nuevaCompannia = new Compannia(cedulaJuridica,nombre);
 			listCompania.add(nuevaCompannia);
-			System.out.print("La Compañia: " + nombre + " se agrego exitosamente");
+			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");
 		}	
 		
+	}
+	
+	public static Compannia getCompannia(int cedulaJuridica) throws CommandException {
+		
+		boolean existeAlgunaCompannia = ! listCompania.isEmpty();
+		
+		if(existeAlgunaCompannia)
+		{
+			for (Compannia compannia: listCompania){							
+				if (compannia.getCedulaJuridica() == cedulaJuridica )
+				{
+					return compannia;
+				}
+			}			
+		}			
+
+		return null;
 	}
 }//fin clase

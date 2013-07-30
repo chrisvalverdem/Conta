@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class ArchivoLog {
    
 	private FileWriter archivo; 
-	private final static String LOG_NAME="log.txt";
+	public final static String LOG_NAME="log.txt";
 
     public void crearRegistroLog(String operacion) throws IOException {
 

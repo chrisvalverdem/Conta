@@ -16,6 +16,13 @@ public class InterpreteMandatos {
         
 	 	public InterpreteMandatos() throws IOException
 	 	{
+
+	 		new InterpreteMandatos(true);
+
+	 	}
+	 	
+	 	public InterpreteMandatos(boolean listenTheConsole) throws IOException
+	 	{
 	 		if(log.existeUnLogPrevio())
 			{
 				ArrayList<String> comandos = log.getAllCommandsFromLog();
@@ -26,15 +33,18 @@ public class InterpreteMandatos {
 				
 				System.out.println("Se realizo el proceso de carga exitosamente");
 			}
-	   
-	 		InputStreamReader isr = new InputStreamReader(System.in);
-		 	BufferedReader br = new BufferedReader(isr);
-			do{
-				System.out.println("Introducir un Comando:"); 
-	        	String dato = br.readLine(); 
-	        	ejecutaComando(dato);
-	    	}
-			while(true);
+	 		
+	 		if(listenTheConsole)
+	 		{
+	 			InputStreamReader isr = new InputStreamReader(System.in);
+	 			BufferedReader br = new BufferedReader(isr);
+				do{
+					System.out.println("Introducir un Comando:"); 
+		        	String dato = br.readLine(); 
+		        	ejecutaComando(dato);
+		    	}
+				while(true);	
+	 		}
 	 	}
 	 		
 	private String[] interpretarCadena(String cadena){
@@ -56,7 +66,7 @@ public class InterpreteMandatos {
 		new InterpreteMandatos();
 	} 	
 
-	private void ejecutaComando(String dato) throws IOException{
+	protected void ejecutaComando(String dato) throws IOException{
 
         String cadena= dato.toLowerCase().toString();
         String[] parametros = interpretarCadena(cadena);
