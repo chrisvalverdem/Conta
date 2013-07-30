@@ -6,19 +6,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.ts.objects.Activo;
-import com.ts.objects.Colaborador;
 import com.ts.objects.CommandException;
-import com.ts.objects.Compannia;
-import com.ts.objects.Edificio;
-import com.ts.objects.Proyecto;
 import com.ts.objects.Repo;
 
 public class InterpreteMandatos {
 	
 		private String comando="";
 	 	private ArchivoLog log = new ArchivoLog();
-        	private boolean esCargaDeDatos;
+        private boolean esCargaDeDatos= false;
 
 	 	public InterpreteMandatos() throws IOException
 	 	{
@@ -34,16 +29,15 @@ public class InterpreteMandatos {
 				esCargaDeDatos=true;
 				ArrayList<String> comandos = log.getAllCommandsFromLog();
 	            for(String comando : comandos)
-	            {   
+	            {   		
 	            	ejecutaComando(comando);
 	            }
-				
+	            esCargaDeDatos=false;
 				System.out.println("Se realizo el proceso de carga exitosamente");
 			}
 	 		
 	 		if(listenTheConsole)
-	 		{
-				esCargaDeDatos=false;	 			
+	 		{			
 				InputStreamReader isr = new InputStreamReader(System.in);
 	 			BufferedReader br = new BufferedReader(isr);
 				do{
@@ -78,14 +72,13 @@ public class InterpreteMandatos {
 
         String cadena= dato.toLowerCase().toString();
         String[] parametros = interpretarCadena(cadena);
-		
         try
 		{
 			switch(comando){	   		 
 				case "exit": 
 					System.exit(0);
 			   	break; 	   		 
-				case "crear_colaborador":   			
+				case "crear_colaborador":   
 			   		Repo.AgregarColaborador(parametros[0], Integer.parseInt(parametros[1].toString()));	   
 			   	break;	   		 
 			   	case "crear_edificio": 	   			 
@@ -111,7 +104,7 @@ public class InterpreteMandatos {
 			   	default:
 			   		throw new CommandException("Comando desconocido. Favor introducirlo nuevamente:");   		
 			}
-				if(!esCargaDeDatos){
+			if(!esCargaDeDatos){
 				log.crearRegistroLog(cadena);
 			}
 		}
