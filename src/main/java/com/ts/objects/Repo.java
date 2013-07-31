@@ -30,31 +30,20 @@ public class Repo  {
 		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
 	}
 	public static void AgregarEdificio(String nombre) throws CommandException{			
-		boolean revisarSiElEdificioYaExiste= getEdificio(nombre) != null;
+		boolean revisarSiElEdificioYaExiste=  ! listEdificios.isEmpty();
 			
 		if(revisarSiElEdificioYaExiste)
 		{
-			throw new CommandException("El edificio " + nombre+ " ya existe.");		
+			for (Edificio edifico : listEdificios){							
+				if (edifico.getNombre().equalsIgnoreCase(nombre))
+				{
+					throw new CommandException("El Edificio: " + nombre+ " ya existe.");
+				}
+			}	
 		}			
 			Edificio nuevoEdificio = new Edificio(nombre);
 		    listEdificios.add(nuevoEdificio);	
 		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");					
-	}
-	public static Edificio getEdificio(String nombre) throws CommandException{			
-		boolean existeAlgunEdificio = ! listEdificios.isEmpty();
-		
-		if(existeAlgunEdificio)
-		{
-			for (Edificio edificio : listEdificios){	
-				String nombreBuscar = nombre.substring(0, nombre.length()-1);
-				if (edificio.getNombre().toString().trim().equalsIgnoreCase(nombreBuscar))
-				{
-					return edificio;
-				}
-			}			
-		}			
-
-		return null;
 	}
 	public static void AgregarProyecto(String nombre) throws CommandException{	
 		boolean revisarSiElproyectoYaExiste= ! listProyectos.isEmpty();
@@ -86,7 +75,6 @@ public class Repo  {
 			Activo nuevoActivo = new Activo(nombre,numeroPlaca);
 			listActivos.add(nuevoActivo);		
 	}
-
 	public static void AgregarCompannia(int cedulaJuridica,String nombre) throws CommandException {
 		boolean revisarSiElActivoYaExiste = getCompannia(cedulaJuridica) != null;
 		
@@ -97,7 +85,6 @@ public class Repo  {
 			listCompania.add(nuevaCompannia);
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
-	
 	public static Compannia getCompannia(int cedulaJuridica) throws CommandException {
 		
 		boolean existeAlgunaCompannia = ! listCompania.isEmpty();
@@ -113,5 +100,44 @@ public class Repo  {
 		}			
 
 		return null;
+	}	
+	public static Edificio getEdificio(String nombre) throws CommandException{			
+		boolean existeAlgunEdificio = ! listEdificios.isEmpty();
+		
+		if(existeAlgunEdificio)
+		{
+			for (Edificio edificio : listEdificios){	
+				String nombreBuscar = nombre.substring(0, nombre.length()-1);
+				if (edificio.getNombre().toString().trim().equalsIgnoreCase(nombreBuscar))
+				{
+					return edificio;
+				}
+			}			
+		}			
+
+		return null;
 	}
+	public static Activo getActivo(int placa) throws CommandException {
+		
+		boolean existeAlgunActivo = ! listActivos.isEmpty();
+		
+		if(existeAlgunActivo)
+		{
+			for (Activo activo: listActivos){							
+				if (activo.getNumeroPlaca()== placa )
+				{
+					return activo;
+				}
+			}			
+		}			
+
+		return null;
+	}
+
+	public static int getTamannoCompannia(){
+		return listCompania.size();
+			}
+	public static int getTamannoEdificio(){
+		return listEdificios.size();
+			}
 }//fin clase
