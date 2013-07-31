@@ -1,6 +1,6 @@
 package com.ts.objects;
 
-public class Proyecto {
+public class Proyecto extends Object{
 	
 	String nombre;	
 	int fechainicio;

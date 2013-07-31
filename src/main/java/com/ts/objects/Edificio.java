@@ -1,6 +1,6 @@
 package com.ts.objects;
 
-public class Edificio {
+public class Edificio extends Object{
 	
 	String nombre;
 	String direccion;

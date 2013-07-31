@@ -2,7 +2,7 @@ package com.ts.objects;
 
 import java.util.Date;
 
-public class Activo {
+public class Activo extends Object {
 	
 	String nombre;
 	String estado;

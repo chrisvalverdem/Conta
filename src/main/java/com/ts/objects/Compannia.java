@@ -2,7 +2,7 @@ package com.ts.objects;
 
 import java.util.Date;
 
-public class Compannia {
+public class Compannia extends Object{
 	
 	String nombre;
 	int cedulaJuridica;

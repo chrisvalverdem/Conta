@@ -2,7 +2,7 @@ package com.ts.objects;
 
 import java.util.Date;
 
-public class Colaborador {
+public class Colaborador extends Object {
 	
 	String nombre;
 	String direccion;

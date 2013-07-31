@@ -1,6 +1,9 @@
 package com.ts.objects;
 
+import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.swing.text.TabableView;
 
 public class Repo  {
 	
@@ -9,7 +12,13 @@ public class Repo  {
 	private static CopyOnWriteArrayList<Proyecto> listProyectos =new CopyOnWriteArrayList<Proyecto> ();
 	private static CopyOnWriteArrayList<Activo> listActivos =new CopyOnWriteArrayList<Activo> ();
 	private static CopyOnWriteArrayList<Compannia> listCompania =new CopyOnWriteArrayList<Compannia> ();
+	private static HashMap<String, Object> tablaDeSimbolos = new HashMap<String, Object>();
 	
+	public void pullInTOTablaDeSimbolos(String string, Object object)
+	{
+		//TODO validar que el string ya no exista....
+		tablaDeSimbolos.put(string, object);
+	}
 	
 	public static void AgregarColaborador(String nombre, int numeroCedula ) throws CommandException{
 		
