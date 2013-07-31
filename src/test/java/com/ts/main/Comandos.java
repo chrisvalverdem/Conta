@@ -32,8 +32,8 @@ public class Comandos {
 		String comando ="crear_compannia";
 		String cedComando= "12,";
 		int cedula = Integer.parseInt(cedComando.substring(0, cedComando.length()-1));
-		String nombre = cedComando +" TestingSoftware;";
-		comando += " "+nombre;
+		String nombre = " TestingSoftware;";
+		comando+=(" "+ cedComando + nombre);
 		interpreteMandatos.ejecutaComando(comando);
 		Compannia compannia= Repo.getCompannia(cedula);
 		
