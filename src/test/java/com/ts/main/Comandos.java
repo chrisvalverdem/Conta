@@ -46,13 +46,11 @@ public class Comandos {
 		String comando ="crear_edificio";
 		String nombre = "Ts1;";
 		comando += " "+nombre;
-		System.err.println("comando: "+comando);
 		interpreteMandatos.ejecutaComando(comando);
 		Edificio edificio= Repo.getEdificio(nombre);
 		
 		Assert.assertNotNull(edificio);
 	}
-	
 	@AfterTest
 	public void end() throws IOException
 	{
