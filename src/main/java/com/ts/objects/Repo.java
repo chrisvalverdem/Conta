@@ -45,8 +45,9 @@ public class Repo  {
 		
 		if(existeAlgunEdificio)
 		{
-			for (Edificio edificio : listEdificios){						
-				if (edificio.getNombre().equalsIgnoreCase(nombre))
+			for (Edificio edificio : listEdificios){	
+				String nombreBuscar = nombre.substring(0, nombre.length()-1);
+				if (edificio.getNombre().toString().trim().equalsIgnoreCase(nombreBuscar))
 				{
 					return edificio;
 				}
