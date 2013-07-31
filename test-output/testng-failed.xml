@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [Default suite]">
-  <test name="Default test(failed)">
+<suite name="Failed suite [Suite]" parallel="none">
+  <test name="Test(failed)" parallel="none">
     <classes>
+      <class name="com.ts.main.Comandos">
+        <methods>
+          <include name="agregarEdificioTest"/>
+          <include name="setUp"/>
+          <include name="end"/>
+          <include name="agregarCompanniaTest"/>
+        </methods>
+      </class> <!-- com.ts.main.Comandos -->
       <class name="com.ts.main.InterpreteComandos">
         <methods>
           <include name="pruebaCargaArchivo"/>
+          <include name="pruebaParseComandos"/>
         </methods>
       </class> <!-- com.ts.main.InterpreteComandos -->
     </classes>
-  </test> <!-- Default test(failed) -->
-</suite> <!-- Failed suite [Default suite] -->
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Suite] -->

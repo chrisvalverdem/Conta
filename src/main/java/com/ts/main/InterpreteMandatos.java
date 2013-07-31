@@ -9,19 +9,16 @@ import java.util.StringTokenizer;
 import com.ts.objects.CommandException;
 import com.ts.objects.Repo;
 
-public class InterpreteMandatos {
-	
-		private String comando="";
+public class InterpreteMandatos {	
+		
 	 	private ArchivoLog log = new ArchivoLog();
-        private boolean esCargaDeDatos= false;
-
+        private boolean esCargaDeDatos= false; 
+     
 	 	public InterpreteMandatos() throws IOException
 	 	{
-
 	 		new InterpreteMandatos(true);
 
-	 	}
-	 	
+	 	}	 	
 	 	public InterpreteMandatos(boolean listenTheConsole) throws IOException
 	 	{
 	 		if(log.existeUnLogPrevio())
@@ -49,19 +46,30 @@ public class InterpreteMandatos {
 	 		}
 	 	}
 	 		
-	private String[] interpretarCadena(String cadena){
-		int contador=0; 				
-		StringTokenizer tokens=new StringTokenizer(cadena);
-		int cantidadP = tokens.countTokens();
-		String[] parametros = new String[cantidadP];
-		comando= tokens.nextToken();		
-				
-		while(tokens.hasMoreTokens()){		
-			String valor= tokens.nextToken().toString();
-			parametros[contador]=valor.substring(0, valor.length()-1);							
-			contador++; 
-		}
-		return parametros;
+	 protected Comando interpreteCadena(String cadena){		
+		
+		  String instance;
+		  String metodo;
+		  String[] parametros;
+		  
+		  String[] temp = cadena.split("\\(");
+		  temp[1] = temp[1].substring(0, temp[1].length()-1);
+		  parametros = temp[1].split("\\,");
+		  
+		  boolean esUnaAsinacion = temp[0].indexOf("=") > -1;
+		  if(esUnaAsinacion)
+		  {
+		   temp = temp[0].split("\\=");
+		   instance = temp[0];
+		   metodo = temp[1];
+		  }
+		  else
+		  {
+		   temp = temp[0].split("\\.");
+		   instance = temp[0];
+		   metodo = temp[1];		  
+		  }	
+		   return new Comando(instance, metodo, parametros); 
 	} 	
 	
 	public static void main(String[] args) throws IOException {
@@ -71,27 +79,28 @@ public class InterpreteMandatos {
 	protected void ejecutaComando(String dato) throws IOException{
 
         String cadena= dato.toLowerCase().toString();
-        String[] parametros = interpretarCadena(cadena);
+        Comando comando=interpreteCadena (cadena);        
+        
         try
 		{
-			switch(comando){	   		 
+			switch(comando.getMetodo()){	   		 
 				case "exit": 
 					System.exit(0);
 			   	break; 	   		 
 				case "crear_colaborador":   
-			   		Repo.AgregarColaborador(parametros[0], Integer.parseInt(parametros[1].toString()));	   
+			   		Repo.AgregarColaborador(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));	   
 			   	break;	   		 
 			   	case "crear_edificio": 	   			 
-			   		Repo.AgregarEdificio(parametros[0]);   		 
+			   		Repo.AgregarEdificio(comando.getInstance(),comando.getParametros()[0]);   		 
 			   	break;	   		 
 			   	case "crear_proyecto": 
-			   		 Repo.AgregarProyecto(parametros[0]);	
+			   		 Repo.AgregarProyecto(comando.getInstance(),comando.getParametros()[0]);	
 			   	break;	   		 
 			   	case "crear_compannia":
-			   		Repo.AgregarCompannia(Integer.parseInt(parametros[0].toString()),parametros[1]);
+			   		Repo.AgregarCompannia(comando.getInstance(),Integer.parseInt(comando.getParametros()[0]),comando.getParametros()[1]);
 			   	break;	   		 
 			   	case "crear_activo":   
-			   		Repo.AgregarActivo(parametros[0], Integer.parseInt(parametros[1].toString()));
+			   		Repo.AgregarActivo(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));
 			   	break;
 			    case "cargar_log":	
 			    	if(log.existeUnLogPrevio())

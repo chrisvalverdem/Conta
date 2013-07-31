@@ -14,13 +14,25 @@ public class Repo  {
 	private static CopyOnWriteArrayList<Compannia> listCompania =new CopyOnWriteArrayList<Compannia> ();
 	private static HashMap<String, Object> tablaDeSimbolos = new HashMap<String, Object>();
 	
-	public void pullInTOTablaDeSimbolos(String string, Object object)
+	private static void pullInTOTablaDeSimbolos(String string, Object object)
 	{
 		//TODO validar que el string ya no exista....
 		tablaDeSimbolos.put(string, object);
 	}
 	
-	public static void AgregarColaborador(String nombre, int numeroCedula ) throws CommandException{
+	public static void AgregarCompannia(String instance, int cedulaJuridica,String nombre) throws CommandException {
+		boolean revisarSiElActivoYaExiste = getCompannia(cedulaJuridica) != null;
+		
+		if(revisarSiElActivoYaExiste){
+			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		
+		}				
+			Compannia nuevaCompannia = new Compannia(cedulaJuridica,nombre);
+			listCompania.add(nuevaCompannia);
+			 pullInTOTablaDeSimbolos(instance, nuevaCompannia );
+			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
+	}
+	
+	public static void AgregarColaborador(String instance, String nombre, int numeroCedula ) throws CommandException{
 		
 		boolean revisarSiElColaboradorYaExiste = !listColaboradores.isEmpty();		
 		
@@ -36,9 +48,10 @@ public class Repo  {
 		}
 			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);	
 		    listColaboradores.add(nuevoColaborador);
+		    pullInTOTablaDeSimbolos(instance, nuevoColaborador );
 		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
 	}
-	public static void AgregarEdificio(String nombre) throws CommandException{			
+	public static void AgregarEdificio(String instance, String nombre) throws CommandException{			
 		boolean revisarSiElEdificioYaExiste=  ! listEdificios.isEmpty();
 			
 		if(revisarSiElEdificioYaExiste)
@@ -51,10 +64,11 @@ public class Repo  {
 			}	
 		}			
 			Edificio nuevoEdificio = new Edificio(nombre);
-		    listEdificios.add(nuevoEdificio);	
+		    listEdificios.add(nuevoEdificio);
+		    pullInTOTablaDeSimbolos(instance, nuevoEdificio );
 		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");					
 	}
-	public static void AgregarProyecto(String nombre) throws CommandException{	
+	public static void AgregarProyecto(String instance, String nombre) throws CommandException{	
 		boolean revisarSiElproyectoYaExiste= ! listProyectos.isEmpty();
 
 		if( revisarSiElproyectoYaExiste ){
@@ -66,10 +80,11 @@ public class Repo  {
 			}			
 		}				
 			Proyecto nuevoProyecto = new Proyecto(nombre);
-			listProyectos.add(nuevoProyecto);	
+			listProyectos.add(nuevoProyecto);
+			 pullInTOTablaDeSimbolos(instance, nuevoProyecto );
 			System.out.println("El Proyecto: " + nombre + " se agrego exitosamente");						
 	}
-	public static void AgregarActivo(String nombre, int numeroPlaca) throws CommandException
+	public static void AgregarActivo(String instance, String nombre, int numeroPlaca) throws CommandException
 	{				
 		boolean revisarSiElActivoYaExiste = ! listProyectos.isEmpty();
 		
@@ -84,16 +99,7 @@ public class Repo  {
 			Activo nuevoActivo = new Activo(nombre,numeroPlaca);
 			listActivos.add(nuevoActivo);		
 	}
-	public static void AgregarCompannia(int cedulaJuridica,String nombre) throws CommandException {
-		boolean revisarSiElActivoYaExiste = getCompannia(cedulaJuridica) != null;
-		
-		if(revisarSiElActivoYaExiste){
-			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		
-		}				
-			Compannia nuevaCompannia = new Compannia(cedulaJuridica,nombre);
-			listCompania.add(nuevaCompannia);
-			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
-	}
+
 	public static Compannia getCompannia(int cedulaJuridica) throws CommandException {
 		
 		boolean existeAlgunaCompannia = ! listCompania.isEmpty();
@@ -116,8 +122,7 @@ public class Repo  {
 		if(existeAlgunEdificio)
 		{
 			for (Edificio edificio : listEdificios){	
-				String nombreBuscar = nombre.substring(0, nombre.length()-1);
-				if (edificio.getNombre().toString().trim().equalsIgnoreCase(nombreBuscar))
+				if (edificio.getNombre().toString().trim().equalsIgnoreCase(nombre))
 				{
 					return edificio;
 				}

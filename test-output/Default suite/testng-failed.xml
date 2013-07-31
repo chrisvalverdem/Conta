@@ -6,6 +6,7 @@
       <class name="com.ts.main.InterpreteComandos">
         <methods>
           <include name="pruebaCargaArchivo"/>
+          <include name="pruebaParseComandos"/>
         </methods>
       </class> <!-- com.ts.main.InterpreteComandos -->
     </classes>

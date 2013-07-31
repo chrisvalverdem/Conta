@@ -36,6 +36,24 @@ public class InterpreteComandos {
 		Assert.assertEquals(Repo.getTamannoEdificio(), 1);
 	}
 	
+	@Test
+	public void pruebaParseComandos() throws IOException, CommandException{
 
+		InterpreteMandatos interprete = new InterpreteMandatos(false);
+		Comando comando =interprete.interpreteCadena("ts=crear_compannia(123456, cecropia)");
+		Comando comando2 =interprete.interpreteCadena("juan.crear_colaborador(juan, 123456)");
+		
+		Assert.assertEquals(comando.getMetodo(),"crear_compannia");		
+		Assert.assertEquals(comando.getInstance(),"ts");
+		Assert.assertEquals(comando.getParametros()[0],"123456");
+		Assert.assertEquals(comando.getParametros()[1],"cecropia");
+		
+		Assert.assertEquals(comando.getMetodo(),"crear_colaborador");		
+		Assert.assertEquals(comando.getInstance(),"juan");
+		Assert.assertEquals(comando.getParametros()[0],"juan");
+		Assert.assertEquals(comando.getParametros()[1],"123456");
+		
+		
+	}
 	
 }
