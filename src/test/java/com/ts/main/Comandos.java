@@ -2,15 +2,16 @@ package com.ts.main;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
 import com.ts.main.InterpreteMandatos;
+import com.ts.objects.Colaborador;
 import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Edificio;
-import com.ts.objects.Repo;
 
 
 public class Comandos {
@@ -21,8 +22,8 @@ public class Comandos {
 	@BeforeTest
 	public void setUp() throws IOException
 	{
-		System.setOut(new PrintStream(new File(ArchivoLog.LOG_NAME)));
-		new File(ArchivoLog.LOG_NAME).delete();
+		System.setOut(new PrintStream(new File("logTestCases.txt")));
+		new File("logTestCases.txt").delete();
 		interpreteMandatos = new InterpreteMandatos(false);	
 	}
 	
@@ -49,4 +50,15 @@ public class Comandos {
 		
 	}
 	
+	@Test
+	public void agregarColaboradorTest() throws IOException, CommandException
+	{
+		String comando ="Cguillen= crear_Colaborador(Jahzeel, 1-1111-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, 1000)";
+		interpreteMandatos.ejecutaComando(comando);
+		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
+		
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getNombre(), "jahzeel");
+		
+	}
 }
