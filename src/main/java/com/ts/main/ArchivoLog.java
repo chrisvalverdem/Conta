@@ -16,13 +16,23 @@ public class ArchivoLog {
 	public final static String LOG_NAME="log.txt";
 
     public void crearRegistroLog(String operacion) throws IOException {
-
+    	String dia= "0";
+		String mes= "0";
     	creaArchivoDeLogParaComandosEjecutadosSiNoExiste();
     	Calendar fechaActual = Calendar.getInstance();
         
-        archivo.write(String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH))
-                +"/"+String.valueOf(fechaActual.get(Calendar.MONTH)+1)
-                +"/"+String.valueOf(fechaActual.get(Calendar.YEAR))
+    	if(fechaActual.get(Calendar.DAY_OF_MONTH)< 10){
+    		dia+=String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH));
+    	}else{
+    		dia=String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH));
+    	}
+    	if(fechaActual.get(Calendar.MONTH)+1 < 10){
+    		mes+=String.valueOf(fechaActual.get(Calendar.MONTH)+1);
+    	}else{
+    		mes= String.valueOf(fechaActual.get(Calendar.MONTH)+1);
+    	}
+    	
+        archivo.write(dia +"/"+ mes +"/"+String.valueOf(fechaActual.get(Calendar.YEAR))
                 +" "+String.valueOf(fechaActual.get(Calendar.HOUR_OF_DAY))
                 +":"+String.valueOf(fechaActual.get(Calendar.MINUTE))
                 +":"+String.valueOf(fechaActual.get(Calendar.SECOND))+ " " + operacion+ "\r\n");
