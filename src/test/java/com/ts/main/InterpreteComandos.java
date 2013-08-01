@@ -3,16 +3,12 @@ package com.ts.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Edificio;
-import com.ts.objects.Repo;
 
 public class InterpreteComandos {
 	
@@ -21,7 +17,7 @@ public class InterpreteComandos {
 	{
 		//System.setOut(new PrintStream(new File("PRUEBAS.LOG")));
 		new File(ArchivoLog.LOG_NAME).delete();
-			
+		Repo.limpiaListas();
 	}
 	
 	@Test
@@ -30,8 +26,8 @@ public class InterpreteComandos {
 		InterpreteMandatos interprete = new InterpreteMandatos(false);
 		interprete.ejecutaComando("ts.crear_edificio(occidente)");
 		interprete.ejecutaComando("cecropia=crear_compannia(123JK456, ts)");
-		interprete.ejecutaComando("ts.crear_compannia(789, cecropia)");
-		
+		interprete.ejecutaComando("ts.crear_compannia(789, testing)");
+		Repo.limpiaListas();
 		new InterpreteMandatos(false);
 		
 		Compannia compannia= Repo.getCompannia("123JK456");
@@ -47,7 +43,7 @@ public class InterpreteComandos {
 	
 	}
 	
-	@Test
+	/*@Test
 	public void pruebaParseComandos() throws IOException, CommandException{
 
 		InterpreteMandatos interprete = new InterpreteMandatos(false);
@@ -72,15 +68,15 @@ public class InterpreteComandos {
 	public void pruebaParseEspacios() throws IOException, CommandException{
 
 		InterpreteMandatos interprete = new InterpreteMandatos(false);
-		Comando comando =interprete.interpreteCadena("ts  =  crear_compannia  (  123456789  ,   cecropia   )");	
+		Comando comando =interprete.interpreteCadena("ts  =  crear_compannia  (  987654321  ,   solutions   )");	
 		
 		Assert.assertEquals(comando.getMetodo(),"crear_compannia");		
 		Assert.assertEquals(comando.getInstance(),"ts");
-		Assert.assertEquals(comando.getParametros()[0],"123456789");
-		Assert.assertEquals(comando.getParametros()[1],"cecropia");
+		Assert.assertEquals(comando.getParametros()[0],"987654321");
+		Assert.assertEquals(comando.getParametros()[1],"solutions");
 		
 		
 		
-	}
+	}*/
 	
 }
