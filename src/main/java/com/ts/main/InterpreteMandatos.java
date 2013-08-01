@@ -122,7 +122,7 @@ public class InterpreteMandatos {
 		catch(CommandException commandException)
 		{
 			System.err.println(commandException.getMessage()); 
-		}
+		}		
 		
 	}			
 	
