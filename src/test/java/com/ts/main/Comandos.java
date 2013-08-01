@@ -29,33 +29,24 @@ public class Comandos {
 	@Test
 	public void agregarCompanniaTest() throws IOException, CommandException
 	{
-		String comando ="crear_compannia";
-		String cedComando= "12,";
-		int cedula = Integer.parseInt(cedComando.substring(0, cedComando.length()-1));
-		String nombre = " TestingSoftware;";
-		comando+=(" "+ cedComando + nombre);
+		String comando ="t.crear_compannia(j456, ts)";
 		interpreteMandatos.ejecutaComando(comando);
-		Compannia compannia= Repo.getCompannia(cedula);
+		Compannia compannia= Repo.getCompannia("j456");
 		
 		Assert.assertNotNull(compannia);
+		Assert.assertEquals(Repo.getTamannoCompannia(),1);
 	}
 	
 	@Test
 	public void agregarEdificioTest() throws IOException, CommandException
 	{
-		String comando ="crear_edificio";
-		String nombre = "Ts1;";
-		comando += " "+nombre;
+		String comando ="elguarco.crear_edificio(ts2)";
 		interpreteMandatos.ejecutaComando(comando);
-		Edificio edificio= Repo.getEdificio(nombre);
+		Edificio edificio= Repo.getEdificio("ts2");
 		
 		Assert.assertNotNull(edificio);
-	}
-	@AfterTest
-	public void end() throws IOException
-	{
-		interpreteMandatos.ejecutaComando("exit");
-		new File(ArchivoLog.LOG_NAME).delete();
+		Assert.assertEquals(edificio.getNombre(), "ts2");
 		
 	}
+	
 }

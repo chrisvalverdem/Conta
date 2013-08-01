@@ -20,14 +20,17 @@ public class Repo  {
 		tablaDeSimbolos.put(string, object);
 	}
 	
-	public static void AgregarCompannia(String instance, int cedulaJuridica,String nombre) throws CommandException {
-		boolean revisarSiElActivoYaExiste = getCompannia(cedulaJuridica) != null;
+	public static void AgregarCompannia(String instance, String cedulaJuridica,String nombre) throws CommandException {
+		boolean revisarSiLaCompanniaYaExiste = getCompannia(cedulaJuridica) != null;
 		
-		if(revisarSiElActivoYaExiste){
+		if(revisarSiLaCompanniaYaExiste){
 			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		
 		}				
 			Compannia nuevaCompannia = new Compannia(cedulaJuridica,nombre);
+			//System.err.println("Compannia tiene: "+ nuevaCompannia.getCedulaJuridica() + "\n");
+			//System.err.println("Compannia tiene: "+ nuevaCompannia.getNombre() + "\n");			
 			listCompania.add(nuevaCompannia);
+			//System.err.println("Cantidad de Compannias : "+ listCompania.size() + "\n");	
 			 pullInTOTablaDeSimbolos(instance, nuevaCompannia );
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
@@ -46,7 +49,7 @@ public class Repo  {
 				}
 			}
 		}
-			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);	
+			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula);			
 		    listColaboradores.add(nuevoColaborador);
 		    pullInTOTablaDeSimbolos(instance, nuevoColaborador );
 		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
@@ -69,9 +72,9 @@ public class Repo  {
 		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");					
 	}
 	public static void AgregarProyecto(String instance, String nombre) throws CommandException{	
-		boolean revisarSiElproyectoYaExiste= ! listProyectos.isEmpty();
+		boolean revisarSiElProyectoYaExiste= ! listProyectos.isEmpty();
 
-		if( revisarSiElproyectoYaExiste ){
+		if( revisarSiElProyectoYaExiste ){
 			for (Proyecto proyecto : listProyectos){							
 				if (proyecto.getNombre().equalsIgnoreCase(nombre))
 				{
@@ -100,14 +103,14 @@ public class Repo  {
 			listActivos.add(nuevoActivo);		
 	}
 
-	public static Compannia getCompannia(int cedulaJuridica) throws CommandException {
+	public static Compannia getCompannia(String cedulaJuridica) throws CommandException {
 		
 		boolean existeAlgunaCompannia = ! listCompania.isEmpty();
 		
 		if(existeAlgunaCompannia)
 		{
 			for (Compannia compannia: listCompania){							
-				if (compannia.getCedulaJuridica() == cedulaJuridica )
+				if (compannia.getCedulaJuridica().toString().trim().equalsIgnoreCase(cedulaJuridica))
 				{
 					return compannia;
 				}
@@ -153,5 +156,8 @@ public class Repo  {
 			}
 	public static int getTamannoEdificio(){
 		return listEdificios.size();
+			}
+	public static int getTamannoColaborador(){
+		return listColaboradores.size();
 			}
 }//fin clase

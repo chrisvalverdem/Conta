@@ -5,7 +5,7 @@ import java.util.Date;
 public class Compannia extends Object{
 	
 	String nombre;
-	int cedulaJuridica;
+	String cedulaJuridica;
 	Date fechaCreacion;
 	String direccion;	
 	int	telefono;
@@ -13,11 +13,11 @@ public class Compannia extends Object{
     public static String comandosValidos[] ={"nuevaCompañia,gregarColaborador,agregarEdificio"};
     
   
-    public Compannia(int cedulaJuridica, String nombre) {
+    public Compannia(String cedulaJuridica, String nombre) {
     	this.cedulaJuridica=cedulaJuridica;  
     	this.nombre = nombre;    	  	
 	} 
-    public Compannia(String nombre, String direccion, int cedulaJuridica,
+    public Compannia(String nombre, String direccion, String cedulaJuridica,
 			Date fechaCreacion, int telefono, int fax) {		
 		this.nombre = nombre;
 		this.cedulaJuridica=cedulaJuridica;
@@ -33,10 +33,10 @@ public class Compannia extends Object{
     public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}	
-	public int getCedulaJuridica() {
+	public String getCedulaJuridica() {
 		return cedulaJuridica;
 	}
-	public void setCedulaJuridica(int cedulaJuridica) {
+	public void setCedulaJuridica(String cedulaJuridica) {
 		this.cedulaJuridica = cedulaJuridica;
 	}	   
 	

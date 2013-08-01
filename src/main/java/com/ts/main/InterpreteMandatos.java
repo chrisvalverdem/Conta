@@ -46,29 +46,30 @@ public class InterpreteMandatos {
 	 		}
 	 	}
 	 		
-	 protected Comando interpreteCadena(String cadena){		
-		
+	 protected Comando interpreteCadena(String cadena){	
+		 
 		  String instance;
 		  String metodo;
-		  String[] parametros;
+		  String[] parametros=null;
 		  
 		  String[] temp = cadena.split("\\(");
 		  temp[1] = temp[1].substring(0, temp[1].length()-1);
-		  parametros = temp[1].split("\\,");
-		  
+		  parametros = temp[1].split("\\,"); 
+		  	
 		  boolean esUnaAsinacion = temp[0].indexOf("=") > -1;
 		  if(esUnaAsinacion)
 		  {
 		   temp = temp[0].split("\\=");
-		   instance = temp[0];
-		   metodo = temp[1];
 		  }
 		  else
 		  {
-		   temp = temp[0].split("\\.");
-		   instance = temp[0];
-		   metodo = temp[1];		  
+		   temp = temp[0].split("\\.");		   		  
 		  }	
+		  instance = temp[0].trim();
+		   metodo = temp[1].trim();	
+		   for(int indice=0; indice < parametros.length; indice++ ){
+			   parametros[indice]=parametros[indice].trim();			   
+		   }
 		   return new Comando(instance, metodo, parametros); 
 	} 	
 	
@@ -80,7 +81,7 @@ public class InterpreteMandatos {
 
         String cadena= dato.toLowerCase().toString();
         Comando comando=interpreteCadena (cadena);        
-        
+     
         try
 		{
 			switch(comando.getMetodo()){	   		 
@@ -97,7 +98,8 @@ public class InterpreteMandatos {
 			   		 Repo.AgregarProyecto(comando.getInstance(),comando.getParametros()[0]);	
 			   	break;	   		 
 			   	case "crear_compannia":
-			   		Repo.AgregarCompannia(comando.getInstance(),Integer.parseInt(comando.getParametros()[0]),comando.getParametros()[1]);
+			   		Repo.AgregarCompannia(comando.getInstance(),comando.getParametros()[0],comando.getParametros()[1]);
+			   		System.err.println("Cantidad de Compannias : "+ Repo.getTamannoCompannia() + "\n");
 			   	break;	   		 
 			   	case "crear_activo":   
 			   		Repo.AgregarActivo(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));
