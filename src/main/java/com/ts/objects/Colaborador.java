@@ -3,124 +3,101 @@ package com.ts.objects;
 import java.util.Date;
 
 public class Colaborador extends Object {
-	
 	String nombre;
-	String direccion;
-	String estadoCivil;
-	int numeroCedula;
-	int codigo;
-	int telefonoCelular;
-	int telefonoCasa;	
-	Date fechaIngreso;
-	Date fechaSalida;
-	Date FechaNacimiento;
-	int numeroHijos;
+	String cedula;
+	Date fechaNacimiento;
+	Date fechaIngresoEmpresa;
+	Boolean estadoCivil;
+	String telefono;
+	int cantidadHijos;
 	double salarioInicial;
-	String correoElectronico;	
-	public static String comandosValidos[] ={"nuevoColaborador"};
-
-	public Colaborador(String nombre, String direccion,
-			String estadoCivil, int numeroCedula, int codigo,
-			int telefonoCelular, int telefonoCasa, Date fechaIngreso,
-			Date fechaSalida, Date fechaNacimiento, int numeroHijos,
-			int salarioInicial) {			
-		this.nombre = nombre;
-		this.direccion = direccion;
-		this.estadoCivil = estadoCivil;
-		this.numeroCedula = numeroCedula;
-		this.codigo = codigo;
-		this.telefonoCelular = telefonoCelular;
-		this.telefonoCasa = telefonoCasa;
-		this.fechaIngreso = fechaIngreso;
-		this.fechaSalida = fechaSalida;
-		this.FechaNacimiento = fechaNacimiento;
-		this.numeroHijos = numeroHijos;
-		this.salarioInicial = salarioInicial;		
-	}
 	
-	public Colaborador(String nombre, int numeroCedula) {		
-		this.nombre = nombre;		
-		this.numeroCedula = numeroCedula;		
-	}	
+	public static String comandosValidos[] ={"Crear_Colaborador"};
+
+	public Colaborador(String nombre, String cedula,Date fechaNacimiento,
+			Date fechaIngreso, boolean estado, String telefono,  int numeroHijos,
+			double salarioInicial) {			
+		this.nombre = nombre;
+		this.cedula = cedula;
+		this.fechaNacimiento= fechaNacimiento;
+		this.fechaIngresoEmpresa= fechaIngreso;
+		this.estadoCivil= estado;
+		this.telefono= telefono;
+		this.cantidadHijos= numeroHijos;
+		this.salarioInicial = salarioInicial;
 		
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getDireccion() {
-		return direccion;
+
+	public String getCedula() {
+		return cedula;
 	}
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
-	public String getEstadoCivil() {
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public Date getFechaIngresoEmpresa() {
+		return fechaIngresoEmpresa;
+	}
+
+	public void setFechaIngresoEmpresa(Date fechaIngresoEmpresa) {
+		this.fechaIngresoEmpresa = fechaIngresoEmpresa;
+	}
+
+	public Boolean getEstadoCivil() {
 		return estadoCivil;
 	}
-	public void setEstadoCivil(String estadoCivil) {
+
+	public void setEstadoCivil(Boolean estadoCivil) {
 		this.estadoCivil = estadoCivil;
 	}
-	public int getNumeroCedula() {
-		return numeroCedula;
+
+	public String getTelefono() {
+		return telefono;
 	}
-	public void setNumeroCedula(int numeroCedula) {
-		this.numeroCedula = numeroCedula;
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
-	public int getCodigo() {
-		return codigo;
+
+	public int getCantidadHijos() {
+		return cantidadHijos;
 	}
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+
+	public void setCantidadHijos(int cantidadHijos) {
+		this.cantidadHijos = cantidadHijos;
 	}
-	public int getTelefonoCelular() {
-		return telefonoCelular;
-	}
-	public void setTelefonoCelular(int telefonoCelular) {
-		this.telefonoCelular = telefonoCelular;
-	}
-	public int getTelefonoCasa() {
-		return telefonoCasa;
-	}
-	public void setTelefonoCasa(int telefonoCasa) {
-		this.telefonoCasa = telefonoCasa;
-	}
-	public Date getFechaIngreso() {
-		return fechaIngreso;
-	}
-	public void setFechaIngreso(Date fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
-	public Date getFechaSalida() {
-		return fechaSalida;
-	}
-	public void setFechaSalida(Date fechaSalida) {
-		this.fechaSalida = fechaSalida;
-	}
-	public Date getFechaNacimiento() {
-		return FechaNacimiento;
-	}
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		FechaNacimiento = fechaNacimiento;
-	}
-	public int getNumeroHijos() {
-		return numeroHijos;
-	}
-	public void setNumeroHijos(int numeroHijos) {
-		this.numeroHijos = numeroHijos;
-	}
+
 	public double getSalarioInicial() {
 		return salarioInicial;
 	}
+
 	public void setSalarioInicial(double salarioInicial) {
 		this.salarioInicial = salarioInicial;
 	}
-	public String getCorreoElectronico() {
-		return correoElectronico;
+
+	public static String[] getComandosValidos() {
+		return comandosValidos;
 	}
 
-	public void setCorreoElectronico(String correoElectronico) {
-		this.correoElectronico = correoElectronico;
+	public static void setComandosValidos(String[] comandosValidos) {
+		Colaborador.comandosValidos = comandosValidos;
 	}
 	
 }//fin clase
