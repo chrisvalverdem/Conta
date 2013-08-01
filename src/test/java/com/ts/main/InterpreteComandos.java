@@ -43,7 +43,7 @@ public class InterpreteComandos {
 	
 	}
 	
-	/*@Test
+	@Test
 	public void pruebaParseComandos() throws IOException, CommandException{
 
 		InterpreteMandatos interprete = new InterpreteMandatos(false);
@@ -77,6 +77,6 @@ public class InterpreteComandos {
 		
 		
 		
-	}*/
+	}
 	
 }
