@@ -1,6 +1,10 @@
 package com.ts.objects;
 
 public class CommandException extends Exception{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String message;
 	
 	public CommandException(String message)
