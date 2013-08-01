@@ -3,36 +3,38 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import com.ts.objects.CommandException;
-import com.ts.objects.Repo;
 
 public class InterpreteMandatos {	
 		
 	 	private ArchivoLog log = new ArchivoLog();
         private boolean esCargaDeDatos= false; 
-     
-	 	public InterpreteMandatos() throws IOException
+        private final SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
+	 	
+        public InterpreteMandatos() throws IOException
 	 	{
 	 		new InterpreteMandatos(true);
 
 	 	}	 	
 	 	public InterpreteMandatos(boolean listenTheConsole) throws IOException
 	 	{
-	 		if(log.existeUnLogPrevio())
-			{
+	 		if(log.existeUnLogPrevio()){
 				esCargaDeDatos=true;
+				int contador=0;
 				ArrayList<String> comandos = log.getAllCommandsFromLog();
 	            for(String comando : comandos)
-	            {   		
+	            {   	
 	            	ejecutaComando(comando);
+	            	contador++;
+	            	if(contador==comandos.size()){
+	            		System.out.println("Se realizo el proceso de carga exitosamente");	
+	            	}
 	            }
-	            esCargaDeDatos=false;
-				System.out.println("Se realizo el proceso de carga exitosamente");
 			}
-	 		
 	 		if(listenTheConsole)
 	 		{			
 				InputStreamReader isr = new InputStreamReader(System.in);
@@ -78,7 +80,7 @@ public class InterpreteMandatos {
 	} 	
 
 	protected void ejecutaComando(String dato) throws IOException{
-
+		boolean temporal;
         String cadena= dato.toLowerCase().toString();
         Comando comando=interpreteCadena (cadena);        
      
@@ -89,7 +91,12 @@ public class InterpreteMandatos {
 					System.exit(0);
 			   	break; 	   		 
 				case "crear_colaborador":   
-			   		Repo.AgregarColaborador(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));	   
+					if(comando.getParametros()[4].equalsIgnoreCase("true")){
+						temporal= true;
+					}else{
+						temporal=false;
+					}		
+			   		Repo.AgregarColaborador(comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), temporal, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), Double.parseDouble(comando.getParametros()[7].toString()) );	
 			   	break;	   		 
 			   	case "crear_edificio": 	   			 
 			   		Repo.AgregarEdificio(comando.getInstance(),comando.getParametros()[0]);   		 
@@ -99,7 +106,6 @@ public class InterpreteMandatos {
 			   	break;	   		 
 			   	case "crear_compannia":
 			   		Repo.AgregarCompannia(comando.getInstance(),comando.getParametros()[0],comando.getParametros()[1]);
-			   		System.err.println("Cantidad de Compannias : "+ Repo.getTamannoCompannia() + "\n");
 			   	break;	   		 
 			   	case "crear_activo":   
 			   		Repo.AgregarActivo(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));
@@ -119,7 +125,7 @@ public class InterpreteMandatos {
 				log.crearRegistroLog(cadena);
 			}
 		}
-		catch(CommandException commandException)
+		catch(CommandException | NumberFormatException | ParseException commandException)
 		{
 			System.err.println(commandException.getMessage()); 
 		}		
