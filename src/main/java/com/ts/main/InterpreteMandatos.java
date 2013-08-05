@@ -11,18 +11,17 @@ import com.ts.objects.CommandException;
 
 public class InterpreteMandatos {	
 		
-	 	private ArchivoLog log;
+	 	private ArchivoLog log = new ArchivoLog();
         private boolean esCargaDeDatos= false; 
         private final SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
 	 	
         public InterpreteMandatos() throws IOException
 	 	{
-	 		new InterpreteMandatos(true, ArchivoLog.LOG_NAME);
+	 		new InterpreteMandatos(true);
 
 	 	}	 	
-	 	public InterpreteMandatos(boolean listenTheConsole, String filePath) throws IOException
+	 	public InterpreteMandatos(boolean listenTheConsole) throws IOException
 	 	{
-	 		log = new ArchivoLog(filePath);
 	 		if(log.existeUnLogPrevio()){
 				esCargaDeDatos=true;
 				int contador=0;
@@ -33,6 +32,7 @@ public class InterpreteMandatos {
 	            	contador++;
 	            	if(contador==comandos.size()){
 	            		System.out.println("Se realizo el proceso de carga exitosamente");	
+	            		esCargaDeDatos=false;
 	            	}
 	            }
 			}
@@ -79,7 +79,7 @@ public class InterpreteMandatos {
 	public static void main(String[] args) throws IOException {
 		new InterpreteMandatos();
 	} 	
-
+	
 	protected void ejecutaComando(String dato) throws IOException{
 		boolean temporal;
         String cadena= dato.toLowerCase().toString();
@@ -97,7 +97,7 @@ public class InterpreteMandatos {
 					}else{
 						temporal=false;
 					}		
-			   		Repo.AgregarColaborador(comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), temporal, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), Double.parseDouble(comando.getParametros()[7].toString()) );	
+			   		Repo.AgregarColaborador(comando.getInstance(), comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), temporal, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), comando.getParametros()[7]);	
 			   	break;	   		 
 			   	case "crear_edificio": 	   			 
 			   		Repo.AgregarEdificio(comando.getInstance(),comando.getParametros()[0]);   		 
@@ -111,6 +111,13 @@ public class InterpreteMandatos {
 			   	case "crear_activo":   
 			   		Repo.AgregarActivo(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));
 			   	break;
+			   	case "aumentar_salario":
+			   		Repo.amentar_Salario( comando.getInstance(), comando.getParametros()[0]); 
+			   		break;
+			   	case "mostrar_salario":
+			   		Repo.mostrar_Salario(comando.getInstance()); 
+			   		esCargaDeDatos= true;
+			   		break;
 			    case "cargar_log":	
 			    	if(log.existeUnLogPrevio())
 			    	{
