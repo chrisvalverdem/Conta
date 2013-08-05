@@ -10,7 +10,7 @@ public class Colaborador extends Object {
 	Boolean estadoCivil;
 	String telefono;
 	int cantidadHijos;
-	String salario;
+	Moneda salario;
 	
 	public static String comandosValidos[] ={"Crear_Colaborador"};
 
@@ -21,7 +21,7 @@ public class Colaborador extends Object {
 	
 	public Colaborador(String nombre, String cedula,Date fechaNacimiento,
 			Date fechaIngreso, boolean estado, String telefono,  int numeroHijos,
-			String salarioInicial) {			
+			Moneda salario) {			
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.fechaNacimiento= fechaNacimiento;
@@ -29,7 +29,7 @@ public class Colaborador extends Object {
 		this.estadoCivil= estado;
 		this.telefono= telefono;
 		this.cantidadHijos= numeroHijos;
-		this.salario = salarioInicial;
+		this.salario = salario;
 		
 	}
 
@@ -89,11 +89,11 @@ public class Colaborador extends Object {
 		this.cantidadHijos = cantidadHijos;
 	}
 
-	public String getSalario() {
+	public Moneda getSalario() {
 		return salario;
 	}
 
-	public void setSalario(String nuevoSalario) {
+	public void setSalario(Moneda nuevoSalario) {
 		this.salario = nuevoSalario;
 	}
 
