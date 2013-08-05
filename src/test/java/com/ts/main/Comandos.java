@@ -73,7 +73,7 @@ public class Comandos {
 		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
 		
 		Assert.assertNotNull(colaborador);
-		Assert.assertEquals(colaborador.getSalario(), "$2000");
+		Assert.assertEquals(colaborador.getSalario().getMonto(), 2000.0);
 		
 		
 		
