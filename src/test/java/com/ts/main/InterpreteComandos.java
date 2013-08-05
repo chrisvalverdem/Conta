@@ -76,7 +76,7 @@ public class InterpreteComandos {
 		Assert.assertEquals(comando.getParametros()[1],"solutions");
 		
 		
-		
+	
 	}
 	
 }
