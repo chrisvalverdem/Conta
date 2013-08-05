@@ -14,6 +14,12 @@ public class Colaborador extends Object {
 	
 	public static String comandosValidos[] ={"Crear_Colaborador"};
 
+
+	public Colaborador(String nombre, String cedula){
+		this.nombre = nombre;
+		this.cedula = cedula;
+	}
+	
 	public Colaborador(String nombre, String cedula,Date fechaNacimiento,
 			Date fechaIngreso, boolean estado, String telefono,  int numeroHijos,
 			double salarioInicial) {			
