@@ -38,9 +38,9 @@ public class Repo  {
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
 	
-	public static void AgregarColaborador(String nombre, String numeroCedula, Date fechaNacimiento,
+	public static void AgregarColaborador(String instance, String nombre, String numeroCedula, Date fechaNacimiento,
 			Date fechaIngreso, boolean estado, String telefono,  int numeroHijos,
-			double salarioInicial ) throws CommandException{
+			String salario ) throws CommandException{
 		
 		boolean revisarSiElColaboradorYaExiste = !listColaboradores.isEmpty();		
 		
@@ -52,11 +52,18 @@ public class Repo  {
 				{
 					throw new CommandException("El colaborador " + colaborador.getNombre() + ", ya tiene el numero de c�dula "+numeroCedula);
 				}
+				
 			}
 		}
-			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula, fechaNacimiento,fechaIngreso, estado, telefono,  numeroHijos, salarioInicial);	
+		if(salario.contains("¢") || salario.contains("$")){
+			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula, fechaNacimiento,fechaIngreso, estado, telefono,  numeroHijos, salario);	
 		    listColaboradores.add(nuevoColaborador);
-		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
+		    pullInTOTablaDeSimbolos(instance, nuevoColaborador );
+		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");			
+		}else{
+			throw new CommandException("Favor Ingresar tipo de moneda apropiado en el salario del colaborador");
+		}
+
 	}
 	public static void AgregarEdificio(String instance, String nombre) throws CommandException{			
 		boolean revisarSiElEdificioYaExiste=  ! listEdificios.isEmpty();
@@ -89,7 +96,7 @@ public class Repo  {
 			Proyecto nuevoProyecto = new Proyecto(nombre);
 			listProyectos.add(nuevoProyecto);
 			 pullInTOTablaDeSimbolos(instance, nuevoProyecto );
-			System.out.println("El Proyecto: " + nombre + " se agrego exitosamente");						
+				
 	}
 	public static void AgregarActivo(String instance, String nombre, int numeroPlaca) throws CommandException
 	{				
@@ -156,7 +163,66 @@ public class Repo  {
 
 		return null;
 	}
-	
+	public static void amentar_Salario(String persona, String nuevoSalario) throws CommandException{
+			boolean existeAlgo= !tablaDeSimbolos.isEmpty();
+			Colaborador colaborador= null;
+			double salarioViejo=0;
+			double salarioNuevo=0;
+
+			  if(existeAlgo){
+				   if(tablaDeSimbolos.containsKey(persona)){   
+					   colaborador= (Colaborador) tablaDeSimbolos.get(persona);
+					   
+					   if(colaborador.getSalario().contains("$") && nuevoSalario.contains("$")){
+						   salarioViejo= Integer.parseInt(colaborador.getSalario().substring(1, colaborador.getSalario().length()));
+						   salarioNuevo= Integer.parseInt(nuevoSalario.substring(1, nuevoSalario.length()));
+						   if(salarioNuevo >= salarioViejo){
+							   colaborador.setSalario(nuevoSalario);
+							   tablaDeSimbolos.put(persona, colaborador);  
+							   System.out.println("El Colaborador: " + colaborador.getNombre() + " se modifico su salario exitosamente.");
+						   }else{
+							   throw new CommandException("Imposible aumentar el salario a un valor menor");
+						   }  
+					   }else{
+						   if(colaborador.getSalario().contains("¢") && nuevoSalario.contains("¢")){
+							   salarioViejo= Integer.parseInt(colaborador.getSalario().substring(1, colaborador.getSalario().length()));
+							   salarioNuevo= Integer.parseInt(nuevoSalario.substring(1, nuevoSalario.length()));
+							   if(salarioNuevo >= salarioViejo){
+								   colaborador.setSalario(nuevoSalario);
+								   tablaDeSimbolos.put(persona, colaborador);  
+								   System.out.println("El Colaborador: " + colaborador.getNombre() + " se modifico su salario exitosamente.");
+							   }else{
+								   throw new CommandException("Imposible aumentar el salario a un valor menor");
+							   }  
+						   }else{
+							   if(nuevoSalario.contains("¢") || nuevoSalario.contains("$")){
+								   throw new CommandException("Imposible realizar operaciones de diferente moneda");   
+							   }else{
+								   throw new CommandException("No se reconoce el tipo de moneda, favor agregar $ o ¢ al monto");
+							   }   	   
+						   }
+					   }  
+				   }else{
+						throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar Salario");
+				   }  
+			  }
+
+	}    					
+	public static void 	mostrar_Salario(String persona) throws CommandException{
+
+		boolean existeAlgo= ! tablaDeSimbolos.isEmpty();
+		Colaborador colaboradorEncontrado= null;
+		
+		if(existeAlgo){
+			   if(tablaDeSimbolos.containsKey(persona)){   
+				   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
+				   System.out.println("El Colaborador con identificacion: " + colaboradorEncontrado.getNombre() + " posee un salario de " + colaboradorEncontrado.getSalario());
+			   }else{
+				   throw new CommandException("El Colaborador " + persona + " no existe.");
+			   }  
+		  }				
+}
+
 	public static int getTamannoCompannia(){
 		return listCompania.size();
 			}
