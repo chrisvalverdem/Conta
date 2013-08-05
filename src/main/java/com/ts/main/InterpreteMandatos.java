@@ -11,17 +11,18 @@ import com.ts.objects.CommandException;
 
 public class InterpreteMandatos {	
 		
-	 	private ArchivoLog log = new ArchivoLog();
+	 	private ArchivoLog log;
         private boolean esCargaDeDatos= false; 
         private final SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
 	 	
         public InterpreteMandatos() throws IOException
 	 	{
-	 		new InterpreteMandatos(true);
+	 		new InterpreteMandatos(true, ArchivoLog.LOG_NAME);
 
 	 	}	 	
-	 	public InterpreteMandatos(boolean listenTheConsole) throws IOException
+	 	public InterpreteMandatos(boolean listenTheConsole, String filePath) throws IOException
 	 	{
+	 		log = new ArchivoLog(filePath);
 	 		if(log.existeUnLogPrevio()){
 				esCargaDeDatos=true;
 				int contador=0;

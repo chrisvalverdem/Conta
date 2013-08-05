@@ -2,8 +2,13 @@ package com.ts.main;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import com.ts.objects.CommandException;
@@ -11,24 +16,42 @@ import com.ts.objects.Compannia;
 import com.ts.objects.Edificio;
 
 public class InterpreteComandos {
+	String outTestDirectory;
+	File err;
 	
-	@BeforeTest
-	public void setUp() throws IOException
+	@BeforeClass
+	public void setUp() throws FileNotFoundException
 	{
-		//System.setOut(new PrintStream(new File("PRUEBAS.LOG")));
-		new File(ArchivoLog.LOG_NAME).delete();
-		Repo.limpiaListas();
+		outTestDirectory = "test-output"+File.separator+getClass().getSimpleName()+"_logs"+File.separator;
+		File outTestDirectoryFile = new File(outTestDirectory);
+		File[] listOfFiles = outTestDirectoryFile.listFiles();
+		
+		outTestDirectoryFile.mkdirs();
+		if(listOfFiles != null )
+		{
+			for(File file : listOfFiles )
+			{
+				file.delete();
+			}
+		}
+
+		
+		err = new File(outTestDirectory+"errors.txt");
+		
+		PrintStream printStream = new PrintStream(new FileOutputStream(err));
+		System.setErr(printStream);
+		//Repo.limpiaListas();
 	}
 	
 	@Test
 	public void pruebaCargaArchivo() throws IOException, CommandException{
 
-		InterpreteMandatos interprete = new InterpreteMandatos(false);
+		InterpreteMandatos interprete = new InterpreteMandatos(false, ArchivoLog.LOG_NAME);
 		interprete.ejecutaComando("ts.crear_edificio(occidente)");
 		interprete.ejecutaComando("cecropia=crear_compannia(123JK456, ts)");
 		interprete.ejecutaComando("ts.crear_compannia(789, testing)");
 		Repo.limpiaListas();
-		new InterpreteMandatos(false);
+		new InterpreteMandatos(false, ArchivoLog.LOG_NAME);
 		
 		Compannia compannia= Repo.getCompannia("123JK456");
 		Edificio edificio= Repo.getEdificio("occidente");
@@ -46,7 +69,7 @@ public class InterpreteComandos {
 	@Test
 	public void pruebaParseComandos() throws IOException, CommandException{
 
-		InterpreteMandatos interprete = new InterpreteMandatos(false);
+		InterpreteMandatos interprete = new InterpreteMandatos(false, ArchivoLog.LOG_NAME);
 		Comando comando =interprete.interpreteCadena("ts=crear_compannia(123456789, cecropia)");
 		Comando comando2 =interprete.interpreteCadena("juan.crear_colaborador(juan, 123456)");
 		
@@ -67,7 +90,7 @@ public class InterpreteComandos {
 	@Test
 	public void pruebaParseEspacios() throws IOException, CommandException{
 
-		InterpreteMandatos interprete = new InterpreteMandatos(false);
+		InterpreteMandatos interprete = new InterpreteMandatos(false, ArchivoLog.LOG_NAME);
 		Comando comando =interprete.interpreteCadena("ts  =  crear_compannia  (  987654321  ,   solutions   )");	
 		
 		Assert.assertEquals(comando.getMetodo(),"crear_compannia");		
