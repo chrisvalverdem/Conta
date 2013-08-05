@@ -14,12 +14,6 @@ public class ArchivoLog {
    
 	private FileWriter archivo; 
 	public final static String LOG_NAME="log.txt";
-	private String filePath;
-	
-	public ArchivoLog(String filePath)
-	{
-		this.setFilePath(filePath);
-	}
 
     public void crearRegistroLog(String operacion) throws IOException {
     	String dia= "0";
@@ -47,7 +41,7 @@ public class ArchivoLog {
    
     public ArrayList<String> getAllCommandsFromLog() throws IOException{
     	
-    	FileInputStream fstream = new FileInputStream(getFilePath());
+    	FileInputStream fstream = new FileInputStream(LOG_NAME);
         DataInputStream entrada = new DataInputStream(fstream);
         BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
         String linea;
@@ -67,21 +61,13 @@ public class ArchivoLog {
     private void creaArchivoDeLogParaComandosEjecutadosSiNoExiste() throws IOException 
     {
     	boolean hagaAppendDeLosComandosEjecutados = true;
-        File logDeComandosEjecutados = new File(getFilePath());
+        File logDeComandosEjecutados = new File(LOG_NAME);
         archivo = new FileWriter(logDeComandosEjecutados, hagaAppendDeLosComandosEjecutados);
     }
     
     public boolean existeUnLogPrevio() throws IOException 
     {
-    	return new File(getFilePath()).exists();
+    	return new File(LOG_NAME).exists();
     }
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
     
 }
