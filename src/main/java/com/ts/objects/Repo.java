@@ -3,8 +3,6 @@ package com.ts.objects;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.text.TabableView;
-
 public class Repo  {
 	
 	private static CopyOnWriteArrayList<Colaborador> listColaboradores =new CopyOnWriteArrayList<Colaborador> ();
@@ -35,7 +33,7 @@ public class Repo  {
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
 	
-	public static void AgregarColaborador(String instance, String nombre, int numeroCedula ) throws CommandException{
+	public static void AgregarColaborador(String instance, String nombre, String numeroCedula ) throws CommandException{
 		
 		boolean revisarSiElColaboradorYaExiste = !listColaboradores.isEmpty();		
 		
@@ -43,7 +41,7 @@ public class Repo  {
 		{
 			for (Colaborador colaborador : listColaboradores)
 			{		
-				if (colaborador.getNumeroCedula() == numeroCedula)
+				if (numeroCedula.equalsIgnoreCase(colaborador.getCedula()))
 				{
 					throw new CommandException("El colaborador " + colaborador.getNombre() + ", ya tiene el numero de c�dula "+numeroCedula);
 				}
