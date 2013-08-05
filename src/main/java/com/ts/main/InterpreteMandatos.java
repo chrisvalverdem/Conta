@@ -7,7 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
+import com.ts.objects.Dolar;
+import com.ts.objects.Moneda;
 
 public class InterpreteMandatos {	
 		
@@ -57,6 +60,10 @@ public class InterpreteMandatos {
 		  
 		  String[] temp = cadena.split("\\(");
 		  temp[1] = temp[1].substring(0, temp[1].length()-1);
+		  
+		  temp[1]=temp[1].replaceAll("\\¢", Moneda.COLON + ",");
+		  temp[1]=temp[1].replaceAll("\\$", Moneda.DOLAR + ",");
+		  
 		  parametros = temp[1].split("\\,"); 
 		  	
 		  boolean esUnaAsinacion = temp[0].indexOf("=") > -1;
@@ -81,43 +88,69 @@ public class InterpreteMandatos {
 	} 	
 	
 	protected void ejecutaComando(String dato) throws IOException{
-		boolean temporal;
         String cadena= dato.toLowerCase().toString();
         Comando comando=interpreteCadena (cadena);        
      
         try
 		{
 			switch(comando.getMetodo()){	   		 
-				case "exit": 
-					System.exit(0);
-			   	break; 	   		 
-				case "crear_colaborador":   
-					if(comando.getParametros()[4].equalsIgnoreCase("true")){
-						temporal= true;
-					}else{
-						temporal=false;
-					}		
-			   		Repo.AgregarColaborador(comando.getInstance(), comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), temporal, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), comando.getParametros()[7]);	
-			   	break;	   		 
-			   	case "crear_edificio": 	   			 
-			   		Repo.AgregarEdificio(comando.getInstance(),comando.getParametros()[0]);   		 
-			   	break;	   		 
-			   	case "crear_proyecto": 
-			   		 Repo.AgregarProyecto(comando.getInstance(),comando.getParametros()[0]);	
-			   	break;	   		 
-			   	case "crear_compannia":
-			   		Repo.AgregarCompannia(comando.getInstance(),comando.getParametros()[0],comando.getParametros()[1]);
-			   	break;	   		 
-			   	case "crear_activo":   
-			   		Repo.AgregarActivo(comando.getInstance(),comando.getParametros()[0], Integer.parseInt(comando.getParametros()[1]));
-			   	break;
-			   	case "aumentar_salario":
-			   		Repo.amentar_Salario( comando.getInstance(), comando.getParametros()[0]); 
-			   		break;
-			   	case "mostrar_salario":
-			   		Repo.mostrar_Salario(comando.getInstance()); 
-			   		esCargaDeDatos= true;
-			   		break;
+			case "exit": 
+				System.exit(0);
+		   	break; 	   		 
+			case "crear_colaborador": 
+				Moneda salario =null;
+				boolean isMarried;
+				double monto;
+				
+				isMarried= Boolean.parseBoolean(comando.getParametros()[4]);
+				monto= Double.parseDouble(comando.getParametros()[8]);
+				System.err.println(""+monto);
+				if(comando.getParametros()[7].equalsIgnoreCase(Moneda.COLON)){
+					salario= new Colon(monto);	
+				}else if(comando.getParametros()[7].equalsIgnoreCase(Moneda.DOLAR)){
+					salario= new Dolar(monto);		
+				}
+				
+		   		Repo.AgregarColaborador(comando.getInstance(), comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), isMarried, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), salario);	
+		   	break;	   		 
+		   	case "crear_edificio": 
+		   		String nombre= comando.getParametros()[0];
+		   		
+		   		Repo.AgregarEdificio(comando.getInstance(),nombre);   		 
+		   	break;	   		 
+		   	case "crear_proyecto":
+		   		String nombreP= comando.getParametros()[0];
+		   		
+		   		 Repo.AgregarProyecto(comando.getInstance(),nombreP);	
+		   	break;	   		 
+		   	case "crear_compannia":
+		   		String nombreC =comando.getParametros()[0];
+		   		String cedula= comando.getParametros()[1];
+		   		
+		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedula);
+		   	break;	   		 
+		   	case "crear_activo":
+		   		String nombreA= comando.getParametros()[0];
+		   		int placa= Integer.parseInt(comando.getParametros()[1]);
+		   		
+		   		Repo.AgregarActivo(comando.getInstance(),nombreA, placa );
+		   	break;
+		   	case "aumentar_salario":
+		   		Double montoR= Double.parseDouble(comando.getParametros()[1]);
+		   		Moneda salarioAumentar = null;
+		   		
+				if(comando.getParametros()[0].equalsIgnoreCase(Moneda.COLON)){
+					salarioAumentar= new Colon(montoR);	
+				}else if(comando.getParametros()[0].equalsIgnoreCase(Moneda.DOLAR)){
+					salarioAumentar= new Dolar(montoR);		
+				}
+		   		
+		   		Repo.aumentar_Salario( comando.getInstance(), salarioAumentar); 
+		   		break;
+		   	case "mostrar_salario":
+		   		Repo.mostrar_Salario(comando.getInstance()); 
+		   		esCargaDeDatos= true;
+		   		break;
 			    case "cargar_log":	
 			    	if(log.existeUnLogPrevio())
 			    	{
