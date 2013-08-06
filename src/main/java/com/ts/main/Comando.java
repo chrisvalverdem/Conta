@@ -4,7 +4,16 @@ public class Comando {
 	
 	private String instance;
 	private String metodo;
-	private String [] parametros;		
+	private String [] parametros;
+	public static final String CREAR_COMPANNIA="CREAR_COMPANNIA";
+    public static final String CREAR_COLABORADOR="CREAR_COLABORADOR";
+    public static final String CREAR_PROYECTO="CREAR_PROYECTO";
+    public static final String CREAR_EDIFICIO="CREAR_EDIFICIO";
+    public static final String CREAR_ACTIVO="CREAR_ACTIVO";
+    public static final String CARGAR_LOG="CARGAR_LOG"; 
+    public static final String EXIT="EXIT";	
+    public static final String MOSTRAR_SALARIO="MOSTRAR_SALARIO";
+    public static final String AUMENTAR_SALARIO="AUMENTAR_SALARIO";
 	
 	public Comando(String instance, String metodo, String[] parametros) {
 		this.instance = instance;

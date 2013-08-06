@@ -17,14 +17,24 @@ public class InterpreteMandatos {
 	 	private ArchivoLog log;
         private boolean esCargaDeDatos= false; 
         private final SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
+        private BufferedReader br;
+        private InputStreamReader isr;        
+        private boolean listenTheConsole;
 	 	
         public InterpreteMandatos() throws IOException
 	 	{
 	 		new InterpreteMandatos(true, ArchivoLog.LOG_NAME);
 
 	 	}	 	
-        public InterpreteMandatos(boolean listenTheConsole, String filePath) throws IOException
+	 	public InterpreteMandatos(boolean listenTheConsole, String filePath) throws IOException
 	 	{
+	 		this.listenTheConsole=listenTheConsole;
+	 		if(listenTheConsole){
+	 			
+	 			 isr = new InputStreamReader(System.in);
+	 			 br = new BufferedReader(isr);
+	 		}
+	 		
 	 		log = new ArchivoLog(filePath);
 	 		if(log.existeUnLogPrevio()){
 				esCargaDeDatos=true;
@@ -38,20 +48,24 @@ public class InterpreteMandatos {
 	            		System.out.println("Se realizo el proceso de carga exitosamente");	
 	            	}
 	            }
-			}
-	 		if(listenTheConsole)
-	 		{			
-				InputStreamReader isr = new InputStreamReader(System.in);
-	 			BufferedReader br = new BufferedReader(isr);
+			}	 		
+			pedirComando ();
+	 	}
+        private void pedirComando () throws IOException {
+			 
+	     	if(listenTheConsole)
+	 		{					
 				do{
-					System.out.println("Introducir un Comando:"); 
-		        	String dato = br.readLine(); 
-		        	ejecutaComando(dato);
+					 System.out.println("Introducir un Comando:");
+					 isr = new InputStreamReader(System.in);
+					 br = new BufferedReader(isr);
+					 String dato = br.readLine(); 
+			     	 ejecutaComando(dato);
 		    	}
 				while(true);	
-	 		}
-	 	}
-	 		
+	 		} 	 
+	     	 
+		 }	
 	 protected Comando interpreteCadena(String cadena){	
 		 
 		  String instance;
@@ -76,7 +90,7 @@ public class InterpreteMandatos {
 		   temp = temp[0].split("\\.");		   		  
 		  }	
 		  instance = temp[0].trim();
-		   metodo = temp[1].trim();	
+		   metodo = temp[1].trim().toUpperCase();	
 		   for(int indice=0; indice < parametros.length; indice++ ){
 			   parametros[indice]=parametros[indice].trim();			   
 		   }
@@ -88,16 +102,16 @@ public class InterpreteMandatos {
 	} 	
 	
 	protected void ejecutaComando(String dato) throws IOException{
-        String cadena= dato.toLowerCase().toString();
+        String cadena= dato;
         Comando comando=interpreteCadena (cadena);        
      
         try
 		{
 			switch(comando.getMetodo()){	   		 
-			case "exit": 
+			case Comando.EXIT:  
 				System.exit(0);
 		   	break; 	   		 
-			case "crear_colaborador": 
+			case Comando.CREAR_COLABORADOR: 
 				Moneda salario =null;
 				boolean isMarried;
 				double monto;
@@ -112,18 +126,18 @@ public class InterpreteMandatos {
 				
 		   		Repo.AgregarColaborador(comando.getInstance(), comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), isMarried, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), salario);	
 		   	break;	   		 
-		   	case "crear_edificio": 
+			case Comando.CREAR_EDIFICIO: 
 		   		String nombre= comando.getParametros()[0];
 		   		
 		   		Repo.AgregarEdificio(comando.getInstance(),nombre);   		 
 		   	break;	   		   		 
-		   	case "crear_compannia":
+			case Comando.CREAR_COMPANNIA:
 		   		String nombreC =comando.getParametros()[0];
 		   		String cedula= comando.getParametros()[1];
 		   		
 		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedula);
 		   	break;	   		 
-		   	case "aumentar_salario":
+		   	case Comando.AUMENTAR_SALARIO:
 		   		Double montoR= Double.parseDouble(comando.getParametros()[1]);
 		   		Moneda salarioAumentar = null;
 		   		
@@ -135,11 +149,11 @@ public class InterpreteMandatos {
 		   		
 		   		Repo.aumentar_Salario( comando.getInstance(), salarioAumentar); 
 		   		break;
-		   	case "mostrar_salario":
+		   	case Comando.MOSTRAR_SALARIO:
 		   		Repo.mostrar_Salario(comando.getInstance()); 
 		   		esCargaDeDatos= true;
 		   		break;
-			    case "cargar_log":	
+		   	case Comando.CARGAR_LOG:	
 			    	if(log.existeUnLogPrevio())
 			    	{
 			    		System.out.println("Se realizo el proceso de carga exitosamente");
@@ -156,7 +170,9 @@ public class InterpreteMandatos {
 		}
 		catch(CommandException | NumberFormatException | ParseException commandException)
 		{
-			System.err.println(commandException.getMessage()); 
+			System.err.println(commandException.getMessage());
+			pedirComando ();
+
 		}		
 		
 	}			

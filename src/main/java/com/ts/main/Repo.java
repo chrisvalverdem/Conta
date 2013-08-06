@@ -200,7 +200,16 @@ public class Repo  {
 		}	
 		return total;
 	}
-
+	
+	protected static void validarInstaciaEnLaTablaDeSimbolos(String instance) throws CommandException  {
+		
+		boolean existeAlgunaInstancea = ! tablaDeSimbolos.isEmpty();
+		if(existeAlgunaInstancea){
+			if(tablaDeSimbolos.containsKey(instance)){			
+				throw new CommandException("La instancia " + instance+ " ya existe, cambiela por una diferente.");				
+			}					
+		}				
+	}	
 	public static void limpiaListas() {
 		tablaDeSimbolos.clear();	
 	}
