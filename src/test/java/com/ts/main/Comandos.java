@@ -112,6 +112,7 @@ public class Comandos {
 		Assert.assertEquals(colaborador.getNombre(), "Cristian Guillen");
 		Assert.assertEquals(Repo.getTamannoColaborador(), 2);
 		
+		//1 in Estado civil
 		comando ="jperez= crear_Colaborador(juanito Perez, 1-2222-2222, 15/12/1988, 08/07/2013, 1, 8445-1544, 0, $2000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-2222-2222");
@@ -121,6 +122,7 @@ public class Comandos {
 		Assert.assertTrue(colaborador.getEstadoCivil());
 		Assert.assertEquals(Repo.getTamannoColaborador(), 3);
 		
+		//0 in Estado civil
 		comando ="jperez= crear_Colaborador(Carlos, 1-2222-333, 15/12/1988, 08/07/2013, 0, 8445-1544, 0, $2000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-2222-333");
@@ -168,19 +170,15 @@ public class Comandos {
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"validarInstaciaEnLaTablaDeSimbolos.txt");
 		try{
 			Repo.validarInstaciaEnLaTablaDeSimbolos("ts4");
-		}catch (CommandException commandException){			
-			
-			Assert.fail("ts4 nunca deberia estar duplicado");	
-			
+		}catch (CommandException commandException){					
+			Assert.fail("ts4 nunca deberia estar duplicado");			
 		}
 		
 		interpreteMandatos.ejecutaComando("ts4=CREAR_COMPANNIA(123HY4567,cecropia2)");
 		try{
 			Repo.validarInstaciaEnLaTablaDeSimbolos("ts4");
-		}catch (CommandException commandException){			
-			
+		}catch (CommandException commandException){					
 			Assert.assertEquals(commandException.getMessage(),"La instancia ts4 ya existe, cambiela por una diferente.");	
-			
 		}
 		
 	}	
