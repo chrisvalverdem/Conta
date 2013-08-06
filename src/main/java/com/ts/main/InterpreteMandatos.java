@@ -14,17 +14,18 @@ import com.ts.objects.Moneda;
 
 public class InterpreteMandatos {	
 		
-	 	private ArchivoLog log = new ArchivoLog();
+	 	private ArchivoLog log;
         private boolean esCargaDeDatos= false; 
         private final SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
 	 	
         public InterpreteMandatos() throws IOException
 	 	{
-	 		new InterpreteMandatos(true);
+	 		new InterpreteMandatos(true, ArchivoLog.LOG_NAME);
 
 	 	}	 	
-	 	public InterpreteMandatos(boolean listenTheConsole) throws IOException
+        public InterpreteMandatos(boolean listenTheConsole, String filePath) throws IOException
 	 	{
+	 		log = new ArchivoLog(filePath);
 	 		if(log.existeUnLogPrevio()){
 				esCargaDeDatos=true;
 				int contador=0;
@@ -35,7 +36,6 @@ public class InterpreteMandatos {
 	            	contador++;
 	            	if(contador==comandos.size()){
 	            		System.out.println("Se realizo el proceso de carga exitosamente");	
-	            		esCargaDeDatos=false;
 	            	}
 	            }
 			}
@@ -104,7 +104,6 @@ public class InterpreteMandatos {
 				
 				isMarried= Boolean.parseBoolean(comando.getParametros()[4]);
 				monto= Double.parseDouble(comando.getParametros()[8]);
-				System.err.println(""+monto);
 				if(comando.getParametros()[7].equalsIgnoreCase(Moneda.COLON)){
 					salario= new Colon(monto);	
 				}else if(comando.getParametros()[7].equalsIgnoreCase(Moneda.DOLAR)){
@@ -117,24 +116,13 @@ public class InterpreteMandatos {
 		   		String nombre= comando.getParametros()[0];
 		   		
 		   		Repo.AgregarEdificio(comando.getInstance(),nombre);   		 
-		   	break;	   		 
-		   	case "crear_proyecto":
-		   		String nombreP= comando.getParametros()[0];
-		   		
-		   		 Repo.AgregarProyecto(comando.getInstance(),nombreP);	
-		   	break;	   		 
+		   	break;	   		   		 
 		   	case "crear_compannia":
 		   		String nombreC =comando.getParametros()[0];
 		   		String cedula= comando.getParametros()[1];
 		   		
 		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedula);
 		   	break;	   		 
-		   	case "crear_activo":
-		   		String nombreA= comando.getParametros()[0];
-		   		int placa= Integer.parseInt(comando.getParametros()[1]);
-		   		
-		   		Repo.AgregarActivo(comando.getInstance(),nombreA, placa );
-		   	break;
 		   	case "aumentar_salario":
 		   		Double montoR= Double.parseDouble(comando.getParametros()[1]);
 		   		Moneda salarioAumentar = null;

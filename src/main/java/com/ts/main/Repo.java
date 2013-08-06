@@ -2,28 +2,22 @@ package com.ts.main;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.ts.objects.Activo;
 import com.ts.objects.Colaborador;
 import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Edificio;
 import com.ts.objects.Moneda;
-import com.ts.objects.Proyecto;
+import com.ts.objects.Objecto;
 
 public class Repo  {
 	
-	private static CopyOnWriteArrayList<Colaborador> listColaboradores =new CopyOnWriteArrayList<Colaborador> ();
-	private static CopyOnWriteArrayList<Edificio> listEdificios=new CopyOnWriteArrayList<Edificio> ();
-	private static CopyOnWriteArrayList<Proyecto> listProyectos =new CopyOnWriteArrayList<Proyecto> ();
-	private static CopyOnWriteArrayList<Activo> listActivos =new CopyOnWriteArrayList<Activo> ();
-	private static CopyOnWriteArrayList<Compannia> listCompania =new CopyOnWriteArrayList<Compannia> ();
-	private static HashMap<String, Object> tablaDeSimbolos = new HashMap<String, Object>();
+	private static HashMap<String, Objecto> tablaDeSimbolos = new HashMap<String, Objecto>();
 	
-	private static void pullInTOTablaDeSimbolos(String string, Object object)
+	private static void pullInTOTablaDeSimbolos(String string, Objecto object)
 	{
-		//TODO validar que el string ya no exista....
 		tablaDeSimbolos.put(string, object);
 	}
 	
@@ -34,132 +28,27 @@ public class Repo  {
 			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		
 		}				
 			Compannia nuevaCompannia = new Compannia(cedulaJuridica,nombre);	
-			listCompania.add(nuevaCompannia);	
 			pullInTOTablaDeSimbolos(instance, nuevaCompannia );
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
 	
 	public static void AgregarColaborador(String instance, String nombre, String numeroCedula, Date fechaNacimiento,
 			Date fechaIngreso, boolean estado, String telefono,  int numeroHijos,
-			Moneda salario ) throws CommandException{
+			Moneda salario) throws CommandException{
 		
-		boolean revisarSiElColaboradorYaExiste = !listColaboradores.isEmpty();		
-		
-		if( revisarSiElColaboradorYaExiste )
-		{
-			for (Colaborador colaborador : listColaboradores)
-			{		
-				if (colaborador.getCedula().equalsIgnoreCase(numeroCedula))
-				{
-					throw new CommandException("El colaborador " + colaborador.getNombre() + ", ya tiene el numero de c�dula "+numeroCedula);
-				}
-				
-			}
-		}
-			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula, fechaNacimiento,fechaIngreso, estado, telefono,  numeroHijos, salario);	
-		    listColaboradores.add(nuevoColaborador);
-		    pullInTOTablaDeSimbolos(instance, nuevoColaborador );
-		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");			
-
-	}
-	public static void AgregarEdificio(String instance, String nombre) throws CommandException{			
-		boolean revisarSiElEdificioYaExiste=  ! listEdificios.isEmpty();
-			
-		if(revisarSiElEdificioYaExiste)
-		{
-			for (Edificio edifico : listEdificios){							
-				if (edifico.getNombre().equalsIgnoreCase(nombre))
-				{
-					throw new CommandException("El Edificio: " + nombre+ " ya existe.");
-				}
-			}	
-		}			
-			Edificio nuevoEdificio = new Edificio(nombre);
-		    listEdificios.add(nuevoEdificio);
-		    pullInTOTablaDeSimbolos(instance, nuevoEdificio );
-		    System.out.println("El Edificio: " + nombre + " se agrego exitosamente.");					
-	}
-	public static void AgregarProyecto(String instance, String nombre) throws CommandException{	
-		boolean revisarSiElProyectoYaExiste= ! listProyectos.isEmpty();
-
-		if( revisarSiElProyectoYaExiste ){
-			for (Proyecto proyecto : listProyectos){							
-				if (proyecto.getNombre().equalsIgnoreCase(nombre))
-				{
-					throw new CommandException("El proyecto " + nombre+ " ya existe.");
-				}
-			}			
-		}				
-			Proyecto nuevoProyecto = new Proyecto(nombre);
-			listProyectos.add(nuevoProyecto);
-			 pullInTOTablaDeSimbolos(instance, nuevoProyecto );
-				
-	}
-	public static void AgregarActivo(String instance, String nombre, int numeroPlaca) throws CommandException
-	{				
-		boolean revisarSiElActivoYaExiste = ! listProyectos.isEmpty();
-		
-		if(revisarSiElActivoYaExiste){
-			for (Activo activo : listActivos){							
-				if ( activo.getNumeroPlaca() == numeroPlaca )
-				{
-					throw new CommandException("El Activo " + nombre+ " ya existe.");
-				}
-			}			
-		}				
-			Activo nuevoActivo = new Activo(nombre,numeroPlaca);
-			listActivos.add(nuevoActivo);	
-			System.out.println("El Activo con placa: " + numeroPlaca + " se agrego exitosamente");
-	}
-
-	public static Compannia getCompannia(String cedulaJuridica) throws CommandException {
-		
-		boolean existeAlgunaCompannia = ! listCompania.isEmpty();
-		
-		if(existeAlgunaCompannia)
-		{
-			for (Compannia compannia: listCompania){							
-				if (compannia.getCedulaJuridica().toString().trim().equalsIgnoreCase(cedulaJuridica))
-				{
-					return compannia;
-				}
-			}			
-		}			
-
-		return null;
-	}	
+		boolean existeElColaborador = getColaborador(numeroCedula) != null;		
 	
-	public static Edificio getEdificio(String nombre) throws CommandException{			
-		boolean existeAlgunEdificio = ! listEdificios.isEmpty();
-		
-		if(existeAlgunEdificio)
-		{
-			for (Edificio edificio : listEdificios){	
-				if (edificio.getNombre().toString().trim().equalsIgnoreCase(nombre))
-				{
-					return edificio;
-				}
-			}			
-		}			
-
-		return null;
+			if ( existeElColaborador )
+			{
+				throw new CommandException("El colaborador " + nombre + ", ya tiene el numero de c�dula "+numeroCedula);
+			}
+			
+			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula, fechaNacimiento,fechaIngreso, estado, telefono,  numeroHijos, salario);				
+		    pullInTOTablaDeSimbolos(instance, nuevoColaborador );
+		    
+		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
 	}
-
-	public static Colaborador getColaborador(String cedula) throws CommandException{			
-		boolean existeAlgunColaborador= ! listColaboradores.isEmpty();
-		
-		if(existeAlgunColaborador)
-		{
-			for (Colaborador colaborador : listColaboradores){	
-				if (colaborador.getCedula().toString().trim().equalsIgnoreCase(cedula))
-				{
-					return colaborador;
-				}
-			}			
-		}			
-
-		return null;
-	}
+	
 	public static void aumentar_Salario(String persona, Moneda nuevoSalario) throws CommandException{
 		boolean existeAlgo= !tablaDeSimbolos.isEmpty();
 		Colaborador colaborador= null;
@@ -180,7 +69,7 @@ public class Repo  {
 
 		boolean existeAlgo= ! tablaDeSimbolos.isEmpty();
 		Colaborador colaboradorEncontrado= null;
-		
+
 		if(existeAlgo){
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
@@ -190,22 +79,129 @@ public class Repo  {
 			   }  
 		  }				
 }
+	public static void AgregarEdificio(String instance, String nombre) throws CommandException{			
+		boolean existeElEdificio =  getEdificio(nombre) != null;
+			
+		if (existeElEdificio)
+		{
+			throw new CommandException("El Edificio: " + nombre+ " ya existe.");
+		}
+		Edificio edificio = new Edificio(nombre);
+		tablaDeSimbolos.put(instance, edificio);
+		 System.out.println("El edificio " + nombre + " se le agrego exitosamente.");
+	}
 
+	public static Compannia getCompannia(String cedulaJuridica) throws CommandException {
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnaCompannia = value instanceof Compannia; 
+		    if(esUnaCompannia)
+		    {
+		    	Compannia comp = (Compannia)value; 
+		    	if(comp.getCedulaJuridica().equals(cedulaJuridica))
+		    	{
+		    		return comp;
+		    	}
+		    }
+		}	
+		return null;			
+	}	
+	public static Edificio getEdificio(String nombre){			
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnEdificio = value instanceof Edificio; 
+		    if(esUnEdificio)
+		    {
+		    	Edificio edi = (Edificio)value; 
+		    	if(edi.getNombre().equals(nombre))
+		    	{
+		    		return edi;
+		    	}
+		    }
+		}	
+		return null;
+	}
+	
+	public static Colaborador getColaborador(String cedula){			
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnColaborador = value instanceof Colaborador; 
+		    if(esUnColaborador)
+		    {
+		    	Colaborador cola = (Colaborador)value; 
+		    	if(cola.getCedula().equals(cedula))
+		    	{
+		    		return cola;
+		    	}
+		    }
+		}	
+		return null;
+	}
+	
 	public static int getTamannoCompannia(){
-		return listCompania.size();
-			}
+		int total = 0;
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnaCompannia = value instanceof Compannia; 
+		    if(esUnaCompannia)
+		    {
+		    	total++;
+		    }
+		}	
+		return total;
+	}
+	
 	public static int getTamannoEdificio(){
-		return listEdificios.size();
-			}
+		int total = 0;
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnEdificio = value instanceof Edificio; 
+		    if(esUnEdificio)
+		    {
+		    	total++;
+		    }
+		}	
+		return total;
+	}
+	
 	public static int getTamannoColaborador(){
-		return listColaboradores.size();
-			}
-	protected static void limpiaListas() {
-		listColaboradores.clear();
-		 listEdificios.clear();
-		 listProyectos.clear();
-		 listActivos.clear();
-		 listCompania.clear();
-		 tablaDeSimbolos.clear();
+		int total = 0;
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnColaborador= value instanceof Colaborador; 
+		    if(esUnColaborador)
+		    {
+		    	total++;
+		    }
+		}	
+		return total;
+	}
+
+	public static void limpiaListas() {
+		tablaDeSimbolos.clear();	
 	}
 }//fin clase
