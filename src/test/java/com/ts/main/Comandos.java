@@ -96,14 +96,69 @@ public class Comandos {
 	{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorTest.txt");
 		
-		String comando ="Cguillen=CREAR_COLABORADOR(jahzeel, 1-1111-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $1000)";
+		String comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, ¢1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
 		
 		Assert.assertNotNull(colaborador);
-		Assert.assertEquals(colaborador.getNombre(), "jahzeel");
+		Assert.assertEquals(colaborador.getNombre(), "Jahzeel");
 		Assert.assertEquals(Repo.getTamannoColaborador(), 1);
 		
+		comando ="Cguillen= crear_Colaborador(Cristian Guillen, 1-2222-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $2000)";
+		interpreteMandatos.ejecutaComando(comando);
+		colaborador= Repo.getColaborador("1-2222-1111");
+		
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getNombre(), "Cristian Guillen");
+		Assert.assertEquals(Repo.getTamannoColaborador(), 2);
+		
+		comando ="jperez= crear_Colaborador(juanito Perez, 1-2222-2222, 15/12/1988, 08/07/2013, 1, 8445-1544, 0, $2000)";
+		interpreteMandatos.ejecutaComando(comando);
+		colaborador= Repo.getColaborador("1-2222-2222");
+		
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getNombre(), "juanito Perez");
+		Assert.assertTrue(colaborador.getEstadoCivil());
+		Assert.assertEquals(Repo.getTamannoColaborador(), 3);
+		
+		comando ="jperez= crear_Colaborador(Carlos, 1-2222-333, 15/12/1988, 08/07/2013, 0, 8445-1544, 0, $2000)";
+		interpreteMandatos.ejecutaComando(comando);
+		colaborador= Repo.getColaborador("1-2222-333");
+		
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getNombre(), "Carlos");
+		Assert.assertFalse(colaborador.getEstadoCivil());
+		Assert.assertEquals(Repo.getTamannoColaborador(), 4);
+	}
+	
+	@Test
+	public void agregarColaboradorNegativeTest() throws IOException
+	{
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorNegativeTest.txt");
+		
+		//wrong month
+		String comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/2013, true, 8445-1544, 0, ¢1000)";
+		interpreteMandatos.ejecutaComando(comando);
+		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
+		Assert.assertNull(colaborador);
+		
+		//wrong year
+		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, true, 8445-1544, 0, ¢1000)";
+		interpreteMandatos.ejecutaComando(comando);
+		colaborador= Repo.getColaborador("1-1111-1111");
+		Assert.assertNull(colaborador);
+		
+		//wrong monto
+		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, true, 8445-1544, 0, 1000)";
+		interpreteMandatos.ejecutaComando(comando);
+		colaborador= Repo.getColaborador("1-1111-1111");
+		Assert.assertNull(colaborador);
+		
+		//wrong estado civil
+		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, casado, 8445-1544, 0, 1000)";
+		interpreteMandatos.ejecutaComando(comando);
+		colaborador= Repo.getColaborador("1-1111-1111");
+		Assert.assertNull(colaborador);
 	}
 	
 	
