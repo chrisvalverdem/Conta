@@ -5,18 +5,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
-
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.ts.main.InterpreteMandatos;
 import com.ts.objects.Colaborador;
 import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Edificio;
+
 
 
 public class Comandos {
@@ -140,13 +139,13 @@ public class Comandos {
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorNegativeTest.txt");
 		
 		//wrong month
-		String comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/2013, true, 8445-1544, 0, �1000)";
+		String comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/2013, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong year
-		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, true, 8445-1544, 0, �1000)";
+		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
@@ -158,7 +157,7 @@ public class Comandos {
 		Assert.assertNull(colaborador);
 		
 		//wrong estado civil
-		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, casado, 8445-1544, 0, 1000)";
+		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, casado, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
@@ -186,15 +185,13 @@ public class Comandos {
 	
 	@Test
 	public void pruebaAgregaVacaciones() throws IOException {
-
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"AgregaVacacionesColaborador.txt");
 		Colaborador colaborador;
+		Date fecha=null;
 		
 		String comando1 ="jlopez= crear_Colaborador(gerardo, 1-1111-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 = "jlopez.tomar_vacaciones(06/08/2013)";
+		String comando2 ="jlopez.tomar_vacaciones(06/08/2013)";
 		
-		Date fecha=null;;
-
 		String result1 = "06/08/2013";
 		String result2="";
 		
@@ -209,8 +206,25 @@ public class Comandos {
 		Assert.assertEquals(result1, result2);
 		Assert.assertTrue(colaborador.getEstadoCivil());
 		Assert.assertEquals(Repo.getTamannoColaborador(), 5);
-
+	}
+	
+	@Test
+	public void pruebaAumentarSalario() throws IOException {
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"AumentarSalario.txt");
+		Colaborador colaborador;
 		
+		String comando1 ="marias= crear_Colaborador(Maria Arias, 1-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando2 ="marias.aumentar_salario($2000)";
+		
+		interpreteMandatos.ejecutaComando(comando1);
+		interpreteMandatos.ejecutaComando(comando2);
+		
+		colaborador=Repo.getColaborador("1-2222-2223");	
+
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getSalario().getMonto(),2000.0);
+		Assert.assertEquals(colaborador.getNombre(),"Maria Arias");
+		Assert.assertEquals(Repo.getTamannoColaborador(), 6);
 	}
 	
 }
