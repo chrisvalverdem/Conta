@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
 import com.ts.objects.Dolar;
@@ -51,6 +52,24 @@ public class InterpreteMandatos {
 			}	 		
 			pedirComando ();
 	 	}
+	 
+	 	public Moneda getSalario(String dato) throws CommandException{
+	 		Moneda salario=null;
+	 		double monto;
+	 		
+	 		monto= Double.parseDouble(dato.substring(1, dato.length()));
+	 		
+			if(dato.contains("¢")){
+				salario= new Colon(monto);
+			}else if(dato.contains("$")){
+				salario= new Dolar(monto);
+			}else{
+				throw new CommandException("Solo se aceptan montos en $ o ¢, Favor revisarlo monto digitado");
+			}
+
+	 		return salario;
+	 	}
+	 	
 	 public Date getFecha(String dato) throws CommandException{
 		 Date fecha;		 
 		  try {
@@ -102,10 +121,7 @@ public class InterpreteMandatos {
 		  String[] parametros=null;
 		  
 		  String[] temp = cadena.split("\\(");
-		  temp[1] = temp[1].substring(0, temp[1].length()-1);
-		  
-		  temp[1]=temp[1].replaceAll("\\¢", Moneda.COLON + ",");
-		  temp[1]=temp[1].replaceAll("\\$", Moneda.DOLAR + ",");
+		  temp[1] = temp[1].substring(0, temp[1].length()-1);	  
 		  
 		  parametros = temp[1].split("\\,"); 
 		  	
@@ -143,13 +159,13 @@ public class InterpreteMandatos {
 			case Comando.CREAR_COLABORADOR: 
 				Moneda salario =null;
 				String isMarried;
-				double monto;
 				String nombre=comando.getParametros()[0];
 				String cedula=comando.getParametros()[1];
-				Date fechaNacimiento= getFecha(comando.getParametros()[2].toString());
-				Date fechaIngresoEmpresa= getFecha(comando.getParametros()[3].toString());
+				Date fechaNacimiento= getFecha(comando.getParametros()[2]);
+				Date fechaIngresoEmpresa= getFecha(comando.getParametros()[3]);
 				String telefono= comando.getParametros()[5];
-				int cantidadHijos = Integer.parseInt(comando.getParametros()[6].toString());
+				int cantidadHijos = Integer.parseInt(comando.getParametros()[6]);
+				salario= getSalario(comando.getParametros()[7]);
 				
 				if(comando.getParametros()[4].equalsIgnoreCase("true")){
 					isMarried="true";
@@ -158,15 +174,7 @@ public class InterpreteMandatos {
 				}else{
 					isMarried="N/A";
 				}
-				monto= Double.parseDouble(comando.getParametros()[8].substring(1, comando.getParametros()[8].length()));
-				if(comando.getParametros()[7].equalsIgnoreCase(Moneda.COLON)){
-					salario= new Colon(monto);	
-				}else if(comando.getParametros()[7].equalsIgnoreCase(Moneda.DOLAR)){
-					salario= new Dolar(monto);		
-				}else{
-					salario= null;
-				}
-				
+	
 		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
 		   	break;	   		 
 			case Comando.CREAR_EDIFICIO: 
@@ -181,14 +189,8 @@ public class InterpreteMandatos {
 		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
 		   	break;	   		 
 		   	case Comando.AUMENTAR_SALARIO:
-		   		Double montoR= Double.parseDouble(comando.getParametros()[1]);
-		   		Moneda salarioAumentar = null;
+		   		Moneda salarioAumentar = getSalario(comando.getParametros()[0]);
 		   		
-				if(comando.getParametros()[0].equalsIgnoreCase(Moneda.COLON)){
-					salarioAumentar= new Colon(montoR);	
-				}else if(comando.getParametros()[0].equalsIgnoreCase(Moneda.DOLAR)){
-					salarioAumentar= new Dolar(montoR);		
-				}
 		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
 		   		break;
 		   	case Comando.MOSTRAR_SALARIO:
@@ -223,9 +225,7 @@ public class InterpreteMandatos {
 		{
 			System.err.println(commandException.getMessage());
 			pedirComando ();
-
 		}		
 		
-	}			
-	
+	}				
 }
