@@ -59,14 +59,13 @@ public class Repo  {
 		  if(existeAlgo){
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);		    
-				   Colaborador.setVacaciones(fecha);
+				   colaborador.setVacaciones(fecha);
 				   tablaDeSimbolos.put(persona, colaborador);
 				   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le agrego un dia de vacaciones");
 			   }else{
 					throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar sus vacaciones");
 			   }  
 		  }
-
 	}
 	
 	public static void 	mostrarVacaciones(String persona) throws CommandException{
@@ -103,14 +102,20 @@ public class Repo  {
 		  if(existeAlgo){
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);
-				   colaborador.setSalario(nuevoSalario);
-				   tablaDeSimbolos.put(persona, colaborador);
-				   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
+		
+				   if(!(colaborador.getSalario().getClass().equals(nuevoSalario.getClass()))){
+						   throw new CommandException("No se reconocen operaciones entre montos de diferente tipo de moneda");  
+					   }
+				    if(!(colaborador.getSalario().getMonto()< nuevoSalario.getMonto())){
+						   throw new CommandException("Imposible ingresar un monto de igual o menor cuantia");    
+					   }	  
 			   }else{
-					throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar Salario");
-			   }  
+				   throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar Salario");
+			   } 
+		   colaborador.setSalario(nuevoSalario);
+		   tablaDeSimbolos.put(persona, colaborador);
+		   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
 		  }
-
 	}   
 	
 	public static void 	mostrarSalario(String persona) throws CommandException{
