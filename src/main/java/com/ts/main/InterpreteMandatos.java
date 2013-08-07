@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
 import com.ts.objects.Dolar;
@@ -16,7 +16,6 @@ public class InterpreteMandatos {
 		
 	 	private ArchivoLog log;
         private boolean esCargaDeDatos= false; 
-        private final SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
         private BufferedReader br;
         private InputStreamReader isr;        
         private boolean listenTheConsole;
@@ -45,13 +44,43 @@ public class InterpreteMandatos {
 	            	ejecutaComando(comando);
 	            	contador++;
 	            	if(contador==comandos.size()){
-	            		System.out.println("Se realizo el proceso de carga exitosamente");	
+	            		System.out.println("Se realizo el proceso de carga exitosamente");
+	            		esCargaDeDatos=false;
 	            	}
 	            }
 			}	 		
 			pedirComando ();
 	 	}
-        private void pedirComando () throws IOException {
+	 public Date getFecha(String dato) throws CommandException{
+		 Date fecha;		 
+		  try {
+				 SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
+				 String[] fechasTemp = dato.split("/");
+				 int dia = Integer.parseInt(fechasTemp[0]);
+				 int mes = Integer.parseInt(fechasTemp[1]);
+				 int annio = Integer.parseInt(fechasTemp[2]);
+				 
+				 if(dia >31 || dia < 1){
+					 throw new CommandException("El rango de los dias esta definido entre 1-31");
+				 }else if(mes>12 || mes< 1){
+					 throw new CommandException("El rango de los meses esta definido entre 1-12");
+				 }else if(annio > 10000 || annio < 1000){
+					 throw new CommandException("El rango de los años solo acepta valores de 4 digitos");
+				 }
+			   fecha = formatFecha.parse(dato);
+			  } catch (ParseException e) {
+			   throw new CommandException("El formato de la fecha es dd/MM/yyyy. Favor actualizar");
+			  } 
+		 return fecha;
+	 }	
+	
+	 public static String getFechaConFormato(Date fecha){
+		 SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
+		 String result = "";
+		 result= formatFecha.format(fecha);
+		 return result;
+	}	
+      private void pedirComando () throws IOException {
 			 
 	     	if(listenTheConsole)
 	 		{					
@@ -113,29 +142,43 @@ public class InterpreteMandatos {
 		   	break; 	   		 
 			case Comando.CREAR_COLABORADOR: 
 				Moneda salario =null;
-				boolean isMarried;
+				String isMarried;
 				double monto;
+				String nombre=comando.getParametros()[0];
+				String cedula=comando.getParametros()[1];
+				Date fechaNacimiento= getFecha(comando.getParametros()[2].toString());
+				Date fechaIngresoEmpresa= getFecha(comando.getParametros()[3].toString());
+				String telefono= comando.getParametros()[5];
+				int cantidadHijos = Integer.parseInt(comando.getParametros()[6].toString());
 				
-				isMarried= Boolean.parseBoolean(comando.getParametros()[4]);
-				monto= Double.parseDouble(comando.getParametros()[8]);
+				if(comando.getParametros()[4].equalsIgnoreCase("true")){
+					isMarried="true";
+				}else if(comando.getParametros()[4].equalsIgnoreCase("false")){
+					isMarried="false";
+				}else{
+					isMarried="N/A";
+				}
+				monto= Double.parseDouble(comando.getParametros()[8].substring(1, comando.getParametros()[8].length()));
 				if(comando.getParametros()[7].equalsIgnoreCase(Moneda.COLON)){
 					salario= new Colon(monto);	
 				}else if(comando.getParametros()[7].equalsIgnoreCase(Moneda.DOLAR)){
 					salario= new Dolar(monto);		
+				}else{
+					salario= null;
 				}
 				
-		   		Repo.AgregarColaborador(comando.getInstance(), comando.getParametros()[0], comando.getParametros()[1],formatFecha.parse(comando.getParametros()[2].toString()), formatFecha.parse(comando.getParametros()[3].toString()), isMarried, comando.getParametros()[5], Integer.parseInt(comando.getParametros()[6].toString()), salario);	
+		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
 		   	break;	   		 
 			case Comando.CREAR_EDIFICIO: 
-		   		String nombre= comando.getParametros()[0];
+		   		String nombreE= comando.getParametros()[0];
 		   		
-		   		Repo.AgregarEdificio(comando.getInstance(),nombre);   		 
+		   		Repo.AgregarEdificio(comando.getInstance(),nombreE);   		 
 		   	break;	   		   		 
 			case Comando.CREAR_COMPANNIA:
 		   		String nombreC =comando.getParametros()[0];
-		   		String cedula= comando.getParametros()[1];
+		   		String cedulaC= comando.getParametros()[1];
 		   		
-		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedula);
+		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
 		   	break;	   		 
 		   	case Comando.AUMENTAR_SALARIO:
 		   		Double montoR= Double.parseDouble(comando.getParametros()[1]);
@@ -146,11 +189,19 @@ public class InterpreteMandatos {
 				}else if(comando.getParametros()[0].equalsIgnoreCase(Moneda.DOLAR)){
 					salarioAumentar= new Dolar(montoR);		
 				}
-		   		
-		   		Repo.aumentar_Salario( comando.getInstance(), salarioAumentar); 
+		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
 		   		break;
 		   	case Comando.MOSTRAR_SALARIO:
-		   		Repo.mostrar_Salario(comando.getInstance()); 
+		   		Repo.mostrarSalario(comando.getInstance()); 
+		   		esCargaDeDatos= true;
+		   		break;
+		   	case Comando.TOMAR_VACACIONES:
+		   		Date fechaTomar = getFecha(comando.getParametros()[0]);
+		   		
+		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
+		   		break;
+		   	case Comando.MOSTRAR_VACACIONES:
+		   		Repo.mostrarVacaciones(comando.getInstance());
 		   		esCargaDeDatos= true;
 		   		break;
 		   	case Comando.CARGAR_LOG:	
@@ -168,7 +219,7 @@ public class InterpreteMandatos {
 				log.crearRegistroLog(cadena);
 			}
 		}
-		catch(CommandException | NumberFormatException | ParseException commandException)
+		catch(CommandException commandException)
 		{
 			System.err.println(commandException.getMessage());
 			pedirComando ();
