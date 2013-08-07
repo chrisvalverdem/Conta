@@ -105,7 +105,7 @@ public class Repo  {
 				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);
 				   colaborador.setSalario(nuevoSalario);
 				   tablaDeSimbolos.put(persona, colaborador);
-				   System.out.println("El Colaborador con identificacion: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
+				   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
 			   }else{
 					throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar Salario");
 			   }  
