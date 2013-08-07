@@ -1,5 +1,6 @@
 package com.ts.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Colaborador extends Objecto {
@@ -13,6 +14,7 @@ public class Colaborador extends Objecto {
 	Moneda salario;
 	
 	public static String comandosValidos[] ={"Crear_Colaborador"};
+	public static ArrayList<Date> vacaciones = new ArrayList<Date>();
 
 	public Colaborador(String nombre, String cedula){
 		this.nombre = nombre;
@@ -31,6 +33,14 @@ public class Colaborador extends Objecto {
 		this.cantidadHijos= numeroHijos;
 		this.salario = salario;
 		
+	}
+
+	public ArrayList<Date> getVacaciones() {
+		return vacaciones;
+	}
+
+	public static void setVacaciones(Date fecha) {
+		Colaborador.vacaciones.add(fecha);
 	}
 
 	public String getNombre() {
