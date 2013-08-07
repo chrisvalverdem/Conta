@@ -14,7 +14,7 @@ public class Colaborador extends Objecto {
 	Moneda salario;
 	
 	public static String comandosValidos[] ={"Crear_Colaborador"};
-	public static ArrayList<Date> vacaciones = new ArrayList<Date>();
+	public ArrayList<Date> vacaciones = new ArrayList<Date>();
 
 	public Colaborador(String nombre, String cedula){
 		this.nombre = nombre;
@@ -39,8 +39,8 @@ public class Colaborador extends Objecto {
 		return vacaciones;
 	}
 
-	public static void setVacaciones(Date fecha) {
-		Colaborador.vacaciones.add(fecha);
+	public void setVacaciones(Date fecha) {
+		vacaciones.add(fecha);
 	}
 
 	public String getNombre() {
