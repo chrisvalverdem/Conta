@@ -38,13 +38,10 @@ public class Comandos {
 				file.delete();
 			}
 		}
-
-		
 		err = new File(outTestDirectory+"errors.txt");
 		
 		PrintStream printStream = new PrintStream(new FileOutputStream(err));
-		System.setErr(printStream);
-		
+		System.setErr(printStream);	
 	}
 	
 	@BeforeTest
@@ -96,7 +93,7 @@ public class Comandos {
 	{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorTest.txt");
 		
-		String comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $1000)";
+		String comando ="jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
 		
@@ -104,65 +101,14 @@ public class Comandos {
 		Assert.assertEquals(colaborador.getNombre(), "Jahzeel");
 		Assert.assertEquals(Repo.getTamannoColaborador(), 1);
 		
-		comando ="Cguillen= crear_Colaborador(Cristian Guillen, 1-2222-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $2000)";
+		comando ="Cguillen= CREAR_COLABORADOR(Cristian Guillen, 1-2222-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $2000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-2222-1111");
 		
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(colaborador.getNombre(), "Cristian Guillen");
-		Assert.assertEquals(Repo.getTamannoColaborador(), 2);
-		
-		//1 in Estado civil
-		comando ="jperez= crear_Colaborador(juanito Perez, 1-2222-2222, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $2000)";
-		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-2222-2222");
-		
-		Assert.assertNotNull(colaborador);
-		Assert.assertEquals(colaborador.getNombre(), "juanito Perez");
-		Assert.assertTrue(colaborador.getEstadoCivil());
-		Assert.assertEquals(Repo.getTamannoColaborador(), 3);
-		
-		//0 in Estado civil
-		comando ="Adrian= crear_Colaborador(Adrian, 1-2222-3333, 15/12/1988, 08/07/2013, false, 8445-1544, 0, $2000)";
-		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-2222-3333");
-
-		Assert.assertNotNull(colaborador);
-		Assert.assertEquals(colaborador.getNombre(), "Adrian");
-		Assert.assertFalse(colaborador.getEstadoCivil());
-		Assert.assertEquals(Repo.getTamannoColaborador(), 4);
+		Assert.assertEquals(Repo.getTamannoColaborador(), 2);	
 	}
-	
-	@Test
-	public void agregarColaboradorNegativeTest() throws IOException
-	{
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorNegativeTest.txt");
-		
-		//wrong month
-		String comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/2013, true, 8445-1544, 0, $1000)";
-		interpreteMandatos.ejecutaComando(comando);
-		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
-		Assert.assertNull(colaborador);
-		
-		//wrong year
-		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, true, 8445-1544, 0, $1000)";
-		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-1111-1111");
-		Assert.assertNull(colaborador);
-		
-		//wrong monto
-		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, true, 8445-1544, 0, 1000)";
-		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-1111-1111");
-		Assert.assertNull(colaborador);
-		
-		//wrong estado civil
-		comando ="jahzeel= crear_Colaborador(Jahzeel, 1-1111-1111, 15/1988/12, 08/07/12, casado, 8445-1544, 0, $1000)";
-		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-1111-1111");
-		Assert.assertNull(colaborador);
-	}
-	
 	
 	@Test
 	public void pruebaValidarInstacias() throws IOException {
@@ -189,8 +135,8 @@ public class Comandos {
 		Colaborador colaborador;
 		Date fecha=null;
 		
-		String comando1 ="jlopez= crear_Colaborador(gerardo, 1-1111-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 ="jlopez.tomar_vacaciones(06/08/2013)";
+		String comando1 ="jlopez= CREAR_COLABORADOR(gerardo, 1-1111-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando2 ="jlopez.TOMAR_VACACIONES(06/08/2013)";
 		
 		String result1 = "06/08/2013";
 		String result2="";
@@ -205,7 +151,28 @@ public class Comandos {
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(result1, result2);
 		Assert.assertTrue(colaborador.getEstadoCivil());
-		Assert.assertEquals(Repo.getTamannoColaborador(), 5);
+		Assert.assertEquals(Repo.getTamannoColaborador(), 3);
+	}
+
+	@Test
+	public void pruebaMostrarVacaciones() throws IOException{
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"MostrarVacaciones.txt");
+		Colaborador colaborador;
+		Date fecha;
+		String result="";
+		String comando12 ="fchinchilla= CREAR_COLABORADOR(Fernanda Chinchilla, 1-4444-4444, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando21 ="fchinchilla.TOMAR_VACACIONES(07/08/2013)";
+		
+		interpreteMandatos.ejecutaComando(comando12);
+		interpreteMandatos.ejecutaComando(comando21);
+		
+		colaborador= Repo.getColaborador("1-4444-4444");
+		fecha= colaborador.getVacaciones().get(0);
+		result= InterpreteMandatos.getFechaConFormato(fecha);
+		
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(result, "07/08/2013");
+		Assert.assertEquals(colaborador.getVacaciones().size(), 1);
 	}
 	
 	@Test
@@ -213,18 +180,32 @@ public class Comandos {
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"AumentarSalario.txt");
 		Colaborador colaborador;
 		
-		String comando1 ="marias= crear_Colaborador(Maria Arias, 1-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 ="marias.aumentar_salario($2000)";
+		String comando1 ="marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando2 ="marias.AUMENTAR_SALARIO($2000)";
 		
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
 		
-		colaborador=Repo.getColaborador("1-2222-2223");	
+		colaborador=Repo.getColaborador("2-2222-2223");	
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(colaborador.getSalario().getMonto(),2000.0);
 		Assert.assertEquals(colaborador.getNombre(),"Maria Arias");
-		Assert.assertEquals(Repo.getTamannoColaborador(), 6);
+	}
+	
+	@Test
+	public void pruebaMostrarSalario() throws IOException{
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"MostrarSalario.txt");
+		Colaborador colaborador;
+
+		String comando1 ="jguerrero= CREAR_COLABORADOR(jose guerrero, 3-2222-2233, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		
+		interpreteMandatos.ejecutaComando(comando1);
+
+		colaborador= Repo.getColaborador("3-2222-2233");
+
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getSalario().getMonto(), 1000.0);	
 	}
 	
 }
