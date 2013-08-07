@@ -1,9 +1,9 @@
 package com.ts.main;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.ts.objects.Colaborador;
 import com.ts.objects.CommandException;
@@ -33,23 +33,70 @@ public class Repo  {
 	}
 	
 	public static void AgregarColaborador(String instance, String nombre, String numeroCedula, Date fechaNacimiento,
-			Date fechaIngreso, boolean estado, String telefono,  int numeroHijos,
+			Date fechaIngreso, String estadoCivil, String telefono,  int numeroHijos,
 			Moneda salario) throws CommandException{
 		
 		boolean existeElColaborador = getColaborador(numeroCedula) != null;		
-	
+		boolean estado;
 			if ( existeElColaborador )
 			{
-				throw new CommandException("El colaborador " + nombre + ", ya tiene el numero de c�dula "+numeroCedula);
+				throw new CommandException("El colaborador " + nombre + ", ya tiene el numero de cedula "+numeroCedula);
+			}else if(estadoCivil.equalsIgnoreCase("N/A")){
+				throw new CommandException("No se reconoce el estado civil del colaborador, digite true si esta casado, false en caso contrario");
+			}else if(salario == null){
+				throw new CommandException("No se reconoce tipo de moneda del salario favor digitar $ o ¢ segun corresponda");
 			}
-			
+			estado= Boolean.parseBoolean(estadoCivil);
 			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula, fechaNacimiento,fechaIngreso, estado, telefono,  numeroHijos, salario);				
 		    pullInTOTablaDeSimbolos(instance, nuevoColaborador );
 		    
 		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
 	}
+	public static void tomarVacaciones(String persona, Date fecha) throws CommandException{
+		boolean existeAlgo= !tablaDeSimbolos.isEmpty();
+		Colaborador colaborador= null;
+		
+		  if(existeAlgo){
+			   if(tablaDeSimbolos.containsKey(persona)){   
+				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);		    
+				   Colaborador.setVacaciones(fecha);
+				   tablaDeSimbolos.put(persona, colaborador);
+				   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le agrego un dia de vacaciones");
+			   }else{
+					throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar sus vacaciones");
+			   }  
+		  }
+
+	}
 	
-	public static void aumentar_Salario(String persona, Moneda nuevoSalario) throws CommandException{
+	public static void 	mostrarVacaciones(String persona) throws CommandException{
+
+		boolean existeAlgo= ! tablaDeSimbolos.isEmpty();
+		Colaborador colaboradorEncontrado= null;
+		String mens ="El colaborador presenta las siguientes fechas de vacaciones :" + "\n";
+		ArrayList<Date> fechasAlmacenadas;
+		int cont =1;
+		
+		if(existeAlgo){
+			   if(tablaDeSimbolos.containsKey(persona)){   
+				   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
+				   fechasAlmacenadas = colaboradorEncontrado.getVacaciones();
+				  if(fechasAlmacenadas.size()<=0){
+					  throw new CommandException("El Colaborador " + persona + " no posee dias de vacaciones.");
+				  }else{
+					   for( Date fecha : fechasAlmacenadas){
+						   mens+= "\t" +cont+". "+ InterpreteMandatos.getFechaConFormato(fecha) + "\n"; 
+						   cont++;
+					   }		   
+				  }
+				   System.out.println(mens);
+			   }else{
+				   throw new CommandException("El Colaborador " + persona + " no existe.");
+			   }  
+		  }				
+}
+	
+	public static void aumentarSalario(String persona, Moneda nuevoSalario) throws CommandException{
 		boolean existeAlgo= !tablaDeSimbolos.isEmpty();
 		Colaborador colaborador= null;
 
@@ -64,16 +111,23 @@ public class Repo  {
 			   }  
 		  }
 
-	}    					
-	public static void 	mostrar_Salario(String persona) throws CommandException{
+	}   
+	
+	public static void 	mostrarSalario(String persona) throws CommandException{
 
 		boolean existeAlgo= ! tablaDeSimbolos.isEmpty();
 		Colaborador colaboradorEncontrado= null;
-
+		String mens ="";
+		
 		if(existeAlgo){
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
-				   System.out.println("El Colaborador con identificacion: " + colaboradorEncontrado.getNombre() + " posee un salario de " + colaboradorEncontrado.getSalario().getMonto());
+				   if(colaboradorEncontrado.getSalario().getClass().equals(Moneda.COLON)){
+					   mens+="¢"+colaboradorEncontrado.getSalario().getMonto();
+				   }else{
+					   mens+="$"+colaboradorEncontrado.getSalario().getMonto();
+				   }
+				   System.out.println("El Colaborador: " + colaboradorEncontrado.getNombre() + " posee un salario de " + mens);
 			   }else{
 				   throw new CommandException("El Colaborador " + persona + " no existe.");
 			   }  
@@ -141,7 +195,7 @@ public class Repo  {
 		    if(esUnColaborador)
 		    {
 		    	Colaborador cola = (Colaborador)value; 
-		    	if(cola.getCedula().equals(cedula))
+		    	if(cola.getCedula().equalsIgnoreCase(cedula))
 		    	{
 		    		return cola;
 		    	}
@@ -210,6 +264,7 @@ public class Repo  {
 			}					
 		}				
 	}	
+	
 	public static void limpiaListas() {
 		tablaDeSimbolos.clear();	
 	}
