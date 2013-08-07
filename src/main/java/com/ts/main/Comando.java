@@ -14,7 +14,9 @@ public class Comando {
     public static final String EXIT="EXIT";	
     public static final String MOSTRAR_SALARIO="MOSTRAR_SALARIO";
     public static final String AUMENTAR_SALARIO="AUMENTAR_SALARIO";
-	
+    public static final String TOMAR_VACACIONES="TOMAR_VACACIONES";
+    public static final String MOSTRAR_VACACIONES="MOSTRAR_VACACIONES";
+    
 	public Comando(String instance, String metodo, String[] parametros) {
 		this.instance = instance;
 		this.metodo = metodo;
