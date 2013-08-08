@@ -47,7 +47,7 @@ public class ArchivoLog {
    
     public ArrayList<String> getAllCommandsFromLog() throws IOException{
     	
-    	FileInputStream fstream = new FileInputStream(LOG_NAME);
+    	FileInputStream fstream = new FileInputStream(filePath);
         DataInputStream entrada = new DataInputStream(fstream);
         BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
         String linea;
