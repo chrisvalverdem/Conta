@@ -1,13 +1,8 @@
 package com.ts.main;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Date;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import com.ts.main.InterpreteMandatos;
@@ -17,7 +12,6 @@ import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Dolar;
 import com.ts.objects.Edificio;
-import com.ts.objects.Moneda;
 
 
 
@@ -194,11 +188,11 @@ public class Comandos  extends TestCase{
 		Assert.assertEquals(colaborador.getSalario().getClass(),Dolar.class);
 		Assert.assertEquals(colaborador.getSalario().getMonto(),2000.0);
 		Assert.assertEquals(colaborador.getNombre(),"Maria Arias");
-		Assert.assertEquals(Repo.getTamannoColaborador(),1);
+		Assert.assertEquals(Repo.getTamannoColaborador(),4);
 		
-		comando1 ="cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0,  ¢1000)";
-		comando2 ="cguillen.AUMENTAR_SALARIO( ¢2000)";
-		String comando3 ="cguillen.AUMENTAR_SALARIO( ¢3000)";
+		comando1 ="cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0,  Â¢1000)";
+		comando2 ="cguillen.AUMENTAR_SALARIO( Â¢2000)";
+		String comando3 ="cguillen.AUMENTAR_SALARIO( Â¢3000)";
 		
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
@@ -210,7 +204,7 @@ public class Comandos  extends TestCase{
 		Assert.assertEquals(colaborador.getSalario().getClass(),Colon.class);
 		Assert.assertEquals(colaborador.getSalario().getMonto(),3000.0);
 		Assert.assertEquals(colaborador.getNombre(),"Cristan");
-		Assert.assertEquals(Repo.getTamannoColaborador(),2);
+		Assert.assertEquals(Repo.getTamannoColaborador(),5);
 	}
 	
 	@Test
@@ -227,6 +221,26 @@ public class Comandos  extends TestCase{
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(colaborador.getSalario().getMonto(), 1000.0);	
+	}
+	
+	@Test
+	public void pruebaCalculaSalarioNetoIQuincena() throws IOException, CommandException{
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"CalculaSalarioNetoIQ.txt");
+		Colaborador colaborador;
+		String info;
+		
+		String comando1 ="garias= CREAR_COLABORADOR(Gabriel Arias, 3-6666-6666, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		
+		interpreteMandatos.ejecutaComando(comando1);
+		
+		colaborador= Repo.getColaborador("3-6666-6666");
+		info= Repo.calculaSalarioNetoPrimeraQuincena("garias");
+
+		Assert.assertNotNull(colaborador);
+		Assert.assertEquals(colaborador.getSalario().getMonto(), 1000.0);
+		Assert.assertTrue(info.contains("$1000.0"));
+		Assert.assertTrue(info.contains("$91.7"));
+		Assert.assertTrue(info.contains("$908.3"));
 	}
 	
 }

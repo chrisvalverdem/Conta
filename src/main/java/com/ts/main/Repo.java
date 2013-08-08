@@ -15,6 +15,7 @@ import com.ts.objects.Objecto;
 public class Repo  {
 	
 	private static HashMap<String, Objecto> tablaDeSimbolos = new HashMap<String, Objecto>();
+	private final static Double porcientoDeduccion= 0.0917;
 	
 	private static void pullInTOTablaDeSimbolos(String string, Objecto object)
 	{
@@ -53,10 +54,7 @@ public class Repo  {
 		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
 	}
 	public static void tomarVacaciones(String persona, Date fecha) throws CommandException{
-		boolean existeAlgo= !tablaDeSimbolos.isEmpty();
 		Colaborador colaborador= null;
-		
-		  if(existeAlgo){
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);		    
 				   colaborador.setVacaciones(fecha);
@@ -65,18 +63,13 @@ public class Repo  {
 			   }else{
 					throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar sus vacaciones");
 			   }  
-		  }
 	}
 	
-	public static void 	mostrarVacaciones(String persona) throws CommandException{
-
-		boolean existeAlgo= ! tablaDeSimbolos.isEmpty();
+	public static String mostrarVacaciones(String persona) throws CommandException{
 		Colaborador colaboradorEncontrado= null;
 		String mens ="El colaborador presenta las siguientes fechas de vacaciones :" + "\n";
 		ArrayList<Date> fechasAlmacenadas;
 		int cont =1;
-		
-		if(existeAlgo){
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
 				   fechasAlmacenadas = colaboradorEncontrado.getVacaciones();
@@ -88,18 +81,46 @@ public class Repo  {
 						   cont++;
 					   }		   
 				  }
-				   System.out.println(mens);
+				   return mens;
 			   }else{
 				   throw new CommandException("El Colaborador " + persona + " no existe.");
-			   }  
-		  }				
+			   }  		
 }
 	
-	public static void aumentarSalario(String persona, Moneda nuevoSalario) throws CommandException{
-		boolean existeAlgo= !tablaDeSimbolos.isEmpty();
+	public static String calculaSalarioNetoPrimeraQuincena(String persona) throws CommandException{
 		Colaborador colaborador= null;
+		Moneda salarioInicial;
+		Double deducciones;
+		Double monto;
+		Double neto;
+		String salario="";
+		String deduc="";
+		String net="";
+			   if(tablaDeSimbolos.containsKey(persona)){   
+				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);
+				   salarioInicial= colaborador.getSalario();
+				   monto= salarioInicial.getMonto();
+				   deducciones = monto * porcientoDeduccion;
+				   neto= monto-deducciones; 
 
-		  if(existeAlgo){
+				   salario += colaborador.getSalario().getSign();
+				   salario += monto;
+				   deduc += colaborador.getSalario().getSign();
+				   deduc+= deducciones;
+				   net += colaborador.getSalario().getSign();
+				   net+= neto;
+			   
+			   }else{
+				   throw new CommandException("El Colaborador " + persona + " no existe.Imposible Calcular su primera quincena");
+			   }       
+		   return("El Colaborador: " + colaborador.getNombre() + " presenta el siguiente salario por concepto de primera quincena:" 
+			   + "\n" + "\t" + "1.Salario Inicial: " + salario 
+			   + "\n" + "\t" + "2.Deducciones: " + deduc
+			   + "\n" + "\t" + "3.Salario Neto: " + net);
+	}
+	
+	public static void aumentarSalario(String persona, Moneda nuevoSalario) throws CommandException{
+		Colaborador colaborador= null;
 			   if(tablaDeSimbolos.containsKey(persona)){   
 				   colaborador= (Colaborador) tablaDeSimbolos.get(persona);
 		
@@ -115,28 +136,17 @@ public class Repo  {
 		   colaborador.setSalario(nuevoSalario);
 		   tablaDeSimbolos.put(persona, colaborador);
 		   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
-		  }
 	}   
 	
-	public static void 	mostrarSalario(String persona) throws CommandException{
-
-		boolean existeAlgo= ! tablaDeSimbolos.isEmpty();
+	public static String mostrarSalario(String persona) throws CommandException{
 		Colaborador colaboradorEncontrado= null;
-		String mens ="";
 		
-		if(existeAlgo){
-			   if(tablaDeSimbolos.containsKey(persona)){   
-				   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
-				   if(colaboradorEncontrado.getSalario().getClass().equals(Moneda.COLON)){
-					   mens+="¢"+colaboradorEncontrado.getSalario().getMonto();
-				   }else{
-					   mens+="$"+colaboradorEncontrado.getSalario().getMonto();
-				   }
-				   System.out.println("El Colaborador: " + colaboradorEncontrado.getNombre() + " posee un salario de " + mens);
-			   }else{
-				   throw new CommandException("El Colaborador " + persona + " no existe.");
-			   }  
-		  }				
+		   if(tablaDeSimbolos.containsKey(persona)){   
+			   colaboradorEncontrado= (Colaborador) tablaDeSimbolos.get(persona);
+			   return("El Colaborador: " + colaboradorEncontrado.getNombre() + " posee un salario de " + colaboradorEncontrado.getSalario().getSign() +colaboradorEncontrado.getSalario().getMonto());
+		   }else{
+			   throw new CommandException("El Colaborador " + persona + " no existe.");
+		   }				
 }
 	public static void AgregarEdificio(String instance, String nombre) throws CommandException{			
 		boolean existeElEdificio =  getEdificio(nombre) != null;

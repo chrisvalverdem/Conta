@@ -65,7 +65,6 @@ public class InterpreteMandatos {
 			}else{
 				throw new CommandException("Solo se aceptan montos en $ o ¢, Favor revisarlo monto digitado");
 			}
-
 	 		return salario;
 	 	}
 	 	
@@ -191,7 +190,9 @@ public class InterpreteMandatos {
 		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
 		   		break;
 		   	case Comando.MOSTRAR_SALARIO:
-		   		Repo.mostrarSalario(comando.getInstance()); 
+		   		String message= Repo.mostrarSalario(comando.getInstance());
+		   		
+		   		System.out.println(message);
 		   		esCargaDeDatos= true;
 		   		break;
 		   	case Comando.TOMAR_VACACIONES:
@@ -200,7 +201,15 @@ public class InterpreteMandatos {
 		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
 		   		break;
 		   	case Comando.MOSTRAR_VACACIONES:
-		   		Repo.mostrarVacaciones(comando.getInstance());
+		   		String mensaje= Repo.mostrarVacaciones(comando.getInstance());
+		   		
+		   		System.out.println(mensaje);
+		   		esCargaDeDatos= true;
+		   		break;
+		   	case Comando.CALCULAR_SALARIO_NETO_IQ:
+		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
+		   		
+		   		System.out.println(respuesta);
 		   		esCargaDeDatos= true;
 		   		break;
 		   	case Comando.CARGAR_LOG:	

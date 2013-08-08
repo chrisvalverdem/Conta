@@ -8,6 +8,12 @@ public final class Dolar extends Moneda{
 		
 		
 	}
+
+	@Override
+	public String getSign() {
+
+		return "$";
+	}
 	
 	
 	
