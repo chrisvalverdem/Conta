@@ -18,10 +18,9 @@ public class InterpreteMandatos {
 	 	private ArchivoLog log;
         private boolean esCargaDeDatos= false; 
         private BufferedReader br;
-        private InputStreamReader isr;        
         private boolean listenTheConsole;
 	 	
-        public InterpreteMandatos() throws IOException
+        private InterpreteMandatos() throws IOException
 	 	{
 	 		new InterpreteMandatos(true, ArchivoLog.LOG_NAME);
 
@@ -31,7 +30,7 @@ public class InterpreteMandatos {
 	 		this.listenTheConsole=listenTheConsole;
 	 		if(listenTheConsole){
 	 			
-	 			 isr = new InputStreamReader(System.in);
+	 			InputStreamReader isr = new InputStreamReader(System.in);
 	 			 br = new BufferedReader(isr);
 	 		}
 	 		
@@ -105,8 +104,6 @@ public class InterpreteMandatos {
 	 		{					
 				do{
 					 System.out.println("Introducir un Comando:");
-					 isr = new InputStreamReader(System.in);
-					 br = new BufferedReader(isr);
 					 String dato = br.readLine(); 
 			     	 ejecutaComando(dato);
 		    	}
