@@ -1,7 +1,9 @@
 package com.ts.main;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -278,7 +280,124 @@ public class Repo  {
 				throw new CommandException("La instancia " + instance+ " ya existe, cambiela por una diferente.");				
 			}					
 		}				
+	}
+	public static Colaborador getColaboradorPorInstancea(String instance){			
+		String key;
+		Objecto value;
+		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
+		while (iterator.hasNext()) {
+		    key = iterator.next();
+		    value = tablaDeSimbolos.get(key);
+		    boolean esUnColaborador = value instanceof Colaborador; 
+		    if(esUnColaborador)
+		    {
+		    	Colaborador cola = (Colaborador)value; 
+		    	if(key.equalsIgnoreCase(instance))
+		    	{
+		    		return cola;
+		    	}
+		    }
+		}	
+		return null;
 	}	
+
+	public static String cantidadVacacionesDisponibles(String instance, String fecha){
+		
+		int vacacionesDisponibles=0;
+		int cantidadVacacionesTomados;
+		String mensaje;	
+		Date fechacomando=null;
+		
+		Calendar cal1 = new GregorianCalendar();
+		Calendar cal2 = new GregorianCalendar();	
+		
+		
+		System.err.println("instancia"+instance);
+		 Colaborador cola=getColaboradorPorInstancea(instance);
+		 Date fechaIngTem1=cola.getFechaIngresoEmpresa();
+		 cal1.setTime(fechaIngTem1);		 
+		 
+		try {
+			fechacomando = Sistema.getParseFecha(fecha);
+		}
+		catch(CommandException commandException)
+		{
+			commandException.setMessage("Formato de fecha invalido, el formato debe ser: dd/mm/yyyy");
+			System.err.println(commandException.getMessage());
+			
+		}		
+		 cal2.setTime(fechacomando);
+		 
+		 int cantidadDiasLaborados= cantidadDiasEntreFechas(cal1.getTime(), cal2.getTime())+1;		 
+		 float diviEntresiete=cantidadDiasLaborados/7;		
+		 float diviEntreCincuenta=diviEntresiete/50;		 
+		 float  multEntrediez=diviEntreCincuenta * 10 ;		
+		
+		 //float vacaciones= (((cantidadDiasLaborados/7)/50)*10);		
+		vacacionesDisponibles= (int) multEntrediez;
+				
+		if (!cola.getVacaciones().isEmpty()){
+		 cantidadVacacionesTomados=cola.getVacaciones().size();	
+		 vacacionesDisponibles=vacacionesDisponibles - cantidadVacacionesTomados;	
+		}		
+		
+		System.out.println("cantidad de vacaciones  : " + vacacionesDisponibles);
+		if(vacacionesDisponibles > 0 )
+			mensaje = "Cantidad de vacaciones disponibles para "+instance+" son: " +vacacionesDisponibles;
+		else{
+			if(vacacionesDisponibles < 0 )				
+				mensaje = "El colaborador "+instance+" no tiene dias de vacaciones disponibles, por el contrario debe la siguiente cantidad de vacaciones: "+ vacacionesDisponibles * -1;			
+			else
+				mensaje = "El colaborador "+instance+" no tiene dias de vacaciones disponibles.";
+		}		
+		System.out.println("Fecha  : " + mensaje+ " \n");
+		return  mensaje;
+		}
+	
+	 public static int cantidadDiasEntreFechas(Date d1, Date d2){
+         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+	 }	
+	public static String cantidadVacacionesLiquidacion(String instance, String fecha){
+		
+		int vacacionesDisponiblesLiquidacion=0;
+		int cantidadVacacionesTomadosLiquidacion=0;
+		String mensajeliquidacion="";
+		
+		String [] parseFecha=fecha.split("\\/");		
+		int mesComando=(Integer.parseInt(parseFecha [1]));
+		int annioComando=(Integer.parseInt(parseFecha [2]));			
+		
+		Colaborador cola=getColaboradorPorInstancea(instance);
+		Date fechaIngTem1=cola.getFechaIngresoEmpresa();		
+		String fechaIngreso=Sistema.getFechaConFormato(fechaIngTem1);							
+		String[] temp = fechaIngreso.split("\\/"); 
+		
+		int annioIngreso=Integer.parseInt(temp[2]);
+		int mesIngreso=Integer.parseInt( temp[1]);
+		int diaIngreso=Integer.parseInt( temp[0]);
+		System.out.println("Fecha de ingreso : " + diaIngreso +""+mesIngreso+""+annioIngreso+ " \n");
+		
+		int x= annioIngreso * 12 + mesIngreso;
+		int y= annioComando * 12 + mesComando;		
+		
+		vacacionesDisponiblesLiquidacion= y - (x + 1)+1;		
+		System.out.println("cantidad de vacaciones  : " + vacacionesDisponiblesLiquidacion);
+
+		if (!cola.getVacaciones().isEmpty()){
+			cantidadVacacionesTomadosLiquidacion=cola.getVacaciones().size();	
+			 vacacionesDisponiblesLiquidacion=vacacionesDisponiblesLiquidacion - cantidadVacacionesTomadosLiquidacion;	
+		}						
+		
+		if(vacacionesDisponiblesLiquidacion > 0 )
+			mensajeliquidacion = "Cantidad de vacaciones disponibles para "+instance+" son: " +vacacionesDisponiblesLiquidacion;
+		else
+			if(vacacionesDisponiblesLiquidacion < 0 )				
+				mensajeliquidacion = "El colaborador "+instance+" no tiene dias de vacaciones disponibles, por el contrario debe la siguiente cantidad de vacaciones: "+ vacacionesDisponiblesLiquidacion * -1;			
+			else
+				mensajeliquidacion = "El colaborador "+instance+" no tiene dias de vacaciones disponibles.";
+		System.out.println(" : " + mensajeliquidacion);
+		return  mensajeliquidacion;
+		}
 	
 	public static void limpiaListas() {
 		tablaDeSimbolos.clear();	

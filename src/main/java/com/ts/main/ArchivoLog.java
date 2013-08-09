@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ArchivoLog {
    
@@ -21,27 +20,11 @@ public class ArchivoLog {
 		this.setFilePath(filePath);
 	}
 
-    public void crearRegistroLog(String operacion) throws IOException {
-    	String dia= "0";
-		String mes= "0";
-    	creaArchivoDeLogParaComandosEjecutadosSiNoExiste();
-    	Calendar fechaActual = Calendar.getInstance();
-        
-    	if(fechaActual.get(Calendar.DAY_OF_MONTH)< 10){
-    		dia+=String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH));
-    	}else{
-    		dia=String.valueOf(fechaActual.get(Calendar.DAY_OF_MONTH));
-    	}
-    	if(fechaActual.get(Calendar.MONTH)+1 < 10){
-    		mes+=String.valueOf(fechaActual.get(Calendar.MONTH)+1);
-    	}else{
-    		mes= String.valueOf(fechaActual.get(Calendar.MONTH)+1);
-    	}
+	public void crearRegistroLog(String operacion) throws IOException {
     	
-        archivo.write(dia +"/"+ mes +"/"+String.valueOf(fechaActual.get(Calendar.YEAR))
-                +" "+String.valueOf(fechaActual.get(Calendar.HOUR_OF_DAY))
-                +":"+String.valueOf(fechaActual.get(Calendar.MINUTE))
-                +":"+String.valueOf(fechaActual.get(Calendar.SECOND))+ " " + operacion+ "\r\n");
+    	creaArchivoDeLogParaComandosEjecutadosSiNoExiste();
+    	
+        archivo.write(operacion+ "\r\n");
         archivo.close(); 
     }
    
@@ -54,9 +37,8 @@ public class ArchivoLog {
         ArrayList<String> resultado = new ArrayList<String>();
 
         while ((linea = buffer.readLine()) != null)
-        {
-            int tamanno= linea.length();
-            resultado.add(linea.substring(19, tamanno));
+        {          
+            resultado.add(linea);
         }
 
         entrada.close();

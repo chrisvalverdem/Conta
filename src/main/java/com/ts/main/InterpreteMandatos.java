@@ -110,32 +110,52 @@ public class InterpreteMandatos {
 	 		} 	 
 	     	 
 		 }	
-	 protected Comando interpreteCadena(String cadena){	
-		 
+      protected Comando interpreteCadena(String cadena){	
+ 		 
 		  String instance;
 		  String metodo;
 		  String[] parametros=null;
-		  
+		  String fecha;
+		  String hora;
+		  String[] temp2;
+				  
 		  String[] temp = cadena.split("\\(");
-		  temp[1] = temp[1].substring(0, temp[1].length()-1);	  
+		  temp[1] = temp[1].substring(0, temp[1].length()-1);  
 		  
-		  parametros = temp[1].split("\\,"); 
-		  	
-		  boolean esUnaAsinacion = temp[0].indexOf("=") > -1;
-		  if(esUnaAsinacion)
+		  parametros = temp[1].split("\\,");		 
+		  
+		  boolean esUnaAsignacion = temp[0].indexOf("=") > -1;
+		  if(esUnaAsignacion)
 		  {
 		   temp = temp[0].split("\\=");
 		  }
 		  else
 		  {
 		   temp = temp[0].split("\\.");		   		  
-		  }	
-		  instance = temp[0].trim();
-		   metodo = temp[1].trim().toUpperCase();	
+		  } 		 
+		  
+		  temp2 =temp[0].split("\\,");		  
+		  String fechaHora=temp2[0];			 
+		  try{
+			  Date p=Sistema.getParseFechaHora(fechaHora);
+			  fecha=Sistema.getFechaConFormato(p);			 
+		  }
+			catch(CommandException commandException)
+			{
+				commandException.setMessage("El formato de la fecha y hora es dd/MM/yyyy hh:mm. Favor actualizar CADENA");
+				System.err.println(commandException.getMessage());				
+			}
+		  
+		   instance = temp2[1].trim();
+		   metodo = temp[1].trim().toUpperCase();
+		   temp2 = temp2[0].split(" ");
+		   fecha=temp2[0].trim();		  
+		   hora=temp2[1].substring(0, temp2[1].length()-1).trim();		     
+		  
 		   for(int indice=0; indice < parametros.length; indice++ ){
 			   parametros[indice]=parametros[indice].trim();			   
 		   }
-		   return new Comando(instance, metodo, parametros); 
+		   return new Comando(instance, metodo, parametros,fecha, hora); 
 	} 	
 	
 	public static void main(String[] args) throws IOException {
@@ -212,6 +232,14 @@ public class InterpreteMandatos {
 		   		System.out.println(respuesta);
 		   		esCargaDeDatos= true;
 		   		break;
+		   	case Comando.MOSTRAR_VACACIONES_DISPONIBLES:
+		   		Repo.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
+		   		esCargaDeDatos= true;
+		   		break;
+		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
+		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
+		   		esCargaDeDatos= true;
+		   		break;		   		
 		   	case Comando.CARGAR_LOG:	
 			    	if(log.existeUnLogPrevio())
 			    	{

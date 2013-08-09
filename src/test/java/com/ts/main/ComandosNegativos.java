@@ -24,25 +24,25 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorNegativeTest.txt");
 		
 		//wrong month
-		String comando ="jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/1988/1998, 08/07/2013, true, 8445-1544, 0, $1000)";
+		String comando ="08/06/2013 16:45, jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/1988/1998, 08/07/2013, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong year
-		comando ="jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/12, 08/07/12, true, 8445-1544, 0, $1000)";
+		comando ="08/06/2013 16:15, jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/12, 08/07/12, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong monto
-		comando ="jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, true, 8445-1544, 0, 1000)";
+		comando ="08/06/2013 11:45, jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, true, 8445-1544, 0, 1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong estado civil
-		comando ="jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, casado, 8445-1544, 0, $1000)";
+		comando ="08/07/2013 16:45, jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, casado, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
 		colaborador= Repo.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
@@ -57,8 +57,8 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"aumentaSalarioNegativeTestCaseError.txt");
 		
 		//wrong moneda.
-		String comando1 ="marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
-		String comando2 ="marias.AUMENTAR_SALARIO($2000)";
+		String comando1 ="08/06/2013 15:45, marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
+		String comando2 ="08/06/2013 18:45, marias.AUMENTAR_SALARIO($2000)";
 		
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
@@ -72,12 +72,12 @@ public class ComandosNegativos extends TestCase{
 		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error en aumentaSalarioNegativeTestCases, por el cambio de moneda.");
 				
 		//aumento sin usuario existente.
-		String comando ="marias.AUMENTAR_SALARIO($2000)";
+		String comando ="09/06/2013 16:45, marias.AUMENTAR_SALARIO($2000)";
 		interpreteMandatos.ejecutaComando(comando);
 		Assert.assertEquals(""+getErrors().size(), "2", "Deberian existir solo un error en aumentaSalarioNegativeTestCases, por que el usuario no existe");
 		
 		//wrong monto.
-		 comando ="marias.AUMENTAR_SALARIO(2000)";
+		 comando ="07/06/2013 16:45, marias.AUMENTAR_SALARIO(2000)";
 		interpreteMandatos.ejecutaComando(comando);
 		Assert.assertEquals(""+getErrors().size(), "3", "Deberian existir solo un error en aumentaSalarioNegativeTestCases, por un monto incorrecto");
 	
@@ -86,17 +86,17 @@ public class ComandosNegativos extends TestCase{
 	
 	@Test
 	public void pruebaAgregaVacacionesNegativeTest() throws IOException {
-		setErrorsFileOutput("pruebaAgregaVacacionesNegativeTest.txt");
+		setErrorsFileOutput("pruebaAgregaVacacionesNegativeTestErrores.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaAgregaVacacionesNegativeTest.txt");
 		
-		interpreteMandatos.ejecutaComando("jlopez.TOMAR_VACACIONES(08/08/2013)");
+		interpreteMandatos.ejecutaComando("06/06/2013 16:45, jlopez.TOMAR_VACACIONES(08/08/2013)");
 		Assert.assertEquals(""+getErrors().size(), "1", "Deberia existir un error por que la variable de instancia no existe.");
 		
-		interpreteMandatos.ejecutaComando("jlopez= CREAR_COLABORADOR(gerardo, 1-1111-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)");
-		interpreteMandatos.ejecutaComando("jlopez.TOMAR_VACACIONES(08/2013/2013)");
-		interpreteMandatos.ejecutaComando("jlopez.TOMAR_VACACIONES(09/08/13)");
-		interpreteMandatos.ejecutaComando("jlopez.TOMAR_VACACIONES(32/08/2013)");
-		Assert.assertEquals(""+getErrors().size(), "4", "Deberia existir 4 errores por paseo incorrecto de la fecha.");			
+		interpreteMandatos.ejecutaComando("20/06/2013 16:45, jlopez= CREAR_COLABORADOR(gerardo, 1-1111-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)");
+		interpreteMandatos.ejecutaComando("21/06/2013 16:45, jlopez.TOMAR_VACACIONES(08/2013/2013)");
+		interpreteMandatos.ejecutaComando("22/06/2013 16:45, jlopez.TOMAR_VACACIONES(09/08/13)");
+		interpreteMandatos.ejecutaComando("10/06/2013 16:45, jlopez.TOMAR_VACACIONES(32/08/2013)");
+		Assert.assertEquals(""+getErrors().size(), "4", "Deberia existir 4 errores por parseo incorrecto de la fecha.");		
 	}
 	
 	@Test
@@ -108,12 +108,12 @@ public class ComandosNegativos extends TestCase{
 		
 		//no existe
 
-		String comando= "garias.calculaSalarioNetoPrimeraQuincena()";
+		String comando= "11/06/2013 16:45, garias.calculaSalarioNetoPrimeraQuincena()";
 		interpreteMandatos.ejecutaComando(comando);
 		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, por un colaborador que no existe");
 
-		String comando1 ="garias= CREAR_COLABORADOR(Gabriel Arias, 3-6666-6666, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 ="garias.AUMENTAR_SALARIO($2000)";
+		String comando1 ="11/06/2013 16:45, garias= CREAR_COLABORADOR(Gabriel Arias, 3-6666-6666, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando2 ="02/06/2013 16:45, garias.AUMENTAR_SALARIO($2000)";
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
 		
