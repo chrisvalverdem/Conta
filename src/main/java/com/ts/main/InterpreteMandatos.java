@@ -174,11 +174,17 @@ public class InterpreteMandatos {
 	
 	protected void ejecutaComando(String dato) throws IOException{
         String cadena= dato;
-        Comando comando=interpreteCadena (cadena);
+        Comando comando;
         
-        if(comando != null){
+        
         	 try {
+        		 comando=interpreteCadena (cadena);
         		 
+        		 if(comando == null)
+        		 {
+        			 throw new CommandException("Comando Invalido. El formato del comando debe contener fecha y hora ");
+        		 }
+        			 
      			switch(comando.getMetodo()){	   		 
      			case Comando.EXIT:  
      				System.exit(0);
@@ -270,15 +276,6 @@ public class InterpreteMandatos {
      		{
      			System.err.println(commandException.getMessage());
      			pedirComando ();
-     		}		
-        }else{
-        	try {
-				throw new CommandException("Comando Invalido. El formato del comando debe contener fecha y hora ");
-			} catch (CommandException e) {
-				System.out.println(e.getMessage());
-				pedirComando ();
-			}
-        }
-		
+     		}				
 	}				
 }
