@@ -193,9 +193,9 @@ public class Comandos  extends TestCase{
 		Assert.assertEquals(colaborador.getNombre(),"Maria Arias");
 		Assert.assertEquals(Repo.getTamannoColaborador(),4);
 		
-		comando1 ="06/08/2013 14:40, cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
-		comando2 ="06/08/2013 14:50, cguillen.AUMENTAR_SALARIO( ¢2000)";
-		String comando3 ="06/08/2013 14:55, cguillen.AUMENTAR_SALARIO(¢3000)";
+		comando1 ="06/08/2013 14:40, cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0, Â¢1000)";
+		comando2 ="06/08/2013 14:50, cguillen.AUMENTAR_SALARIO( Â¢2000)";
+		String comando3 ="06/08/2013 14:55, cguillen.AUMENTAR_SALARIO(Â¢3000)";
 
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
@@ -359,7 +359,7 @@ public class Comandos  extends TestCase{
 
 		
 		String comando1 ="09/08/2013 09:15, javila= CREAR_COLABORADOR(joel avila, 3-7777-7777, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 = "09/08/2013 09:16, javila.CAMBIAR_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-x]15)";
+		String comando2 = "09/08/2013 09:16, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-x]15)";
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
 		interval= Repo.intervalosRenta;
