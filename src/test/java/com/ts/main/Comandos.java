@@ -1,10 +1,13 @@
 package com.ts.main;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
 import com.ts.main.InterpreteMandatos;
 import com.ts.objects.Colaborador;
 import com.ts.objects.Colon;
@@ -190,9 +193,9 @@ public class Comandos  extends TestCase{
 		Assert.assertEquals(colaborador.getNombre(),"Maria Arias");
 		Assert.assertEquals(Repo.getTamannoColaborador(),4);
 		
-		comando1 ="06/08/2013 14:40, cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
-		comando2 ="06/08/2013 14:50, cguillen.AUMENTAR_SALARIO( ¢2000)";
-		String comando3 ="06/08/2013 14:55, cguillen.AUMENTAR_SALARIO(¢3000)";
+		comando1 ="06/08/2013 14:40, cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0, Â¢1000)";
+		comando2 ="06/08/2013 14:50, cguillen.AUMENTAR_SALARIO( Â¢2000)";
+		String comando3 ="06/08/2013 14:55, cguillen.AUMENTAR_SALARIO(Â¢3000)";
 
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
@@ -254,7 +257,7 @@ public class Comandos  extends TestCase{
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(Repo.cantidadVacacionesDisponibles("Svillegas", "07/08/2013"),"Cantidad de vacaciones disponibles para Svillegas son: 3");
-		Assert.assertEquals(Repo.getTamannoColaborador(),7);
+		Assert.assertEquals(Repo.getTamannoColaborador(),8);
 		
 		comando ="08/08/2013 14:40, Svillegas.TOMAR_VACACIONES(06/05/2013)";		
 		interpreteMandatos.ejecutaComando(comando);		
@@ -279,7 +282,7 @@ public class Comandos  extends TestCase{
 		
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(Repo.cantidadVacacionesDisponibles("ydesanti", "07/08/2013"),"Cantidad de vacaciones disponibles para ydesanti son: 12");
-		Assert.assertEquals(Repo.getTamannoColaborador(),8);
+		Assert.assertEquals(Repo.getTamannoColaborador(),9);
 		
 		comando="08/08/2013 16:20, ydesanti.TOMAR_VACACIONES(04/03/2013)";
 		interpreteMandatos.ejecutaComando(comando);	
@@ -319,7 +322,7 @@ public class Comandos  extends TestCase{
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(Repo.cantidadVacacionesLiquidacion("asanchez", "07/08/2013"),"Cantidad de vacaciones disponibles para asanchez son: 5");
-		Assert.assertEquals(Repo.getTamannoColaborador(),13);
+		Assert.assertEquals(Repo.getTamannoColaborador(),14);
 		
 		comando ="09/08/2013 08:20, asanchez.TOMAR_VACACIONES(17/06/2013)";		
 		interpreteMandatos.ejecutaComando(comando);		
@@ -347,6 +350,33 @@ public class Comandos  extends TestCase{
 		
 		Assert.assertEquals(Repo.cantidadVacacionesLiquidacion("csoto", "01/11/2012"),"Cantidad de vacaciones disponibles para csoto son: 10");
 				
+	}
+	
+	@Test
+	public void pruebaCambiarRangoRenta() throws IOException, CommandException{
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRenta.txt");
+		ArrayList<Double> interval = new ArrayList<Double>();
+
+		
+		String comando1 ="09/08/2013 09:15, javila= CREAR_COLABORADOR(joel avila, 3-7777-7777, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando2 = "09/08/2013 09:16, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-x]15)";
+		interpreteMandatos.ejecutaComando(comando1);
+		interpreteMandatos.ejecutaComando(comando2);
+		interval= Repo.intervalosRenta;
+
+
+		Assert.assertTrue(!(interval.isEmpty()));
+		Assert.assertEquals(interval.get(0), 1.0);
+		Assert.assertEquals(interval.get(1), 714000.0);
+		Assert.assertEquals(interval.get(2), 0.0);
+		Assert.assertEquals(interval.get(3), 714000.0);
+		Assert.assertEquals(interval.get(4), 1085000.0);
+		Assert.assertEquals(interval.get(5), 10.0);
+		Assert.assertEquals(interval.get(6), 1085000.0);
+		Assert.assertEquals(interval.get(7), 0.0);
+		Assert.assertEquals(interval.get(8), 15.0);
+			
+
 	}
 	
 }

@@ -255,7 +255,16 @@ public class InterpreteMandatos {
      		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
      		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
      		   		esCargaDeDatos= true;
-     		   		break;		   		
+     		   		break;	
+    		   	case Comando.ESTABLECER_RANGO_RENTA:
+    		   		String param1 = comando.getParametros()[0];
+    		   		String param2 = comando.getParametros()[1];
+    		   		String param3 = comando.getParametros()[2];
+    		   		
+    		   		double[] intervalos = Sistema.analizaIntervalosRenta(param1, param2, param3);  		
+
+    		   		Repo.cambioRangoRenta(intervalos);
+    		   		break;
      		   	case Comando.CARGAR_LOG:	
      			    	if(log.existeUnLogPrevio())
      			    	{

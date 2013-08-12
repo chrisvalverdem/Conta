@@ -1,9 +1,12 @@
 package com.ts.main;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
 import com.ts.objects.Colaborador;
 import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
@@ -57,7 +60,7 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"aumentaSalarioNegativeTestCaseError.txt");
 		
 		//wrong moneda.
-		String comando1 ="08/06/2013 15:45, marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, �1000)";
+		String comando1 ="08/06/2013 15:45, marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
 		String comando2 ="08/06/2013 18:45, marias.AUMENTAR_SALARIO($2000)";
 		
 		interpreteMandatos.ejecutaComando(comando1);
@@ -129,7 +132,65 @@ public class ComandosNegativos extends TestCase{
 			} catch (CommandException e) {
 
 			}
-	}	
+	}
 	
+	@Test
+	public void pruebaCambiarRangoRentaNegativeTest() throws IOException, CommandException{
+		setErrorsFileOutput("pruebaCambiarRangoRentaNegativeTest.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRentaNegativeTest.txt");
+		ArrayList<Double> interval = new ArrayList<Double>();
+		String comando1 ="11/06/2013 16:45, javila= CREAR_COLABORADOR(joel avila, 3-7777-7777, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		interpreteMandatos.ejecutaComando(comando1);
+		
+		//intervalos con , de separador entre digitos
+		String comando2 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714,000]0,[714,000-1085000]10,[1085000-x]15)";
+		interpreteMandatos.ejecutaComando(comando2);
+		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, el parse de ,");
+		
+		//intervalos con . de separador entre digitos
+		String comando3 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714.000]0,[714.000-1085000]10,[1085000-x]15)";
+		interpreteMandatos.ejecutaComando(comando3);
+		Assert.assertEquals(""+getErrors().size(), "2", "Deberian existir solo un error, el parse de .");
+		
+		//intervalos Mayor case 0 y menor case 1 diferentes
+		String comando4 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[814000-1085000]10,[1085000-x]15)";
+		interpreteMandatos.ejecutaComando(comando4);
+		Assert.assertEquals(""+getErrors().size(), "3", "Deberian existir solo un error, por la integridad del intervalo Mayor case 0 y menor case 1");
+		
+		//intervalos Mayor case 1 y menor case 2 diferentes
+		String comando5 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1995000]10,[1085000-x]15)";
+		interpreteMandatos.ejecutaComando(comando5);
+		Assert.assertEquals(""+getErrors().size(), "4", "Deberian existir solo un error, por la integridad del intervalo Mayor case 1 y menor case 2");
+		
+		//no encuentra la x
+		String comando6 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-10]15)";
+		interpreteMandatos.ejecutaComando(comando6);
+		
+		Assert.assertEquals(""+getErrors().size(), "5", "Deberian existir solo un error, por no encontrar la x");
+		
+		//Signo $ en monto
+		String comando7 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-10]15)";
+		interpreteMandatos.ejecutaComando(comando7);
+		
+		Assert.assertEquals(""+getErrors().size(), "6", "Deberian existir solo un error, por tener $ en el monto");
+		
+		//Signo ¢ en monto
+		String comando8 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[¢1085000-10]15)";
+		interpreteMandatos.ejecutaComando(comando8);
+		
+		Assert.assertEquals(""+getErrors().size(), "7", "Deberian existir solo un error, por tener ¢ en el monto");
+		
+		//Signo % en porcientos
+		String comando9 = "11/06/2013 16:45, javila.ESTABLECER_RANGO_RENTA([1-714000]%0,[714000-1085000]10,[¢1085000-10]15)";
+		interpreteMandatos.ejecutaComando(comando9);
+		
+		Assert.assertEquals(""+getErrors().size(), "8", "Deberian existir solo un error, por tener % en el porciento");
+		
+		interval= Repo.intervalosRenta;
+		Assert.assertTrue(interval.isEmpty());
+
+			
+
+	}
 
 }

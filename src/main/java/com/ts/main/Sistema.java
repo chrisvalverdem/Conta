@@ -234,5 +234,96 @@ public class Sistema {
 			}
 
 	 		return salario;
-	 	}	 		
+	 	}
+	 public static double[] analizaIntervalosRenta(String param1, String param2, String param3) throws CommandException {
+			double[] intervalos = new double[9];	
+			
+			if(!(param1.contains("[") && param1.contains("]"))){
+				throw new CommandException("No se reconocen "+ "," + " como separador de digitos favor ingresar monto correctamente 714000");
+			}
+			if(!(param2.contains("[") && param2.contains("]"))){
+				throw new CommandException("No se reconocen "+ "," + " como separador de digitos favor ingresar monto correctamente 714000");
+			}
+			if(!(param3.contains("[") && param3.contains("]"))){
+				throw new CommandException("No se reconocen "+ "," + " como separador de digitos favor ingresar monto correctamente 714000");
+			}
+			if(param1.contains(".") || param2.contains(".") || param3.contains(".")){
+				throw new CommandException("No se reconocen "+ "," + " como separador de digitos favor ingresar monto correctamente 714000");
+			}
+			if(param1.contains("$") || param2.contains("$") || param3.contains("$")){
+				throw new CommandException("No se reconocen el tipo de moneda "+ "$" + "  favor ingresar el monto correctamente 714000");
+			}
+			if(param1.contains("¢") || param2.contains("¢") || param3.contains("¢")){
+				throw new CommandException("No se reconocen el tipo de moneda "+ "¢" + "  favor ingresar el monto correctamente 714000");
+			}
+			if(param1.contains("%") || param2.contains("%") || param3.contains("%")){
+				throw new CommandException("No se reconocen caracter % en los porcientos");
+			}
+			
+			//Case °0
+			String temp1 = param1.substring(1, param1.length());
+			int catidadIntervaloMenor0= temp1.indexOf("-");
+			String intervaloMenor0= param1.substring(1, catidadIntervaloMenor0 + 1);
+			
+			String temp2 = param1.substring(catidadIntervaloMenor0 + 2, param1.length());
+			int catidadIntervaloMayor0= temp2.indexOf("]");
+			String intervaloMayor0= temp2.substring(0, catidadIntervaloMayor0);
+			String porcientoCase0 = temp2.substring(catidadIntervaloMayor0 + 1, temp2.length());
+			
+			//Case °1
+			String temp3 = param2.substring(1, param2.length());
+			int catidadIntervaloMenor1= temp3.indexOf("-");
+			String intervaloMenor1= temp3.substring(0, catidadIntervaloMenor1);
+
+			String temp4 = param2.substring(catidadIntervaloMenor1 + 2, param2.length());
+			int catidadIntervaloMayor1= temp4.indexOf("]");
+			String intervaloMayor1= temp4.substring(0, catidadIntervaloMayor1);
+			String porcientoCase1 = temp4.substring(catidadIntervaloMayor1 + 1, temp4.length());
+			
+			//Case °2
+			String temp5 = param3.substring(1, param3.length());
+			int catidadIntervaloMenor2= temp5.indexOf("-");
+			String intervaloMenor2= temp5.substring(0, catidadIntervaloMenor2);
+			
+			String temp6 = param3.substring(catidadIntervaloMenor2 + 2, param3.length());
+			int catidadIntervalo6= temp6.indexOf("]");
+			String intervaloMayor2= temp6.substring(0, catidadIntervalo6);
+			String porcientoCase2 = temp6.substring(catidadIntervalo6 + 1, temp6.length());
+		
+			if(!(intervaloMayor0.equalsIgnoreCase(intervaloMenor1))){
+				throw new CommandException("Error, los intervalos no concuerdan verifcar Mayor del case 0 y menor del case 1");
+			}
+			if(!(intervaloMayor1.equalsIgnoreCase(intervaloMenor2))){
+				throw new CommandException("Error, los intervalos no concuerdan verifcar Mayor del case 1 y menor del case 2");
+			}
+			if(!(intervaloMayor2.equalsIgnoreCase("x"))){
+				throw new CommandException("Error con el tercer intervalo, no se encuentrael valor esperado (X) ");
+			}
+
+			double valor1= Double.parseDouble(intervaloMenor0);
+			double valor2= Double.parseDouble(intervaloMayor0);
+			double porcientoIntervalo1= Double.parseDouble(porcientoCase0);
+
+			double valor3= Double.parseDouble(intervaloMenor1);
+			double valor4= Double.parseDouble(intervaloMayor1);
+			double porcientoIntervalo2= Double.parseDouble(porcientoCase1);
+			
+			double valor5= Integer.parseInt(intervaloMenor2);
+			double valor6= 0.0;
+			double porcientoIntervalo3= Double.parseDouble(porcientoCase2);	
+
+			intervalos[0]= valor1;
+			intervalos[1]= valor2;
+			intervalos[2]= porcientoIntervalo1;
+			
+			intervalos[3]= valor3;
+			intervalos[4]= valor4;
+			intervalos[5]= porcientoIntervalo2;
+			
+			intervalos[6]= valor5;
+			intervalos[7]= valor6;
+			intervalos[8]= porcientoIntervalo3;
+			
+			return intervalos;
+		}
 }
