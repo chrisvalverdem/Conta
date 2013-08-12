@@ -13,7 +13,7 @@ public class Colaborador extends Objecto {
 	int cantidadHijos;
 	Moneda salario;
 	
-	public static String comandosValidos[] ={"Crear_Colaborador"};
+	public static String comandosValidos[] ={"CREAR_COLABORADOR"};
 	public ArrayList<Date> vacaciones = new ArrayList<Date>();
 
 	public Colaborador(String nombre, String cedula){

@@ -133,32 +133,39 @@ public class InterpreteMandatos {
 		  {
 		   temp = temp[0].split("\\.");		   		  
 		  } 		 
-		  
-		  temp2 =temp[0].split("\\,");		  
-		  String fechaHora=temp2[0]; 
-		  instance = temp2[1].trim();
-		  metodo = temp[1].trim().toUpperCase(); 
-		  
-		  for(int indice=0; indice < parametros.length; indice++ ){
-			   parametros[indice]=parametros[indice].trim();			   
-		   }		  
-		  	temp2 = temp2[0].split(" ");
-		  	fecha=temp2[0].trim();
-		  	if(temp2.length>1){	
-			  	hora=temp2[1].substring(0, temp2[1].length()-1).trim();	
-				  try{
-					  Date p=Sistema.getParseFechaHora(fechaHora);
-					  fecha=Sistema.getFechaConFormato(p);	
-				  }
-					catch(CommandException commandException)
-					{				 
-						System.err.println(commandException.getMessage());
-					}   	  
-				   return new Comando(instance, metodo, parametros,fecha, hora);
-		  	}
-		  	else{
-		  		   return null;
-		  	}
+		  boolean cadenaTraeFecha = temp[0].indexOf("/") > -1;
+		  if(cadenaTraeFecha){
+			  
+			  temp2 =temp[0].split("\\,");		  
+			  String fechaHora=temp2[0]; 
+			  instance = temp2[1].trim();
+			  metodo = temp[1].trim().toUpperCase(); 
+			  
+			  for(int indice=0; indice < parametros.length; indice++ ){
+				   parametros[indice]=parametros[indice].trim();			   
+			   }		  
+			  	temp2 = temp2[0].split(" ");
+			  	fecha=temp2[0].trim();
+			  	if(temp2.length>1){	
+				  	hora=temp2[1].substring(0, temp2[1].length()-1).trim();	
+					  try{
+						  Date p=Sistema.getParseFechaHora(fechaHora);
+						  fecha=Sistema.getFechaConFormato(p);	
+					  }
+						catch(CommandException commandException)
+						{				 
+							System.err.println(commandException.getMessage());
+						}   	  
+					   return new Comando(instance, metodo, parametros,fecha, hora);
+			  	}
+			  	else{
+			  		   return null;
+			  	}
+			 
+		  }else{
+			  return null;
+			 
+		  }		 
 	} 	
 	
 	public static void main(String[] args) throws IOException {

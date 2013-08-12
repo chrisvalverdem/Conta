@@ -272,16 +272,16 @@ public class Repo  {
 		return total;
 	}
 	
-	protected static void validarInstaciaEnLaTablaDeSimbolos(String instance) throws CommandException  {
+	protected static void validarInstaciaEnLaTablaDeSimbolos(String instancia) throws CommandException  {
 		
 		boolean existeAlgunaInstancea = ! tablaDeSimbolos.isEmpty();
 		if(existeAlgunaInstancea){
-			if(tablaDeSimbolos.containsKey(instance)){			
-				throw new CommandException("La instancia " + instance+ " ya existe, cambiela por una diferente.");				
+			if(tablaDeSimbolos.containsKey(instancia)){			
+				throw new CommandException("La instancia " + instancia+ " ya existe, cambiela por una diferente.");				
 			}					
 		}				
 	}
-	public static Colaborador getColaboradorPorInstancea(String instance){			
+	public static Colaborador getColaboradorPorInstancea(String instancia){			
 		String key;
 		Objecto value;
 		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
@@ -292,7 +292,7 @@ public class Repo  {
 		    if(esUnColaborador)
 		    {
 		    	Colaborador cola = (Colaborador)value; 
-		    	if(key.equalsIgnoreCase(instance))
+		    	if(key.equalsIgnoreCase(instancia))
 		    	{
 		    		return cola;
 		    	}
@@ -301,7 +301,7 @@ public class Repo  {
 		return null;
 	}	
 
-	public static String cantidadVacacionesDisponibles(String instance, String fecha){
+	public static String cantidadVacacionesDisponibles(String instancia, String fecha){
 		
 		int vacacionesDisponibles=0;
 		int cantidadVacacionesTomados;
@@ -309,11 +309,9 @@ public class Repo  {
 		Date fechacomando=null;
 		
 		Calendar cal1 = new GregorianCalendar();
-		Calendar cal2 = new GregorianCalendar();	
-		
-		
-		System.err.println("instancia"+instance);
-		 Colaborador cola=getColaboradorPorInstancea(instance);
+		Calendar cal2 = new GregorianCalendar();
+				
+		 Colaborador cola=getColaboradorPorInstancea(instancia);
 		 Date fechaIngTem1=cola.getFechaIngresoEmpresa();
 		 cal1.setTime(fechaIngTem1);		 
 		 
@@ -343,12 +341,12 @@ public class Repo  {
 		
 		System.out.println("cantidad de vacaciones  : " + vacacionesDisponibles);
 		if(vacacionesDisponibles > 0 )
-			mensaje = "Cantidad de vacaciones disponibles para "+instance+" son: " +vacacionesDisponibles;
+			mensaje = "Cantidad de vacaciones disponibles para "+instancia+" son: " +vacacionesDisponibles;
 		else{
 			if(vacacionesDisponibles < 0 )				
-				mensaje = "El colaborador "+instance+" no tiene dias de vacaciones disponibles, por el contrario debe la siguiente cantidad de vacaciones: "+ vacacionesDisponibles * -1;			
+				mensaje = "El colaborador "+instancia+" no tiene dias de vacaciones disponibles, por el contrario debe la siguiente cantidad de vacaciones: "+ vacacionesDisponibles * -1;			
 			else
-				mensaje = "El colaborador "+instance+" no tiene dias de vacaciones disponibles.";
+				mensaje = "El colaborador "+instancia+" no tiene dias de vacaciones disponibles.";
 		}		
 		System.out.println("Fecha  : " + mensaje+ " \n");
 		return  mensaje;
@@ -357,7 +355,7 @@ public class Repo  {
 	 public static int cantidadDiasEntreFechas(Date d1, Date d2){
          return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	 }	
-	public static String cantidadVacacionesLiquidacion(String instance, String fecha){
+	public static String cantidadVacacionesLiquidacion(String instancia, String fecha){
 		
 		int vacacionesDisponiblesLiquidacion=0;
 		int cantidadVacacionesTomadosLiquidacion=0;
@@ -367,7 +365,7 @@ public class Repo  {
 		int mesComando=(Integer.parseInt(parseFecha [1]));
 		int annioComando=(Integer.parseInt(parseFecha [2]));			
 		
-		Colaborador cola=getColaboradorPorInstancea(instance);
+		Colaborador cola=getColaboradorPorInstancea(instancia);
 		Date fechaIngTem1=cola.getFechaIngresoEmpresa();		
 		String fechaIngreso=Sistema.getFechaConFormato(fechaIngTem1);							
 		String[] temp = fechaIngreso.split("\\/"); 
@@ -389,15 +387,22 @@ public class Repo  {
 		}						
 		
 		if(vacacionesDisponiblesLiquidacion > 0 )
-			mensajeliquidacion = "Cantidad de vacaciones disponibles para "+instance+" son: " +vacacionesDisponiblesLiquidacion;
+			mensajeliquidacion = "Cantidad de vacaciones disponibles para "+instancia+" son: " +vacacionesDisponiblesLiquidacion;
 		else
 			if(vacacionesDisponiblesLiquidacion < 0 )				
-				mensajeliquidacion = "El colaborador "+instance+" no tiene dias de vacaciones disponibles, por el contrario debe la siguiente cantidad de vacaciones: "+ vacacionesDisponiblesLiquidacion * -1;			
+				mensajeliquidacion = "El colaborador "+instancia+" no tiene dias de vacaciones disponibles, por el contrario debe la siguiente cantidad de vacaciones: "+ vacacionesDisponiblesLiquidacion * -1;			
 			else
-				mensajeliquidacion = "El colaborador "+instance+" no tiene dias de vacaciones disponibles.";
+				mensajeliquidacion = "El colaborador "+instancia+" no tiene dias de vacaciones disponibles.";
 		System.out.println(" : " + mensajeliquidacion);
 		return  mensajeliquidacion;
 		}
+	public static void cambioMontoConyugeHijo (String instancia, int montoConyuge, int montoHijo) {
+		
+		Colaborador cola=getColaboradorPorInstancea(instancia);
+		
+				
+		
+	}	
 	
 	public static void limpiaListas() {
 		tablaDeSimbolos.clear();	
