@@ -175,8 +175,7 @@ public class InterpreteMandatos {
 	protected void ejecutaComando(String dato) throws IOException{
         String cadena= dato;
         Comando comando;
-        
-        
+               
         	 try {
         		 comando=interpreteCadena (cadena);
         		 
