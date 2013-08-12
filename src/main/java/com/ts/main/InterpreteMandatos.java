@@ -110,7 +110,7 @@ public class InterpreteMandatos {
 	 		} 	 
 	     	 
 		 }	
-      protected Comando interpreteCadena(String cadena){
+      protected Comando interpreteCadena(String cadena) throws CommandException{
     	  
 		  String instance;
 		  String metodo;
@@ -148,15 +148,10 @@ public class InterpreteMandatos {
 			  	fecha=temp2[0].trim();
 			  	if(temp2.length>1){	
 				  	hora=temp2[1].substring(0, temp2[1].length()-1).trim();	
-					  try{
-						  Date p=Sistema.getParseFechaHora(fechaHora);
-						  fecha=Sistema.getFechaConFormato(p);	
-					  }
-						catch(CommandException commandException)
-						{				 
-							System.err.println(commandException.getMessage());
-						}   	  
-					   return new Comando(instance, metodo, parametros,fecha, hora);
+				  	Date p=Sistema.getParseFechaHora(fechaHora);
+					fecha=Sistema.getFechaConFormato(p);	
+ 	  
+					return new Comando(instance, metodo, parametros,fecha, hora);
 			  	}
 			  	else{
 			  		   return null;
@@ -177,13 +172,13 @@ public class InterpreteMandatos {
         Comando comando;
                
         	 try {
-        		 comando=interpreteCadena (cadena);
-        		 
-        		 if(comando == null)
+        		 if(cadena.equals(""))
         		 {
         			 throw new CommandException("Comando Invalido. El formato del comando debe contener fecha y hora ");
         		 }
-        			 
+        		 
+        		 comando=interpreteCadena (cadena);
+        		        			 
      			switch(comando.getMetodo()){	   		 
      			case Comando.EXIT:  
      				System.exit(0);
