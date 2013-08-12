@@ -21,6 +21,7 @@ public class Comando {
     public static final String MOSTRAR_VACACIONES_DISPONIBLES="MOSTRAR_VACACIONES_DISPONIBLES";
     public static final String MOSTRAR_VACACIONES_LIQUIDACION="MOSTRAR_VACACIONES_LIQUIDACION";
     public static final String CALCULAR_SALARIO_NETO_IQ="CALCULAR_SALARIO_NETO_IQ";    
+    public static final String ESTABLECER_RANGO_RENTA = "ESTABLECER_RANGO_RENTA";
     
 	public Comando(String instance, String metodo, String[] parametros,String fecha, String hora) {
 		this.instance = instance;

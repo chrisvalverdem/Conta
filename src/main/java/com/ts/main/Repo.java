@@ -18,6 +18,7 @@ public class Repo  {
 	
 	private static HashMap<String, Objecto> tablaDeSimbolos = new HashMap<String, Objecto>();
 	private final static Double porcientoDeduccion= 0.0917;
+	public static ArrayList<Double> intervalosRenta = new ArrayList<Double>();
 	
 	private static void pullInTOTablaDeSimbolos(String string, Objecto object)
 	{
@@ -396,12 +397,21 @@ public class Repo  {
 		System.out.println(" : " + mensajeliquidacion);
 		return  mensajeliquidacion;
 		}
+	
+	public static void cambioRangoRenta(double[] intervalos) {
+		int contador=0;
+		for (double valor : intervalos){			
+			intervalosRenta.add(valor);
+			if(contador == intervalos.length-1){
+				System.out.println("Los rangos de Renta se modificaron exitosamente");
+			}
+			contador++;
+		}
+	}
 	public static void cambioMontoConyugeHijo (String instancia, int montoConyuge, int montoHijo) {
 		
-		Colaborador cola=getColaboradorPorInstancea(instancia);
-		
-				
-		
+		//Colaborador cola=getColaboradorPorInstancea(instancia);
+			
 	}	
 	
 	public static void limpiaListas() {
