@@ -57,7 +57,7 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"aumentaSalarioNegativeTestCaseError.txt");
 		
 		//wrong moneda.
-		String comando1 ="08/06/2013 15:45, marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, Â¢1000)";
+		String comando1 ="08/06/2013 15:45, marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
 		String comando2 ="08/06/2013 18:45, marias.AUMENTAR_SALARIO($2000)";
 		
 		interpreteMandatos.ejecutaComando(comando1);

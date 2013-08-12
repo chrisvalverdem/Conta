@@ -190,9 +190,9 @@ public class Comandos  extends TestCase{
 		Assert.assertEquals(colaborador.getNombre(),"Maria Arias");
 		Assert.assertEquals(Repo.getTamannoColaborador(),4);
 		
-		comando1 ="06/08/2013 14:40, cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0,  Â¢1000)";
-		comando2 ="06/08/2013 14:50, cguillen.AUMENTAR_SALARIO( Â¢2000)";
-		String comando3 ="06/08/2013 14:55, cguillen.AUMENTAR_SALARIO(Â¢3000)";
+		comando1 ="06/08/2013 14:40, cguillen= CREAR_COLABORADOR(Cristan, 2-2222-55, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢1000)";
+		comando2 ="06/08/2013 14:50, cguillen.AUMENTAR_SALARIO( ¢2000)";
+		String comando3 ="06/08/2013 14:55, cguillen.AUMENTAR_SALARIO(¢3000)";
 
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
