@@ -177,12 +177,15 @@ public class Sistema {
 		 return result;
 	}
 	 public static Date getParseFechaHora(String dato) throws CommandException{
-			 Date fecha;
-		  try {
-			  
-			  SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-			  
-			    String[] temp = dato.split(" ");
+		 Date fecha;
+	  try {
+		  
+		  SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		  System.out.println(dato.length());
+		  
+		  if(dato.length() > 10){
+			 
+			  String[] temp = dato.split(" ");
 			    
 			     String[] fechasTemp = temp [0].split("/");
 				 int dia = Integer.parseInt(fechasTemp[0]);
@@ -205,13 +208,17 @@ public class Sistema {
 					 throw new CommandException("El rango de los minutos esta definido entre 1-60");
 				 }else if(tempHora.length > 3){
 					 throw new CommandException("Favor actualizar, el formato de la hora es hh:mm");
-				 }				
-				 fecha = formatFecha.parse(dato);				 
-				  } catch (ParseException e) {
-				   throw new CommandException("El formato de la fecha y hora es dd/MM/yyyy hh:mm. Favor actualizar");
-				  } 
-			 return fecha;
-		 }	
+				 }				 
+				 fecha = formatFecha.parse(dato); 
+		  }else{
+			  throw new CommandException("El formato de la fecha debe contener hora ejemplo: dd/MM/yyyy hh:mm");
+		  }  	    			 
+			  } catch (ParseException e) {
+			   throw new CommandException("El formato de la fecha y hora es dd/MM/yyyy hh:mm. Favor actualizar");
+			  } 
+		 return fecha;
+	 }
+	 
 	 public static Moneda getSalario(String dato) throws CommandException{
 	 		Moneda salario=null;
 	 		double monto;

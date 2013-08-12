@@ -110,13 +110,13 @@ public class InterpreteMandatos {
 	 		} 	 
 	     	 
 		 }	
-      protected Comando interpreteCadena(String cadena){	
- 		 
+      protected Comando interpreteCadena(String cadena){
+    	  
 		  String instance;
 		  String metodo;
 		  String[] parametros=null;
 		  String fecha;
-		  String hora;
+		  String hora="00:00";
 		  String[] temp2;
 				  
 		  String[] temp = cadena.split("\\(");
@@ -135,27 +135,30 @@ public class InterpreteMandatos {
 		  } 		 
 		  
 		  temp2 =temp[0].split("\\,");		  
-		  String fechaHora=temp2[0];			 
-		  try{
-			  Date p=Sistema.getParseFechaHora(fechaHora);
-			  fecha=Sistema.getFechaConFormato(p);			 
-		  }
-			catch(CommandException commandException)
-			{
-				commandException.setMessage("El formato de la fecha y hora es dd/MM/yyyy hh:mm. Favor actualizar CADENA");
-				System.err.println(commandException.getMessage());				
-			}
+		  String fechaHora=temp2[0]; 
+		  instance = temp2[1].trim();
+		  metodo = temp[1].trim().toUpperCase(); 
 		  
-		   instance = temp2[1].trim();
-		   metodo = temp[1].trim().toUpperCase();
-		   temp2 = temp2[0].split(" ");
-		   fecha=temp2[0].trim();		  
-		   hora=temp2[1].substring(0, temp2[1].length()-1).trim();		     
-		  
-		   for(int indice=0; indice < parametros.length; indice++ ){
+		  for(int indice=0; indice < parametros.length; indice++ ){
 			   parametros[indice]=parametros[indice].trim();			   
-		   }
-		   return new Comando(instance, metodo, parametros,fecha, hora); 
+		   }		  
+		  	temp2 = temp2[0].split(" ");
+		  	fecha=temp2[0].trim();
+		  	if(temp2.length>1){	
+			  	hora=temp2[1].substring(0, temp2[1].length()-1).trim();	
+				  try{
+					  Date p=Sistema.getParseFechaHora(fechaHora);
+					  fecha=Sistema.getFechaConFormato(p);	
+				  }
+					catch(CommandException commandException)
+					{				 
+						System.err.println(commandException.getMessage());
+					}   	  
+				   return new Comando(instance, metodo, parametros,fecha, hora);
+		  	}
+		  	else{
+		  		   return null;
+		  	}
 	} 	
 	
 	public static void main(String[] args) throws IOException {
@@ -164,102 +167,111 @@ public class InterpreteMandatos {
 	
 	protected void ejecutaComando(String dato) throws IOException{
         String cadena= dato;
-        Comando comando=interpreteCadena (cadena);        
-     
-        try
-		{
-			switch(comando.getMetodo()){	   		 
-			case Comando.EXIT:  
-				System.exit(0);
-		   	break; 	   		 
-			case Comando.CREAR_COLABORADOR: 
-				Moneda salario =null;
-				String isMarried;
-				String nombre=comando.getParametros()[0];
-				String cedula=comando.getParametros()[1];
-				Date fechaNacimiento= getFecha(comando.getParametros()[2]);
-				Date fechaIngresoEmpresa= getFecha(comando.getParametros()[3]);
-				String telefono= comando.getParametros()[5];
-				int cantidadHijos = Integer.parseInt(comando.getParametros()[6]);
-				salario= getSalario(comando.getParametros()[7]);
-				
-				if(comando.getParametros()[4].equalsIgnoreCase("true")){
-					isMarried="true";
-				}else if(comando.getParametros()[4].equalsIgnoreCase("false")){
-					isMarried="false";
-				}else{
-					isMarried="N/A";
-				}
-	
-		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
-		   	break;	   		 
-			case Comando.CREAR_EDIFICIO: 
-		   		String nombreE= comando.getParametros()[0];
-		   		
-		   		Repo.AgregarEdificio(comando.getInstance(),nombreE);   		 
-		   	break;	   		   		 
-			case Comando.CREAR_COMPANNIA:
-		   		String nombreC =comando.getParametros()[0];
-		   		String cedulaC= comando.getParametros()[1];
-		   		
-		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
-		   	break;	   		 
-		   	case Comando.AUMENTAR_SALARIO:
-		   		Moneda salarioAumentar = getSalario(comando.getParametros()[0]);
-		   		
-		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
-		   		break;
-		   	case Comando.MOSTRAR_SALARIO:
-		   		String message= Repo.mostrarSalario(comando.getInstance());
-		   		
-		   		System.out.println(message);
-		   		esCargaDeDatos= true;
-		   		break;
-		   	case Comando.TOMAR_VACACIONES:
-		   		Date fechaTomar = getFecha(comando.getParametros()[0]);
-		   		
-		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
-		   		break;
-		   	case Comando.MOSTRAR_VACACIONES:
-		   		String mensaje= Repo.mostrarVacaciones(comando.getInstance());
-		   		
-		   		System.out.println(mensaje);
-		   		esCargaDeDatos= true;
-		   		break;
-		   	case Comando.CALCULAR_SALARIO_NETO_IQ:
-		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
-		   		
-		   		System.out.println(respuesta);
-		   		esCargaDeDatos= true;
-		   		break;
-		   	case Comando.MOSTRAR_VACACIONES_DISPONIBLES:
-		   		Repo.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
-		   		esCargaDeDatos= true;
-		   		break;
-		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
-		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
-		   		esCargaDeDatos= true;
-		   		break;		   		
-		   	case Comando.CARGAR_LOG:	
-			    	if(log.existeUnLogPrevio())
-			    	{
-			    		System.out.println("Se realizo el proceso de carga exitosamente");
-			   		}else{
-			   			System.out.println("No se realizo el proceso de carga de forma debida");	
-			   		}
-			   	break;
-			   	default:
-			   		throw new CommandException("Comando desconocido. Favor introducirlo nuevamente:");   		
+        Comando comando=interpreteCadena (cadena);
+        
+        if(comando != null){
+        	 try {
+        		 
+     			switch(comando.getMetodo()){	   		 
+     			case Comando.EXIT:  
+     				System.exit(0);
+     		   	break; 	   		 
+     			case Comando.CREAR_COLABORADOR: 
+     				Moneda salario =null;
+     				String isMarried;
+     				String nombre=comando.getParametros()[0];
+     				String cedula=comando.getParametros()[1];
+     				Date fechaNacimiento= getFecha(comando.getParametros()[2]);
+     				Date fechaIngresoEmpresa= getFecha(comando.getParametros()[3]);
+     				String telefono= comando.getParametros()[5];
+     				int cantidadHijos = Integer.parseInt(comando.getParametros()[6]);
+     				salario= getSalario(comando.getParametros()[7]);
+     				
+     				if(comando.getParametros()[4].equalsIgnoreCase("true")){
+     					isMarried="true";
+     				}else if(comando.getParametros()[4].equalsIgnoreCase("false")){
+     					isMarried="false";
+     				}else{
+     					isMarried="N/A";
+     				}
+     	
+     		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
+     		   	break;	   		 
+     			case Comando.CREAR_EDIFICIO: 
+     		   		String nombreE= comando.getParametros()[0];
+     		   		
+     		   		Repo.AgregarEdificio(comando.getInstance(),nombreE);   		 
+     		   	break;	   		   		 
+     			case Comando.CREAR_COMPANNIA:
+     		   		String nombreC =comando.getParametros()[0];
+     		   		String cedulaC= comando.getParametros()[1];
+     		   		
+     		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
+     		   	break;	   		 
+     		   	case Comando.AUMENTAR_SALARIO:
+     		   		Moneda salarioAumentar = getSalario(comando.getParametros()[0]);
+     		   		
+     		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
+     		   		break;
+     		   	case Comando.MOSTRAR_SALARIO:
+     		   		String message= Repo.mostrarSalario(comando.getInstance());
+     		   		
+     		   		System.out.println(message);
+     		   		esCargaDeDatos= true;
+     		   		break;
+     		   	case Comando.TOMAR_VACACIONES:
+     		   		Date fechaTomar = getFecha(comando.getParametros()[0]);
+     		   		
+     		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
+     		   		break;
+     		   	case Comando.MOSTRAR_VACACIONES:
+     		   		String mensaje= Repo.mostrarVacaciones(comando.getInstance());
+     		   		
+     		   		System.out.println(mensaje);
+     		   		esCargaDeDatos= true;
+     		   		break;
+     		   	case Comando.CALCULAR_SALARIO_NETO_IQ:
+     		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
+     		   		
+     		   		System.out.println(respuesta);
+     		   		esCargaDeDatos= true;
+     		   		break;
+     		   	case Comando.MOSTRAR_VACACIONES_DISPONIBLES:
+     		   		Repo.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
+     		   		esCargaDeDatos= true;
+     		   		break;
+     		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
+     		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
+     		   		esCargaDeDatos= true;
+     		   		break;		   		
+     		   	case Comando.CARGAR_LOG:	
+     			    	if(log.existeUnLogPrevio())
+     			    	{
+     			    		System.out.println("Se realizo el proceso de carga exitosamente");
+     			   		}else{
+     			   			System.out.println("No se realizo el proceso de carga de forma debida");	
+     			   		}
+     			   	break;
+     			   	default:
+     			   		throw new CommandException("Comando desconocido. Favor introducirlo nuevamente:");   		
+     			}
+     			if(!esCargaDeDatos){
+     				log.crearRegistroLog(cadena);
+     			}
+     		}
+     		catch(CommandException commandException)
+     		{
+     			System.err.println(commandException.getMessage());
+     			pedirComando ();
+     		}		
+        }else{
+        	try {
+				throw new CommandException("Comando Invalido. El formato del comando debe contener fecha y hora ");
+			} catch (CommandException e) {
+				System.out.println(e.getMessage());
+				pedirComando ();
 			}
-			if(!esCargaDeDatos){
-				log.crearRegistroLog(cadena);
-			}
-		}
-		catch(CommandException commandException)
-		{
-			System.err.println(commandException.getMessage());
-			pedirComando ();
-		}		
+        }
 		
 	}				
 }
