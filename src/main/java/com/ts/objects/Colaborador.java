@@ -31,7 +31,7 @@ public class Colaborador extends Objecto {
 		this.estadoCivil= estado;
 		this.telefono= telefono;
 		this.cantidadHijos= numeroHijos;
-		this.salario = salario;
+		this.salario = salario;		
 		
 	}
 

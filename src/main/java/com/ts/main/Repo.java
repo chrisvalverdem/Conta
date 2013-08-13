@@ -80,7 +80,7 @@ public class Repo  {
 					  throw new CommandException("El Colaborador " + persona + " no posee dias de vacaciones.");
 				  }else{
 					   for( Date fecha : fechasAlmacenadas){
-						   mens+= "\t" +cont+". "+ InterpreteMandatos.getFechaConFormato(fecha) + "\n"; 
+						   mens+= "\t" +cont+". "+ Sistema.getFechaConFormato(fecha) + "\n"; 
 						   cont++;
 					   }		   
 				  }
@@ -379,8 +379,7 @@ public class Repo  {
 		int x= annioIngreso * 12 + mesIngreso;
 		int y= annioComando * 12 + mesComando;		
 		
-		vacacionesDisponiblesLiquidacion= y - (x + 1)+1;		
-		System.out.println("cantidad de vacaciones  : " + vacacionesDisponiblesLiquidacion);
+		vacacionesDisponiblesLiquidacion= y - (x + 1)+1;
 
 		if (!cola.getVacaciones().isEmpty()){
 			cantidadVacacionesTomadosLiquidacion=cola.getVacaciones().size();	

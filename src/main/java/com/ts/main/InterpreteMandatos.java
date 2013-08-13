@@ -3,14 +3,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
-import com.ts.objects.Dolar;
 import com.ts.objects.Moneda;
 
 public class InterpreteMandatos {	
@@ -51,52 +46,7 @@ public class InterpreteMandatos {
 			}	 		
 			pedirComando ();
 	 	}
-	 
-	 	public Moneda getSalario(String dato) throws CommandException{
-	 		Moneda salario=null;
-	 		double monto;
-	 		
-	 		monto= Double.parseDouble(dato.substring(1, dato.length()));
-	 		
-			if(dato.contains("¢")){
-				salario= new Colon(monto);
-			}else if(dato.contains("$")){
-				salario= new Dolar(monto);
-			}else{
-				throw new CommandException("Solo se aceptan montos en $ o ¢, Favor revisarlo monto digitado");
-			}
-	 		return salario;
-	 	}
-	 	
-	 public Date getFecha(String dato) throws CommandException{
-		 Date fecha;		 
-		  try {
-				 SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
-				 String[] fechasTemp = dato.split("/");
-				 int dia = Integer.parseInt(fechasTemp[0]);
-				 int mes = Integer.parseInt(fechasTemp[1]);
-				 int annio = Integer.parseInt(fechasTemp[2]);
-				 
-				 if(dia >31 || dia < 1){
-					 throw new CommandException("El rango de los dias esta definido entre 1-31");
-				 }else if(mes>12 || mes< 1){
-					 throw new CommandException("El rango de los meses esta definido entre 1-12");
-				 }else if(annio > 10000 || annio < 1000){
-					 throw new CommandException("El rango de los años solo acepta valores de 4 digitos");
-				 }
-			   fecha = formatFecha.parse(dato);
-			  } catch (ParseException e) {
-			   throw new CommandException("El formato de la fecha es dd/MM/yyyy. Favor actualizar");
-			  } 
-		 return fecha;
-	 }	
-	
-	 public static String getFechaConFormato(Date fecha){
-		 SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
-		 String result = "";
-		 result= formatFecha.format(fecha);
-		 return result;
-	}	
+
       private void pedirComando () throws IOException {
 			 
 	     	if(listenTheConsole)
@@ -112,15 +62,23 @@ public class InterpreteMandatos {
 		 }	
       protected Comando interpreteCadena(String cadena) throws CommandException{
     	  
-		  String instance;
-		  String metodo;
-		  String[] parametros=null;
-		  String fecha;
+    	  String fecha;
 		  String hora="00:00";
-		  String[] temp2;
-				  
+		  String instance;
+		  String comando;
+		  String metodo;
+		  String[] parametros=null;		 
+		  String[] temp2;		
+		  boolean existeMetodo=false;
+		  
+		  if (cadena.equals("")){
+			  throw new CommandException("Comando Invalido. El formato del comando no se reconoce");			  
+		  }	
+		  
+		  Comando.llenarListas();
+		  
 		  String[] temp = cadena.split("\\(");
-		  temp[1] = temp[1].substring(0, temp[1].length()-1);  
+		  temp[1] = temp[1].substring(0, temp[1].length()-1); 
 		  
 		  parametros = temp[1].split("\\,");		 
 		  
@@ -132,35 +90,80 @@ public class InterpreteMandatos {
 		  else
 		  {
 		   temp = temp[0].split("\\.");		   		  
-		  } 		 
+		  } 
+		  
 		  boolean cadenaTraeFecha = temp[0].indexOf("/") > -1;
-		  if(cadenaTraeFecha){
-			  
-			  temp2 =temp[0].split("\\,");		  
-			  String fechaHora=temp2[0]; 
-			  instance = temp2[1].trim();
-			  metodo = temp[1].trim().toUpperCase(); 
-			  
-			  for(int indice=0; indice < parametros.length; indice++ ){
-				   parametros[indice]=parametros[indice].trim();			   
-			   }		  
-			  	temp2 = temp2[0].split(" ");
-			  	fecha=temp2[0].trim();
-			  	if(temp2.length>1){	
-				  	hora=temp2[1].substring(0, temp2[1].length()-1).trim();	
-				  	Date p=Sistema.getParseFechaHora(fechaHora);
-					fecha=Sistema.getFechaConFormato(p);	
- 	  
-					return new Comando(instance, metodo, parametros,fecha, hora);
-			  	}
-			  	else{
-			  		   return null;
-			  	}
-			 
-		  }else{
-			  return null;
-			 
-		  }		 
+		  if(!cadenaTraeFecha){			  
+			  throw new CommandException("Comando Invalido. El formato del comando debe contener fecha y hora ");			  
+		  }
+		 
+		  metodo = temp[1].trim().toUpperCase(); 		
+		  temp2 =temp[0].split("\\,");		  
+		  String fechaHora=temp2[0];		 
+		  
+		  temp = temp2[0].split(" ");		  	
+		  if(temp.length <= 1){
+		  		throw new CommandException("Comando Invalido. El formato del comando debe contener hora ");	
+		  }		  
+		
+		  fecha=temp[0].trim();
+		  hora=temp[1].trim();
+		  
+		  Date fechaParse=Sistema.getParseFechaHora(fechaHora);
+		  fecha=Sistema.getFechaConFormato(fechaParse);		  
+		  
+		  temp=temp2[1].split(" ");		  		  	
+		  if(temp.length <= 2){
+		  		throw new CommandException("Formato invalido, el comando debe contener un SHOW, WRITE ó un EXECUTE ");	
+		  }		
+		  comando = temp[1].trim().toUpperCase();
+		  instance = temp[2].trim();
+	
+		switch(comando.toUpperCase()){
+		
+		case Comando.EXECUTE:
+		if(!Comando.getListaParaMetodosExcecute().isEmpty()){
+			for (int indice=0; indice < Comando.getListaParaMetodosExcecute().size(); indice++){			
+				if(metodo.equals(Comando.getListaParaMetodosExcecute().get(indice))){
+					existeMetodo=true;
+					break;
+					}
+				}			
+			break;			
+		}
+		case Comando.WRITE:
+			if(!Comando.getListaParaMetodosWrite().isEmpty()){				
+				for (int indice=0; indice < Comando.getListaParaMetodosWrite().size(); indice++){					
+					if(metodo.equals(Comando.getListaParaMetodosWrite().get(indice))){
+						existeMetodo=true;
+						break;
+						}
+					}			
+				break;				
+			}
+		case Comando.SHOW:
+			if(!Comando.getListaParaMetodosShow().isEmpty()){
+				for (int indice=0; indice < Comando.getListaParaMetodosShow().size(); indice++){			
+					if(metodo.equals(Comando.getListaParaMetodosShow().get(indice))){
+						existeMetodo=true;
+						break;
+						}
+					}
+				break;	
+				
+			}						
+		default:
+		   		throw new CommandException("Comando desconocido. Favor introducirlo nuevamente:");   
+		
+		}
+		
+		if(!existeMetodo ){
+			throw new CommandException("El metodo " + metodo+ " no es valido para el comando "+comando);
+		}
+		  for(int indice=0; indice < parametros.length; indice++ ){
+			   parametros[indice]=parametros[indice].trim();			   
+		   }			
+		  	return new Comando(fecha, hora, instance, comando, metodo, parametros);
 	} 	
 	
 	public static void main(String[] args) throws IOException {
@@ -168,107 +171,115 @@ public class InterpreteMandatos {
 	} 	
 	
 	protected void ejecutaComando(String dato) throws IOException{
-        String cadena= dato;
-        Comando comando;
+        String cadena= dato;       
                
         	 try {
-        		 if(cadena.equals(""))
-        		 {
-        			 throw new CommandException("Comando Invalido. El formato del comando debe contener fecha y hora ");
-        		 }
-        		 
-        		 comando=interpreteCadena (cadena);
+        		 Comando comando=interpreteCadena (cadena);
         		        			 
-     			switch(comando.getMetodo()){	   		 
+     			switch(comando.getComando()){	
+     			
      			case Comando.EXIT:  
      				System.exit(0);
      		   	break; 	   		 
-     			case Comando.CREAR_COLABORADOR: 
-     				Moneda salario =null;
-     				String isMarried;
-     				String nombre=comando.getParametros()[0];
-     				String cedula=comando.getParametros()[1];
-     				Date fechaNacimiento= getFecha(comando.getParametros()[2]);
-     				Date fechaIngresoEmpresa= getFecha(comando.getParametros()[3]);
-     				String telefono= comando.getParametros()[5];
-     				int cantidadHijos = Integer.parseInt(comando.getParametros()[6]);
-     				salario= getSalario(comando.getParametros()[7]);
+     			case Comando.WRITE: 
      				
-     				if(comando.getParametros()[4].equalsIgnoreCase("true")){
-     					isMarried="true";
-     				}else if(comando.getParametros()[4].equalsIgnoreCase("false")){
-     					isMarried="false";
-     				}else{
-     					isMarried="N/A";
-     				}
-     	
-     		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
-     		   	break;	   		 
-     			case Comando.CREAR_EDIFICIO: 
-     		   		String nombreE= comando.getParametros()[0];
-     		   		
-     		   		Repo.AgregarEdificio(comando.getInstance(),nombreE);   		 
-     		   	break;	   		   		 
-     			case Comando.CREAR_COMPANNIA:
-     		   		String nombreC =comando.getParametros()[0];
-     		   		String cedulaC= comando.getParametros()[1];
-     		   		
-     		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
-     		   	break;	   		 
-     		   	case Comando.AUMENTAR_SALARIO:
-     		   		Moneda salarioAumentar = getSalario(comando.getParametros()[0]);
-     		   		
-     		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
-     		   		break;
-     		   	case Comando.MOSTRAR_SALARIO:
-     		   		String message= Repo.mostrarSalario(comando.getInstance());
-     		   		
-     		   		System.out.println(message);
-     		   		esCargaDeDatos= true;
-     		   		break;
-     		   	case Comando.TOMAR_VACACIONES:
-     		   		Date fechaTomar = getFecha(comando.getParametros()[0]);
-     		   		
-     		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
-     		   		break;
-     		   	case Comando.MOSTRAR_VACACIONES:
-     		   		String mensaje= Repo.mostrarVacaciones(comando.getInstance());
-     		   		
-     		   		System.out.println(mensaje);
-     		   		esCargaDeDatos= true;
-     		   		break;
-     		   	case Comando.CALCULAR_SALARIO_NETO_IQ:
-     		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
-     		   		
-     		   		System.out.println(respuesta);
-     		   		esCargaDeDatos= true;
-     		   		break;
-     		   	case Comando.MOSTRAR_VACACIONES_DISPONIBLES:
-     		   		Repo.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
-     		   		esCargaDeDatos= true;
-     		   		break;
-     		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
-     		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
-     		   		esCargaDeDatos= true;
-     		   		break;	
-    		   	case Comando.ESTABLECER_RANGO_RENTA:
-    		   		String param1 = comando.getParametros()[0];
-    		   		String param2 = comando.getParametros()[1];
-    		   		String param3 = comando.getParametros()[2];
-    		   		
-    		   		double[] intervalos = Sistema.analizaIntervalosRenta(param1, param2, param3);  		
+     				switch(comando.getMetodo()){     				
+     				case Comando.CREAR_COLABORADOR:     					
+     					Moneda salario =null;
+         				String isMarried;
+         				String nombre=comando.getParametros()[0];
+         				String cedula=comando.getParametros()[1];
+         				Date fechaNacimiento= Sistema.getParseFecha(comando.getParametros()[2]);
+         				Date fechaIngresoEmpresa= Sistema.getParseFecha(comando.getParametros()[3]);
+         				String telefono= comando.getParametros()[5];
+         				int cantidadHijos = Integer.parseInt(comando.getParametros()[6]);
+         				salario= Sistema.getSalario(comando.getParametros()[7]);
+         				
+         				if(comando.getParametros()[4].equalsIgnoreCase("true")){
+         					isMarried="true";
+         				}else if(comando.getParametros()[4].equalsIgnoreCase("false")){
+         					isMarried="false";
+         				}else{
+         					isMarried="N/A";
+         				}
+         				
+         		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
+         		   	break;
+     				case Comando.CREAR_COMPANNIA:
+         		   		String nombreC =comando.getParametros()[0];
+         		   		String cedulaC= comando.getParametros()[1];
+         		   		
+         		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
+         		   	break;
+     				case Comando.CREAR_EDIFICIO:
+     					String nombreE= comando.getParametros()[0];
+         		   		
+         		   		Repo.AgregarEdificio(comando.getInstance(),nombreE);   		 
+         		   	break;
+     				default:
+      			   		throw new CommandException("El metodo no corresponde al comando:");  
+     				}     			  			
+     				break;
+     			case Comando.EXECUTE:
+     				
+     				switch(comando.getMetodo()){ 
+     				case Comando.AUMENTAR_SALARIO:
+         		   		Moneda salarioAumentar = Sistema.getSalario(comando.getParametros()[0]);
+         		   		
+         		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
+         		   		break;
+     				case Comando.TOMAR_VACACIONES:
+         		   		Date fechaTomar = Sistema.getParseFecha(comando.getParametros()[0]);
+         		   		
+         		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
+         		   		break;
+     				case Comando.CALCULAR_SALARIO_NETO_IQ:
+         		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
+         		   		
+         		   		System.out.println(respuesta);
+         		   		esCargaDeDatos= true;
+         		   		break;
+     				case Comando.ESTABLECER_RANGO_RENTA:
+        		   		String param1 = comando.getParametros()[0];
+        		   		String param2 = comando.getParametros()[1];
+        		   		String param3 = comando.getParametros()[2];
+        		   		
+        		   		double[] intervalos = Sistema.analizaIntervalosRenta(param1, param2, param3);  		
 
-    		   		Repo.cambioRangoRenta(intervalos);
-    		   		break;
-     		   	case Comando.CARGAR_LOG:	
-     			    	if(log.existeUnLogPrevio())
-     			    	{
-     			    		System.out.println("Se realizo el proceso de carga exitosamente");
-     			   		}else{
-     			   			System.out.println("No se realizo el proceso de carga de forma debida");	
-     			   		}
-     			   	break;
-     			   	default:
+        		   		Repo.cambioRangoRenta(intervalos);
+        		   		break; 
+     				default:
+      			   		throw new CommandException("El metodo no corresponde al comando:");  
+     				}
+     				break;
+     			case Comando.SHOW:
+     			
+     				switch(comando.getMetodo()){
+     				case Comando.MOSTRAR_SALARIO:
+         		   		String message= Repo.mostrarSalario(comando.getInstance());
+         		   		
+         		   		System.out.println(message);
+         		   		esCargaDeDatos= true;
+         		   		break;
+     				case Comando.MOSTRAR_VACACIONES:
+         		   		String mensaje= Repo.mostrarVacaciones(comando.getInstance());
+         		   		
+         		   		System.out.println(mensaje);
+         		   		esCargaDeDatos= true;
+         		   		break;  
+     				case Comando.MOSTRAR_VACACIONES_DISPONIBLES:
+         		   		Repo.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
+         		   		esCargaDeDatos= true;
+         		   		break;
+         		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
+         		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
+         		   		esCargaDeDatos= true;
+         		   		break;
+         		   default:
+     			   		throw new CommandException("El metodo no corresponde al comando:");  
+     				}  
+     				break;     				
+     			 default:
      			   		throw new CommandException("Comando desconocido. Favor introducirlo nuevamente:");   		
      			}
      			if(!esCargaDeDatos){

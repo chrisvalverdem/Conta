@@ -181,7 +181,6 @@ public class Sistema {
 	  try {
 		  
 		  SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-		  System.out.println(dato.length());
 		  
 		  if(dato.length() > 10){
 			 
@@ -204,7 +203,7 @@ public class Sistema {
 					 throw new CommandException("El rango de los años solo acepta valores de 4 digitos");
 				 }else if(horas > 24 || horas < 1){
 					 throw new CommandException("El rango de la hora esta definido entre 1-24");
-				 }else if(minutos > 60 || minutos < 1){
+				 }else if(minutos > 60 || minutos < 0){
 					 throw new CommandException("El rango de los minutos esta definido entre 1-60");
 				 }else if(tempHora.length > 3){
 					 throw new CommandException("Favor actualizar, el formato de la hora es hh:mm");
