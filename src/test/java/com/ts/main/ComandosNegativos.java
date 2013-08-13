@@ -1,12 +1,9 @@
 package com.ts.main;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.ts.objects.Colaborador;
 import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
@@ -104,7 +101,7 @@ public class ComandosNegativos extends TestCase{
 	
 	@Test
 	public void pruebaCalculaSalarioNetoIQNegativeTest() throws IOException{
-		setErrorsFileOutput("pruebaCalculaSalarioNetoIQNegativeTest.txt");
+		setErrorsFileOutput("pruebaCalculaSalarioNetoIQNegativeTestErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCalculaSalarioNetoIQNegativeTest.txt");
 		Colaborador colaborador;
 		String info;
@@ -136,61 +133,64 @@ public class ComandosNegativos extends TestCase{
 	
 	@Test
 	public void pruebaCambiarRangoRentaNegativeTest() throws IOException, CommandException{
-		setErrorsFileOutput("pruebaCambiarRangoRentaNegativeTest.txt");
+		setErrorsFileOutput("pruebaCambiarRangoRentaNegativeErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRentaNegativeTest.txt");
-		ArrayList<Double> interval = new ArrayList<Double>();
-		String comando1 ="11/06/2013 16:45, Write javila= CREAR_COLABORADOR(joel avila, 3-7777-7777, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		interpreteMandatos.ejecutaComando(comando1);
+
+		String comando ="01/08/2013 08:17, Write ts=CREAR_COMPANNIA(310146598,cecropia2)";
+		interpreteMandatos.ejecutaComando(comando);
 		
 		//intervalos con , de separador entre digitos
-		String comando2 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714,000]0,[714,000-1085000]10,[1085000-x]15)";
-		interpreteMandatos.ejecutaComando(comando2);
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢7,14000,0)";
+		interpreteMandatos.ejecutaComando(comando);
 		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, el parse de ,");
 		
 		//intervalos con . de separador entre digitos
-		String comando3 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714.000]0,[714.000-1085000]10,[1085000-x]15)";
-		interpreteMandatos.ejecutaComando(comando3);
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢7.14000,0)";
+		interpreteMandatos.ejecutaComando(comando);
 		Assert.assertEquals(""+getErrors().size(), "2", "Deberian existir solo un error, el parse de .");
 		
-		//intervalos Mayor case 0 y menor case 1 diferentes
-		String comando4 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714000]0,[814000-1085000]10,[1085000-x]15)";
-		interpreteMandatos.ejecutaComando(comando4);
-		Assert.assertEquals(""+getErrors().size(), "3", "Deberian existir solo un error, por la integridad del intervalo Mayor case 0 y menor case 1");
+		//Sin signos en los montos 
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(1,714000,0)";
+		interpreteMandatos.ejecutaComando(comando);
 		
-		//intervalos Mayor case 1 y menor case 2 diferentes
-		String comando5 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1995000]10,[1085000-x]15)";
-		interpreteMandatos.ejecutaComando(comando5);
-		Assert.assertEquals(""+getErrors().size(), "4", "Deberian existir solo un error, por la integridad del intervalo Mayor case 1 y menor case 2");
+		Assert.assertEquals(""+getErrors().size(), "3", "Deberian existir solo un error, por no tener signos en el monto");
 		
-		//no encuentra la x
-		String comando6 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-10]15)";
-		interpreteMandatos.ejecutaComando(comando6);
+		//Con signos diferentes en montos
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA($1,¢714000,0)";
+		interpreteMandatos.ejecutaComando(comando);
 		
-		Assert.assertEquals(""+getErrors().size(), "5", "Deberian existir solo un error, por no encontrar la x");
-		
-		//Signo $ en monto
-		String comando7 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-10]15)";
-		interpreteMandatos.ejecutaComando(comando7);
-		
-		Assert.assertEquals(""+getErrors().size(), "6", "Deberian existir solo un error, por tener $ en el monto");
-		
-		//Signo ¢ en monto
-		String comando8 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[¢1085000-10]15)";
-		interpreteMandatos.ejecutaComando(comando8);
-		
-		Assert.assertEquals(""+getErrors().size(), "7", "Deberian existir solo un error, por tener ¢ en el monto");
+		Assert.assertEquals(""+getErrors().size(), "4", "Deberian existir solo un error, por tener signos diferentes en el monto");
 		
 		//Signo % en porcientos
-		String comando9 = "11/06/2013 16:45, Execute javila.ESTABLECER_RANGO_RENTA([1-714000]%0,[714000-1085000]10,[¢1085000-10]15)";
-		interpreteMandatos.ejecutaComando(comando9);
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA($1,¢714000,%0)";
+		interpreteMandatos.ejecutaComando(comando);
 		
-		Assert.assertEquals(""+getErrors().size(), "8", "Deberian existir solo un error, por tener % en el porciento");
+		Assert.assertEquals(""+getErrors().size(), "5", "Deberian existir solo un error, por tener % en el porciento");
 		
-		interval= Repo.intervalosRenta;
-		Assert.assertTrue(interval.isEmpty());
-
-			
-
+		//Tipos de moneda diferentes
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
+		String comando2 = "01/08/2013 08:19, ts.ESTABLECER_RANGO_RENTA($714000,$1085000,10)";
+		interpreteMandatos.ejecutaComando(comando);
+		interpreteMandatos.ejecutaComando(comando2);
+		Assert.assertEquals(""+getErrors().size(), "6", "Deberian existir solo un error, por la integridad del intervalo Mayor case 0 y menor case 1");
+		
+		//intervalos Mayor case 0 y menor case 1 diferentes
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
+		comando2 = "01/08/2013 08:19, Execute ts.ESTABLECER_RANGO_RENTA(¢720000,¢1085000,10)";
+		interpreteMandatos.ejecutaComando(comando);
+		interpreteMandatos.ejecutaComando(comando2);
+		Assert.assertEquals(""+getErrors().size(), "7", "Deberian existir solo un error, por la integridad del intervalo Mayor case 0 y menor case 1");
+		
+		Repo.limpiaRangoRenta("ts");
+		
+		//intervalos Mayor case 1 y menor case 2 diferentes
+		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
+		comando2 = "01/08/2013 08:19, Execute ts.ESTABLECER_RANGO_RENTA(¢714000,¢1085000,10)";
+		String comando3 = "01/08/2013 08:19, Execute ts.ESTABLECER_RANGO_RENTA(¢1090000, ¢9999999,15)";
+		interpreteMandatos.ejecutaComando(comando);
+		interpreteMandatos.ejecutaComando(comando2);
+		interpreteMandatos.ejecutaComando(comando3);
+		Assert.assertEquals(""+getErrors().size(), "8", "Deberian existir solo un error, por la integridad del intervalo Mayor case 1 y menor case 2");
 	}
 
 }

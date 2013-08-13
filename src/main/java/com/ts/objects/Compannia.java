@@ -1,5 +1,6 @@
 package com.ts.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Compannia extends Objecto{
@@ -11,7 +12,7 @@ public class Compannia extends Objecto{
 	int	telefono;
     int fax;
     public static String comandosValidos[] ={"nuevaCompañia,gregarColaborador,agregarEdificio"};
-    
+    public static ArrayList<RangoRenta> intervalosRenta = new ArrayList<RangoRenta>();
   
     public Compannia(String cedulaJuridica, String nombre) {
     	this.cedulaJuridica=cedulaJuridica;  
@@ -64,5 +65,10 @@ public class Compannia extends Objecto{
 	public void setFax(int fax) {
 		this.fax = fax;
 	}	
-	
+	public ArrayList<RangoRenta> getIntervalosRenta() {
+		return intervalosRenta;
+	}
+	public void setIntervalosRenta(ArrayList<RangoRenta> intervalosRenta) {
+		Compannia.intervalosRenta = intervalosRenta;
+	}
 }//fin de la clase

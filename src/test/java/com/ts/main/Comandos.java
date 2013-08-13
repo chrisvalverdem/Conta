@@ -15,6 +15,7 @@ import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Dolar;
 import com.ts.objects.Edificio;
+import com.ts.objects.RangoRenta;
 
 
 
@@ -111,7 +112,7 @@ public class Comandos  extends TestCase{
 	@Test
 	public void pruebaAgregaVacaciones() throws IOException {
 		setErrorsFileOutput("pruebaAgregaVacacionesErrores.txt");
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaAgregaVacaciones.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaAgregaVacacionesTest.txt");
 		Colaborador colaborador;
 		Date fecha=null;
 		
@@ -175,7 +176,7 @@ public class Comandos  extends TestCase{
 	@Test
 	public void pruebaAumentarSalario() throws IOException {
 		setErrorsFileOutput("pruebaAumentarSalarioErrores.txt");
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"AumentarSalario.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaAumentarSalarioTest.txt");
 		Colaborador colaborador;
 		
 		String comando1 ="05/08/2013 11:11, Write marias= CREAR_COLABORADOR(Maria Arias, 2-2222-2223, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
@@ -212,8 +213,8 @@ public class Comandos  extends TestCase{
 	
 	@Test
 	public void pruebaMostrarSalario() throws IOException{
-		setErrorsFileOutput("pruebaMostrarSalarioErrores.txt");
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"MostrarSalario.txt");
+		setErrorsFileOutput("pruebaMostrarSalarioTestErrores.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaMostrarSalarioTest.txt");
 		Colaborador colaborador;
 
 		String comando1 ="07/08/2013 15:30, Write jguerrero= CREAR_COLABORADOR(jose guerrero, 3-2222-2233, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
@@ -228,7 +229,8 @@ public class Comandos  extends TestCase{
 	
 	@Test
 	public void pruebaCalculaSalarioNetoIQuincena() throws IOException, CommandException{
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"CalculaSalarioNetoIQ.txt");
+		setErrorsFileOutput("pruebaCalculaSalarioNetoIQTestErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCalculaSalarioNetoIQTest.txt");
 		Colaborador colaborador;
 		String info;
 		
@@ -248,7 +250,8 @@ public class Comandos  extends TestCase{
 	
 	@Test
 	public void pruebaCantidadVacacionesDisponibles() throws IOException {
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"cantidadVacacionesDisponibles.txt");
+		setErrorsFileOutput("pruebacantidadVacacionesDisponiblesTestErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebacantidadVacacionesDisponiblesTest.txt");
 		Colaborador colaborador;
 		
 		String comando ="08/08/2013 14:20, Write Svillegas= CREAR_COLABORADOR(Sandra Villegas, 8-5555-1111, 15/12/1988, 08/04/2013, true, 8445-1544, 0, $2000)";		
@@ -257,7 +260,7 @@ public class Comandos  extends TestCase{
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(Repo.cantidadVacacionesDisponibles("Svillegas", "07/08/2013"),"Cantidad de vacaciones disponibles para Svillegas son: 3");
-		Assert.assertEquals(Repo.getTamannoColaborador(),8);
+		Assert.assertEquals(Repo.getTamannoColaborador(),7);
 		
 		comando ="08/08/2013 14:40, Execute Svillegas.TOMAR_VACACIONES(06/05/2013)";		
 		interpreteMandatos.ejecutaComando(comando);		
@@ -282,7 +285,7 @@ public class Comandos  extends TestCase{
 		
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(Repo.cantidadVacacionesDisponibles("ydesanti", "07/08/2013"),"Cantidad de vacaciones disponibles para ydesanti son: 12");
-		Assert.assertEquals(Repo.getTamannoColaborador(),9);
+		Assert.assertEquals(Repo.getTamannoColaborador(),8);
 		
 		comando="08/08/2013 16:20, Execute ydesanti.TOMAR_VACACIONES(04/03/2013)";
 		interpreteMandatos.ejecutaComando(comando);	
@@ -313,7 +316,8 @@ public class Comandos  extends TestCase{
 	
 	@Test
 	public void pruebaCantidadVacacionesLiquidacion() throws IOException {
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"cantidadVacacionesLiquidacion.txt");
+		setErrorsFileOutput("pruebaCantidadVacacionesLiquidacionTestErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCantidadVacacionesLiquidacionTest.txt");
 		Colaborador colaborador;
 		
 		String comando ="09/08/2013 08:10, Write asanchez= CREAR_COLABORADOR(Ana Sanchez, 8-5555-6666, 15/12/1988, 25/03/2013, true, 8445-1544, 0, $2000)";		
@@ -322,7 +326,7 @@ public class Comandos  extends TestCase{
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(Repo.cantidadVacacionesLiquidacion("asanchez", "07/08/2013"),"Cantidad de vacaciones disponibles para asanchez son: 5");
-		Assert.assertEquals(Repo.getTamannoColaborador(),14);
+		Assert.assertEquals(Repo.getTamannoColaborador(),13);
 		
 		comando ="09/08/2013 08:20, Execute asanchez.TOMAR_VACACIONES(17/06/2013)";		
 		interpreteMandatos.ejecutaComando(comando);		
@@ -348,24 +352,45 @@ public class Comandos  extends TestCase{
 		comando="08/08/2013 09:11, Write csoto= CREAR_COLABORADOR(Carlos Soto, 7-1234-6666, 15/12/1968, 01/01/2012, true, 8445-1544, 0, $2000)";
 		interpreteMandatos.ejecutaComando(comando);	
 		
-		Assert.assertEquals(Repo.cantidadVacacionesLiquidacion("csoto", "01/11/2012"),"Cantidad de vacaciones disponibles para csoto son: 10");
-				
+		Assert.assertEquals(Repo.cantidadVacacionesLiquidacion("csoto", "01/11/2012"),"Cantidad de vacaciones disponibles para csoto son: 10");			
 	}
 	
 	@Test
 	public void pruebaCambiarRangoRenta() throws IOException, CommandException{
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRenta.txt");
+		setErrorsFileOutput("pruebaCambiarRangoRentaErrores.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRentaTest.txt");
+		ArrayList<RangoRenta> interval = new ArrayList<RangoRenta>();
 
+		String comando1 ="01/08/2013 08:17, Write ts=CREAR_COMPANNIA(31014659,cecropia2)";
+		String comando2 = "01/08/2013 08:17, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
+		String comando3 = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢714000,¢1085000,10)";
+		String comando4 = "01/08/2013 08:19, Execute ts.ESTABLECER_RANGO_RENTA(¢1085000,¢9999999,15)";
 		
-		String comando1 ="09/08/2013 09:15, Write javila= CREAR_COLABORADOR(joel avila, 3-7777-7777, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 = "09/08/2013 09:16, Write javila.ESTABLECER_RANGO_RENTA([1-714000]0,[714000-1085000]10,[1085000-x]15)";
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
+		interpreteMandatos.ejecutaComando(comando3);
+		interpreteMandatos.ejecutaComando(comando4);
 		
+		interval= Compannia.intervalosRenta;
 		
-		Assert.assertTrue(true);
-			
-
+		Assert.assertTrue(!(interval.isEmpty()));
+		Assert.assertEquals(interval.get(0).getIntervaloInferior().getMonto(), 1.0);
+		Assert.assertEquals(interval.get(0).getIntervaloSuperior().getMonto(), 714000.0);
+		Assert.assertEquals(interval.get(0).getIntervaloPorciento(), 0.0);
+		Assert.assertEquals(interval.get(0).getIdentificador(), "case0");
+		Assert.assertEquals(interval.get(0).getIntervaloInferior().getSign(), "¢");
+		
+		Assert.assertEquals(interval.get(1).getIntervaloInferior().getMonto(), 714000.0);
+		Assert.assertEquals(interval.get(1).getIntervaloSuperior().getMonto(), 1085000.0);
+		Assert.assertEquals(interval.get(1).getIntervaloPorciento(), 10.0);
+		Assert.assertEquals(interval.get(1).getIdentificador(), "case1");
+		Assert.assertEquals(interval.get(1).getIntervaloInferior().getSign(), "¢");
+		
+		Assert.assertEquals(interval.get(2).getIntervaloInferior().getMonto(), 1085000.0);
+		Assert.assertEquals(interval.get(2).getIntervaloSuperior().getMonto(), 9999999.0);
+		Assert.assertEquals(interval.get(2).getIntervaloPorciento(), 15.0);
+		Assert.assertEquals(interval.get(2).getIdentificador(), "case2");
+		Assert.assertEquals(interval.get(2).getIntervaloInferior().getSign(), "¢");	
 	}
 	
 }

@@ -29,6 +29,7 @@ public class Comando {
     public static final String TOMAR_VACACIONES="TOMAR_VACACIONES";
     public static final String CARGAR_LOG="CARGAR_LOG"; 
     public static final String EXIT="EXIT";
+    public static final String LIMPIAR_RANGO_RENTA="LIMPIAR_RANGO_RENTA";
     
     public static ArrayList<String> listaParaMetodosExcecute = new ArrayList<String>();
     public static ArrayList<String> listaParaMetodosWrite = new ArrayList<String>();

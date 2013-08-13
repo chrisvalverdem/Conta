@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
+
 import com.ts.objects.CommandException;
 import com.ts.objects.Moneda;
+import com.ts.objects.RangoRenta;
 
 public class InterpreteMandatos {	
 		
@@ -239,15 +241,15 @@ public class InterpreteMandatos {
          		   		System.out.println(respuesta);
          		   		esCargaDeDatos= true;
          		   		break;
-     				case Comando.ESTABLECER_RANGO_RENTA:
-        		   		String param1 = comando.getParametros()[0];
-        		   		String param2 = comando.getParametros()[1];
-        		   		String param3 = comando.getParametros()[2];
-        		   		
-        		   		double[] intervalos = Sistema.analizaIntervalosRenta(param1, param2, param3);  		
+        		   	case Comando.ESTABLECER_RANGO_RENTA:
+        		   		RangoRenta rango = Repo.analizaIntervalosRenta(comando.getParametros());  		
 
-        		   		Repo.cambioRangoRenta(intervalos);
-        		   		break; 
+        		   		Repo.cambioRangoRenta(comando.getInstance(), rango);
+        		   		break;
+        		   	case Comando.LIMPIAR_RANGO_RENTA:		
+
+        		   		Repo.limpiaRangoRenta(comando.getInstance());
+        		   		break;
      				default:
       			   		throw new CommandException("El metodo no corresponde al comando:");  
      				}
