@@ -283,27 +283,52 @@ public class Repo  {
 			}					
 		}				
 	}
-	public static Colaborador getColaboradorPorInstancea(String instancia){			
+	
+	public static Colaborador getColaboradorPorInstancea(String instancia) throws CommandException{	
+		
 		String key;
 		Objecto value;
+		boolean esxisteInstancea=false;
+		Colaborador cola=null;
+		
 		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value = tablaDeSimbolos.get(key);
 		    boolean esUnColaborador = value instanceof Colaborador; 
+		    
 		    if(esUnColaborador)
-		    {
-		    	Colaborador cola = (Colaborador)value; 
+		    {		    	
 		    	if(key.equalsIgnoreCase(instancia))
 		    	{
-		    		return cola;
+		    		esxisteInstancea=true;
+		    		cola = (Colaborador)value; 
 		    	}
 		    }
-		}	
-		return null;
+		}
+		if(!esxisteInstancea){
+			throw new CommandException("La instancia " + instancia+ " no existe.");			
+		}
+		return cola;
 	}	
 
-	public static String cantidadVacacionesDisponibles(String instancia, String fecha){
+	/*protected  Colaborador verificarQueLaInstaciaExistaEnLaTablaDeSimbolos(String instancia) throws CommandException {
+		
+		boolean existeAlgunaInstancea = ! tablaDeSimbolos.isEmpty();
+		boolean esxisteInstancea=false;
+		
+		if(existeAlgunaInstancea){
+			if(tablaDeSimbolos.containsKey(instancia)){
+				esxisteInstancea=true;	
+				return 
+			}
+			if(!esxisteInstancea){
+				throw new CommandException("La instancia " + instancia+ " ya existe, cambiela por una diferente.");				
+			}
+		}			
+	}*/
+
+	public static String cantidadVacacionesDisponibles(String instancia, String fecha) throws CommandException{
 		
 		int vacacionesDisponibles=0;
 		int cantidadVacacionesTomados;
@@ -357,7 +382,7 @@ public class Repo  {
 	 public static int cantidadDiasEntreFechas(Date d1, Date d2){
          return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	 }	
-	public static String cantidadVacacionesLiquidacion(String instancia, String fecha){
+	public static String cantidadVacacionesLiquidacion(String instancia, String fecha) throws CommandException{
 		
 		int vacacionesDisponiblesLiquidacion=0;
 		int cantidadVacacionesTomadosLiquidacion=0;
@@ -431,8 +456,8 @@ public class Repo  {
 				throw new CommandException("No se reconocen montos, estos deben contener el mismo tipo de moneda");
 			}
 
-			intervaloMenor = Sistema.getSalario(param1);
-			intervaloMayor = Sistema.getSalario(param2);
+			intervaloMenor = Sistema.getMoneda(param1);
+			intervaloMayor = Sistema.getMoneda(param2);
 			porciento= Double.parseDouble(param3);	
 
 			System.out.println("Tamaño :"+Compannia.intervalosRenta.size() );
@@ -548,10 +573,11 @@ public class Repo  {
 		    	}
 		}
 	}
-	public static void cambioMontoConyugeHijo (String instancia, int montoConyuge, int montoHijo) {
+	public static void actualizarMontoConyugeHijo (Moneda montoConyuge, Moneda montoHijo) {
 		
-		//Colaborador cola=getColaboradorPorInstancea(instancia);
-			
+		Hacienda.setMontoConyuge(montoConyuge);
+		Hacienda.setMontoHijo(montoHijo);
+		System.out.println("Los montos para conyuge e hijo se actualizaron exitosamente");		
 	}	
 	
 	public static void limpiaListas() {

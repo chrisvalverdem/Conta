@@ -11,7 +11,7 @@ public class Colaborador extends Objecto {
 	Boolean estadoCivil;
 	String telefono;
 	int cantidadHijos;
-	Moneda salario;
+	Moneda salario;	
 	
 	public static String comandosValidos[] ={"CREAR_COLABORADOR"};
 	public ArrayList<Date> vacaciones = new ArrayList<Date>();
@@ -113,7 +113,7 @@ public class Colaborador extends Objecto {
 
 	public static void setComandosValidos(String[] comandosValidos) {
 		Colaborador.comandosValidos = comandosValidos;
-	}
+	}	
 	
 }//fin clase
 

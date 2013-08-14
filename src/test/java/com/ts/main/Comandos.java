@@ -15,6 +15,7 @@ import com.ts.objects.CommandException;
 import com.ts.objects.Compannia;
 import com.ts.objects.Dolar;
 import com.ts.objects.Edificio;
+import com.ts.objects.Moneda;
 import com.ts.objects.RangoRenta;
 
 
@@ -249,7 +250,7 @@ public class Comandos  extends TestCase{
 	}
 	
 	@Test
-	public void pruebaCantidadVacacionesDisponibles() throws IOException {
+	public void pruebaCantidadVacacionesDisponibles() throws IOException, CommandException {
 		setErrorsFileOutput("pruebacantidadVacacionesDisponiblesTestErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebacantidadVacacionesDisponiblesTest.txt");
 		Colaborador colaborador;
@@ -315,7 +316,7 @@ public class Comandos  extends TestCase{
 	}
 	
 	@Test
-	public void pruebaCantidadVacacionesLiquidacion() throws IOException {
+	public void pruebaCantidadVacacionesLiquidacion() throws IOException, CommandException {
 		setErrorsFileOutput("pruebaCantidadVacacionesLiquidacionTestErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCantidadVacacionesLiquidacionTest.txt");
 		Colaborador colaborador;
@@ -392,6 +393,18 @@ public class Comandos  extends TestCase{
 		Assert.assertEquals(interval.get(2).getIdentificador(), "case2");
 		Assert.assertEquals(interval.get(2).getIntervaloInferior().getSign(), "¢");	
 	}
+	
+	@Test
+	public void pruebaActualizarMontoConyugeHijo() throws IOException {
+		setErrorsFileOutput("pruebaActualizarMontoConyugeHijooErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaActualizarMontoConyugeHijoTest.txt");			
+		
+		String comando2="01/08/2013 08:17, Execute tsa=ACTUALIZAR_MONTO_CONYUGE_HIJO(¢2000,¢1340)";
+		interpreteMandatos.ejecutaComando(comando2);	
+		
+		Assert.assertEquals(Hacienda.getMontoConyuge().getMonto(),2000.0);
+		Assert.assertEquals(Hacienda.getMontoHijo().getMonto(),1340.0);					
+	}	
 	
 }
 	

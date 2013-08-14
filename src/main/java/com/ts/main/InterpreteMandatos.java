@@ -195,7 +195,7 @@ public class InterpreteMandatos {
          				Date fechaIngresoEmpresa= Sistema.getParseFecha(comando.getParametros()[3]);
          				String telefono= comando.getParametros()[5];
          				int cantidadHijos = Integer.parseInt(comando.getParametros()[6]);
-         				salario= Sistema.getSalario(comando.getParametros()[7]);
+         				salario= Sistema.getMoneda(comando.getParametros()[7]);
          				
          				if(comando.getParametros()[4].equalsIgnoreCase("true")){
          					isMarried="true";
@@ -226,7 +226,7 @@ public class InterpreteMandatos {
      				
      				switch(comando.getMetodo()){ 
      				case Comando.AUMENTAR_SALARIO:
-         		   		Moneda salarioAumentar = Sistema.getSalario(comando.getParametros()[0]);
+         		   		Moneda salarioAumentar = Sistema.getMoneda(comando.getParametros()[0]);
          		   		
          		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
          		   		break;
@@ -235,9 +235,9 @@ public class InterpreteMandatos {
          		   		
          		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
          		   		break;
-     				case Comando.CALCULAR_SALARIO_NETO_IQ:
+    				case Comando.CALCULAR_SALARIO_NETO_IQ:
          		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
-         		   		
+         	 	   		
          		   		System.out.println(respuesta);
          		   		esCargaDeDatos= true;
          		   		break;
@@ -249,6 +249,12 @@ public class InterpreteMandatos {
         		   	case Comando.LIMPIAR_RANGO_RENTA:		
 
         		   		Repo.limpiaRangoRenta(comando.getInstance());
+        		   		break;
+        		   	case Comando.ACTUALIZAR_MONTO_CONYUGE_HIJO:
+        		   		Moneda montoConyuge= Sistema.getMoneda(comando.getParametros()[0]);
+        		   		Moneda montoHijo= Sistema.getMoneda(comando.getParametros()[1]);       		   		
+        		   		
+        		   		Repo.actualizarMontoConyugeHijo(montoConyuge, montoHijo);
         		   		break;
      				default:
       			   		throw new CommandException("El metodo no corresponde al comando:");  

@@ -1,9 +1,11 @@
 package com.ts.main;
 
 import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
 import com.ts.objects.Colaborador;
 import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
@@ -192,5 +194,21 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando3);
 		Assert.assertEquals(""+getErrors().size(), "8", "Deberian existir solo un error, por la integridad del intervalo Mayor case 1 y menor case 2");
 	}
+	
+	@Test
+	public void pruebaActualizarMontoConyugeHijoNegativeTest() throws IOException {
+		setErrorsFileOutput("pruebaActualizarMontoConyugeHijooErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaActualizarMontoConyugeHijoTest.txt");			
+		
+		String comando2="01/08/2013 08:17, Execute tsa=ACTUALIZAR_MONTO_CONYUGE_HIJO(2000,1340)";
+		interpreteMandatos.ejecutaComando(comando2);	
+		
+		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir un solo error en pruebaActualizarMontoConyugeHijoNegativeTest, por un incorrecto");
+		
+		comando2="01/08/2013 08:17, Execute tsa=ACTUALIZAR_MONTO_CONYUGE_HIJO($2000,1340)";
+		interpreteMandatos.ejecutaComando(comando2);	
+		
+		Assert.assertEquals(""+getErrors().size(), "2", "Deberian existir dos errores en pruebaActualizarMontoConyugeHijoNegativeTest, por montos incorrectos");
+	}	
 
 }
