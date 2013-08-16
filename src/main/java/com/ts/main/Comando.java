@@ -22,7 +22,8 @@ public class Comando {
     public static final String MOSTRAR_SALARIO="MOSTRAR_SALARIO";  
     public static final String MOSTRAR_VACACIONES="MOSTRAR_VACACIONES";
     public static final String MOSTRAR_VACACIONES_DISPONIBLES="MOSTRAR_VACACIONES_DISPONIBLES";
-    public static final String MOSTRAR_VACACIONES_LIQUIDACION="MOSTRAR_VACACIONES_LIQUIDACION";    
+    public static final String MOSTRAR_VACACIONES_LIQUIDACION="MOSTRAR_VACACIONES_LIQUIDACION";
+    public static final String MOSTRAR_RETENCIONES_FUENTE="MOSTRAR_RETENCIONES_FUENTE";
     public static final String CALCULAR_SALARIO_NETO_IQ="CALCULAR_SALARIO_NETO_IQ";    
     public static final String ESTABLECER_RANGO_RENTA = "ESTABLECER_RANGO_RENTA";    
     public static final String AUMENTAR_SALARIO="AUMENTAR_SALARIO";
@@ -64,6 +65,7 @@ public class Comando {
 		listaParaMetodosShow.add(MOSTRAR_SALARIO);		
 		listaParaMetodosShow.add(MOSTRAR_VACACIONES_DISPONIBLES);		
 		listaParaMetodosShow.add(MOSTRAR_VACACIONES_LIQUIDACION);
+		listaParaMetodosShow.add(MOSTRAR_RETENCIONES_FUENTE);
 		
 	}
 

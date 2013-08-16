@@ -19,7 +19,7 @@ public abstract class Moneda extends Expression {
 
 	public static boolean isColon(String economia)
 	{
-		return "¢".equals(economia);
+		return "Â¢".equals(economia);
 	}
 	
 	public static boolean isDolar(String economia)

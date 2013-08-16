@@ -15,6 +15,7 @@ public class Colaborador extends Objecto {
 	
 	public static String comandosValidos[] ={"CREAR_COLABORADOR"};
 	public ArrayList<Date> vacaciones = new ArrayList<Date>();
+	public ArrayList<RetencionFuente> retenciones = new ArrayList<RetencionFuente>();
 
 	public Colaborador(String nombre, String cedula){
 		this.nombre = nombre;
@@ -113,6 +114,14 @@ public class Colaborador extends Objecto {
 
 	public static void setComandosValidos(String[] comandosValidos) {
 		Colaborador.comandosValidos = comandosValidos;
+	}
+
+	public ArrayList<RetencionFuente> getRetenciones() {
+		return retenciones;
+	}
+
+	public void setRetenciones(ArrayList<RetencionFuente> retenciones) {
+		this.retenciones = retenciones;
 	}	
 	
 }//fin clase

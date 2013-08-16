@@ -10,7 +10,7 @@ public final class Colon extends Moneda{
 	
 	public String toShow()
 	{
-		return "¢"+monto;
+		return "Â¢"+monto;
 	}
 
 }

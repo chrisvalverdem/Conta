@@ -310,24 +310,8 @@ public class Repo  {
 			throw new CommandException("La instancia " + instancia+ " no existe.");			
 		}
 		return cola;
-	}	
-
-	/*protected  Colaborador verificarQueLaInstaciaExistaEnLaTablaDeSimbolos(String instancia) throws CommandException {
-		
-		boolean existeAlgunaInstancea = ! tablaDeSimbolos.isEmpty();
-		boolean esxisteInstancea=false;
-		
-		if(existeAlgunaInstancea){
-			if(tablaDeSimbolos.containsKey(instancia)){
-				esxisteInstancea=true;	
-				return 
-			}
-			if(!esxisteInstancea){
-				throw new CommandException("La instancia " + instancia+ " ya existe, cambiela por una diferente.");				
-			}
-		}			
-	}*/
-
+	}
+	
 	public static String cantidadVacacionesDisponibles(String instancia, String fecha) throws CommandException{
 		
 		int vacacionesDisponibles=0;
@@ -579,6 +563,54 @@ public class Repo  {
 		Hacienda.setMontoHijo(montoHijo);
 		System.out.println("Los montos para conyuge e hijo se actualizaron exitosamente");		
 	}	
+	
+public static Moneda mostrarRetencionesFuente (String instancea, String mesAnnioActual, String mesAnnio) throws CommandException {		
+		
+		double monto=0.0;
+		Moneda montoRetencionFuente=Sistema.getMoneda("¢"+monto);
+		boolean montoExiste=false;		
+		
+		String temp []=mesAnnioActual.split("/");
+		mesAnnioActual=temp [1];
+		mesAnnioActual+=temp[2];		
+		
+		String mesAnnioParam=Sistema.getFechaFormatoRetencion(mesAnnio);
+		
+		temp=mesAnnioParam.split("/");		
+		String mesAnnioRetencionFuente=temp[0];
+		mesAnnioRetencionFuente+=temp[1];		
+			
+		if (Integer.parseInt(mesAnnioRetencionFuente) > Integer.parseInt(mesAnnioActual)){
+			throw new CommandException("El periodo consultado : " +mesAnnioParam+ " es superior a la fecha actual.");
+		}	
+		
+		if (mesAnnioRetencionFuente.equals(mesAnnioActual)){			
+			throw new CommandException("No se pude brindar el dato ya que el periodo consultado es el actual : " +mesAnnio +" y el mismo no ha finalizado.");
+		}
+		
+		if (Integer.parseInt(mesAnnioRetencionFuente) < Integer.parseInt(mesAnnioActual)){			
+			Colaborador cola = getColaboradorPorInstancea(instancea);			
+			boolean existeAlgunaRetencionFuente = ! cola.retenciones.isEmpty();		
+			
+			if(!existeAlgunaRetencionFuente){
+				throw new CommandException("El colaborador : " +instancea+ " no posee retenciones fuente.");
+			}	
+			
+			for(int indice=0; indice < cola.retenciones.size(); indice++ ){	
+				
+				if (cola.retenciones.get(indice).getFecha().equals(mesAnnioParam)){					
+					montoRetencionFuente=cola.retenciones.get(indice).getMonto();
+					montoExiste=true;									
+				}				
+			}
+			
+		}
+		if(!montoExiste){
+			throw new CommandException("El colaborador : " +instancea+ " no posee retenciones fuente, para el periodo: "+mesAnnioParam);	
+		}
+		System.out.println("El monto de la retencion fuente para el colaborador "+instancea +" es de: "+montoRetencionFuente.getMonto());
+		return montoRetencionFuente;
+	}
 	
 	public static void limpiaListas() {
 		tablaDeSimbolos.clear();	

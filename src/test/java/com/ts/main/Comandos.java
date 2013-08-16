@@ -17,6 +17,7 @@ import com.ts.objects.Dolar;
 import com.ts.objects.Edificio;
 import com.ts.objects.Moneda;
 import com.ts.objects.RangoRenta;
+import com.ts.objects.RetencionFuente;
 
 
 
@@ -404,6 +405,29 @@ public class Comandos  extends TestCase{
 		
 		Assert.assertEquals(Hacienda.getMontoConyuge().getMonto(),2000.0);
 		Assert.assertEquals(Hacienda.getMontoHijo().getMonto(),1340.0);					
+	}
+	
+	@Test
+	public void pruebaMostrarRetencionesFuente() throws IOException {
+		setErrorsFileOutput("pruebaMostrarRetencionesFuenteErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaMostrarRetencionesFuenteTest.txt");			
+		Colaborador colaborador;
+		
+		String comando1 ="10/08/2013 15:17, WRITE ybolannios= CREAR_COLABORADOR(Yoselyn Bolannios, 2-0357-0387, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢600000)";
+		interpreteMandatos.ejecutaComando(comando1);	
+				
+		colaborador=Repo.getColaborador("2-0357-0387");	
+
+		Assert.assertNotNull(colaborador);		
+		Assert.assertEquals(Repo.getTamannoColaborador(), 15);
+		
+		Moneda monto= Sistema.getMoneda("¢4000.0");		
+		RetencionFuente retencionFuente =new RetencionFuente ("02/2013", monto);
+		
+		colaborador.retenciones.add(retencionFuente);
+		
+		Assert.assertEquals(Repo.mostrarRetencionesFuente("ybolannios", "16/08/2013", "02/2013").getMonto(), 4000.0);
+		
 	}	
 	
 }
