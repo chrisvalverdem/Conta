@@ -1,6 +1,6 @@
 package com.ts.objects;
 
-public class CommandException extends Exception{
+public class CommandException extends RuntimeException{
 	/**
 	 * 
 	 */
