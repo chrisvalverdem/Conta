@@ -234,4 +234,35 @@ public class Sistema {
 
 	 		return salario;
 	 	}
+	 
+	  public static String getFechaFormatoRetencion(String dato) throws CommandException{
+		   SimpleDateFormat formatFecha = new SimpleDateFormat("MM/yyyy");
+		   String result = "";
+		   String[] fechasTemp;
+		   Date fecha;
+		   int mes;
+		   int annio;
+
+		   if(dato.length()>7 && dato.length()< 7){
+		    throw new CommandException("Fecha invalidad debe poseer el siguiente formato: MM/yyyy");
+		   }else{
+		    fechasTemp = dato.split("/");
+		    mes = Integer.parseInt(fechasTemp[0]);
+		    annio = Integer.parseInt(fechasTemp[1]);  
+		    if(mes > 12 || mes < 1){
+		     throw new CommandException("El rango de los meses esta definido entre 1-12"); 
+		    }
+		    if(annio > 10000 || annio < 1000){
+		     throw new CommandException("El rango de los aÃ±os solo acepta valores de 4 digitos");
+		    }
+		    try {
+		    fecha= formatFecha.parse(dato);
+		    result= formatFecha.format(fecha); 
+		   } catch (ParseException e) {
+
+		    e.printStackTrace();
+		   } 
+		   } 
+		   return result;
+		 }	  
 }

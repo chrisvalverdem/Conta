@@ -283,6 +283,10 @@ public class InterpreteMandatos {
          		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
          		   		esCargaDeDatos= true;
          		   		break;
+         		   case Comando.MOSTRAR_RETENCIONES_FUENTE:
+        		   		Repo.mostrarRetencionesFuente(comando.getInstance(),comando.getFecha(),comando.getParametros()[0]);
+        		   		esCargaDeDatos= true;
+        		   		break;
          		   default:
      			   		throw new CommandException("El metodo no corresponde al comando:");  
      				}  

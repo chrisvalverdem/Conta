@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 import com.ts.objects.Colaborador;
 import com.ts.objects.Colon;
 import com.ts.objects.CommandException;
+import com.ts.objects.Moneda;
+import com.ts.objects.RetencionFuente;
 
 public class ComandosNegativos extends TestCase{
 	InterpreteMandatos interpreteMandatos;
@@ -210,5 +212,38 @@ public class ComandosNegativos extends TestCase{
 		
 		Assert.assertEquals(""+getErrors().size(), "2", "Deberian existir dos errores en pruebaActualizarMontoConyugeHijoNegativeTest, por montos incorrectos");
 	}	
+	
+	@Test
+	public void pruebaMostrarRetencionesFuenteRentaNegativeErrors() throws IOException {
+		setErrorsFileOutput("pruebaMostrarRetencionesFuenteRentaNegativeErrors.txt");
+		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaMostrarRetencionesFuenteRentaNegativeErrors.txt");			
+		Colaborador colaborador=null;
+		
+		String comando1 ="10/08/2013 15:17, WRITE ybolannios= CREAR_COLABORADOR(Yoselyn Bolannios, 2-0357-0387, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		interpreteMandatos.ejecutaComando(comando1);					
+		
+		String comando2="08/08/2013 15:17, SHOW ybolannios=MOSTRAR_RETENCIONES_FUENTE(02/2013)";
+		interpreteMandatos.ejecutaComando(comando2);	
+		
+		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, por que el colaborador no posee retenciones fuente");
+		
+		colaborador=Repo.getColaborador("2-0357-0387");	
+		
+		Moneda monto= Sistema.getMoneda("¢4000.0");		
+		RetencionFuente retencionFuente =new RetencionFuente ( "02/2013", monto);
+		
+		colaborador.retenciones.add(retencionFuente);
+		
+		String comando3="16/08/2013 15:17, SHOW ybolannios=MOSTRAR_RETENCIONES_FUENTE(08/2013)";
+		interpreteMandatos.ejecutaComando(comando3);
+		
+		Assert.assertEquals(""+getErrors().size(), "2", "Deberian existir solo un error, por que el periodo consultado es igual a la fecha actual");		
+		
+		String comando4="16/08/2013 15:17, SHOW ybolannios=MOSTRAR_RETENCIONES_FUENTE(09/2013)";
+		interpreteMandatos.ejecutaComando(comando4);	
+		
+		Assert.assertEquals(""+getErrors().size(), "3", "Deberian existir solo un error, por que el periodo consultado es superior a la fecha actual");		
+		
+	}
 
 }
