@@ -23,7 +23,7 @@ public class Token {
 	        show("show"),
 	        spacio("[ \t\f\r\n]+", true),
 	        literal("\"(.*?)\"|\'(.*?)\'"),
-	        variable("[\\w]+");
+	        variable("[\\w]+");//TODO este ultimo es un id, y es un objeto de conta, para usarlo de variable de instancia
 	        
 	        public String pattern;
 	        public boolean skip= false ;

@@ -1,17 +1,14 @@
 package com.ts.interprete.libraries;
 
-public class ShowComando extends Expression{
-	
-	private Expression expression;
-	
-	public ShowComando(Expression expression)
-	{
-		this.expression = expression;
+public class ShowComando extends Comando{
+		
+	public ShowComando(Expression expression) {
+		super(expression);
 	}
-	
-	public String toShow()
+
+	public void execute()
 	{
-		return expression.toShow();
+		System.out.println(expression.objecto.show());
 	}
 
 }
