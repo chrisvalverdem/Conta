@@ -1,7 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
-
 
 public class Literal extends Objecto{
 
@@ -11,6 +9,7 @@ public class Literal extends Objecto{
 		this.valor = valor;
 	}
 	
+	@Override
 	public String show()
 	{
 		return this.valor;
@@ -20,6 +19,7 @@ public class Literal extends Objecto{
 		return valor.equals(literal.valor);
 	}
 	
+	@Override
 	public String toString() {
 		return valor;
 	}

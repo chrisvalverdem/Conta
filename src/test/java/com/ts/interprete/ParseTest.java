@@ -1,14 +1,7 @@
 package com.ts.interprete;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import com.ts.interprete.Token.TokenType;
-import com.ts.interprete.libraries.Expression;
-import com.ts.interprete.libraries.Literal;
-import com.ts.interprete.libraries.Variable;
-
 public class ParseTest {
-	
+	/*
 	@Test
 	public void showTest()
 	{
@@ -57,5 +50,5 @@ public class ParseTest {
 		Assert.assertEquals(result.getParams().get(2).toShow(), "12");
 		
 	}
-
+*/
 }

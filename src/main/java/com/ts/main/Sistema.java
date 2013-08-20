@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.ts.objects.Colon;
-import com.ts.objects.CommandException;
-import com.ts.objects.Dolar;
-import com.ts.objects.Moneda;
+import com.ts.libraries.Colon;
+import com.ts.libraries.CommandException;
+import com.ts.libraries.Dolar;
+import com.ts.libraries.Mes;
+import com.ts.libraries.Moneda;
+
 
 public class Sistema {
 	
@@ -21,6 +23,7 @@ public class Sistema {
 	private static String segundos;
 	private static String fechaSistema;
 	private static String horaSistema;
+	public static final double tipoCambio = 493.00;
 	
 	public Sistema (){
 		
@@ -264,5 +267,30 @@ public class Sistema {
 		   } 
 		   } 
 		   return result;
-		 }	  
+		 }
+		public static Mes getFormatoMes(String fecha){
+			int mes=0;
+			int anno=0;
+			String[] fechasTemp;
+			
+			if(fecha.length()>7){
+				throw new CommandException("No se reconoce el formato de la fecha, solo debera contener meses y años (MM/YYYY)");
+			}
+			if(fecha.equalsIgnoreCase("") || !fecha.contains("/")){
+				throw new CommandException("No se reconoce el formato de la fecha, la misma debera ser MM/YYYY");
+			}
+			
+		    fechasTemp = fecha.split("/");
+		    mes = Integer.parseInt(fechasTemp[0]);
+		    anno = Integer.parseInt(fechasTemp[1]); 
+			
+		    if(mes > 12 || mes < 1){
+			     throw new CommandException("El rango de los meses esta definido entre 1-12"); 
+			}
+			if(anno > 10000 || anno < 1000){
+			     throw new CommandException("El rango de los años solo acepta valores de 4 digitos");
+			}
+			
+			return new Mes(mes,anno);
+		}
 }

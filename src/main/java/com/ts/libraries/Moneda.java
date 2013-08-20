@@ -1,7 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
-
 public abstract class Moneda extends Objecto{
 
 	public double monto;
@@ -21,11 +19,12 @@ public abstract class Moneda extends Objecto{
 
 	public static boolean isColon(String economia)
 	{
-		return "¢".equals(economia);
+		return "Â¢".equals(economia);
 	}
 	
 	public static boolean isDolar(String economia)
 	{
 		return "$".equals(economia);
 	}
+	public abstract String getSing();
 }

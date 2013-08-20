@@ -1,7 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
-
 
 public class NumericLiteral extends Objecto {
 	
@@ -12,6 +10,7 @@ public class NumericLiteral extends Objecto {
 		this.valor = valor;
 	}
 	
+	@Override
 	public String show()
 	{
 		return ""+this.valor;

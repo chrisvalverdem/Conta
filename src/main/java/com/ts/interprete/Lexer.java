@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import com.ts.interprete.Token.TokenType;
-import com.ts.objects.CommandException;
+import com.ts.libraries.CommandException;
 
 public class Lexer {
    

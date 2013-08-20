@@ -5,7 +5,7 @@ public class Token {
 	private TokenType type;
 	private String valor;
 	 public static enum TokenType {
-		 	monto("[$]|[¢]"),
+		 	monto("[$]|[ï¿½]"),
 		 	fecha("[0-3]?[0-9]/[0-1]?[0-9]/[0-2][0-9][0-9][0-9]"),
 		 	hora("[0-2]?[0-9]:[0-6]?[0-9]:[0-6]?[0-9]"),
 		 	decimal("-?[0-9]+[.][0-9]+"), 
@@ -37,7 +37,8 @@ public class Token {
 	            this.skip = skip;
 	        }
 	        
-	        public String toString()
+	        @Override
+			public String toString()
 	        {
 	        	return "Pattern: "+this.pattern+" skip:"+this.skip;
 	        }
@@ -72,6 +73,7 @@ public class Token {
 		this.valor = signo;
 	}
 
+	@Override
 	public String toString() {
 		return "Valor: "+valor+" Tipo: "+type.name();
 	}

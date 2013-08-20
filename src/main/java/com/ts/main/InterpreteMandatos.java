@@ -6,9 +6,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.ts.objects.CommandException;
-import com.ts.objects.Moneda;
-import com.ts.objects.RangoRenta;
+import com.ts.db.Repo;
+import com.ts.libraries.Colaborador;
+import com.ts.libraries.CommandException;
+import com.ts.libraries.Compania;
+import com.ts.libraries.Edificio;
+import com.ts.libraries.Mes;
+import com.ts.libraries.Moneda;
+import com.ts.libraries.RangoRenta;
+
 
 public class InterpreteMandatos {	
 		
@@ -205,18 +211,20 @@ public class InterpreteMandatos {
          					isMarried="N/A";
          				}
          				
-         		   		Repo.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
+         		   		Colaborador.AgregarColaborador(comando.getInstance(),nombre,cedula,fechaNacimiento, fechaIngresoEmpresa, isMarried, telefono, cantidadHijos, salario);	
          		   	break;
      				case Comando.CREAR_COMPANNIA:
          		   		String nombreC =comando.getParametros()[0];
          		   		String cedulaC= comando.getParametros()[1];
-         		   		
-         		   		Repo.AgregarCompannia(comando.getInstance(),nombreC,cedulaC);
+         		   		String tipoMoneda= comando.getParametros()[2];
+         		   	
+         		   		Compania.AgregarCompannia(comando.getInstance(),nombreC,cedulaC, tipoMoneda);
          		   	break;
      				case Comando.CREAR_EDIFICIO:
      					String nombreE= comando.getParametros()[0];
-         		   		
-         		   		Repo.AgregarEdificio(comando.getInstance(),nombreE);   		 
+     					String direccionE= comando.getParametros()[1];
+     					
+         		   		Edificio.AgregarEdificio(comando.getInstance(),nombreE, direccionE);   		 
          		   	break;
      				default:
       			   		throw new CommandException("El metodo no corresponde al comando:");  
@@ -228,15 +236,15 @@ public class InterpreteMandatos {
      				case Comando.AUMENTAR_SALARIO:
          		   		Moneda salarioAumentar = Sistema.getMoneda(comando.getParametros()[0]);
          		   		
-         		   		Repo.aumentarSalario( comando.getInstance(), salarioAumentar);
+         		   		Colaborador.aumentarSalario( comando.getInstance(), salarioAumentar);
          		   		break;
      				case Comando.TOMAR_VACACIONES:
          		   		Date fechaTomar = Sistema.getParseFecha(comando.getParametros()[0]);
          		   		
-         		   		Repo.tomarVacaciones(comando.getInstance(), fechaTomar);
+         		   		Colaborador.tomarVacaciones(comando.getInstance(), fechaTomar);
          		   		break;
     				case Comando.CALCULAR_SALARIO_NETO_IQ:
-         		   		String respuesta= Repo.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
+         		   		String respuesta= Colaborador.calculaSalarioNetoPrimeraQuincena(comando.getInstance());
          	 	   		
          		   		System.out.println(respuesta);
          		   		esCargaDeDatos= true;
@@ -248,13 +256,24 @@ public class InterpreteMandatos {
         		   		break;
         		   	case Comando.LIMPIAR_RANGO_RENTA:		
 
-        		   		Repo.limpiaRangoRenta(comando.getInstance());
+        		   		Repo.limpiaRangoRenta();
         		   		break;
         		   	case Comando.ACTUALIZAR_MONTO_CONYUGE_HIJO:
         		   		Moneda montoConyuge= Sistema.getMoneda(comando.getParametros()[0]);
         		   		Moneda montoHijo= Sistema.getMoneda(comando.getParametros()[1]);       		   		
         		   		
         		   		Repo.actualizarMontoConyugeHijo(montoConyuge, montoHijo);
+        		   		break;
+        		   	case Comando.CALCULAR_RETENCION_FUENTE:		   		
+        		   		Mes mesAnno = Sistema.getFormatoMes(comando.getParametros()[0]);
+
+        		   		Colaborador.calculaRetencionFuente(comando.getInstance(), mesAnno);
+        		   		break;
+        		   	case Comando.AGREGRAR_COLABORADOR_COMPANNIA:		
+        		   		String nombreCompannia = comando.getInstance();
+        		   		String nombreColaborador = comando.getParametros()[0];
+        		   		
+        		   		Compania.agregaColaborardorCompannia(nombreCompannia, nombreColaborador);
         		   		break;
      				default:
       			   		throw new CommandException("El metodo no corresponde al comando:");  
@@ -264,27 +283,27 @@ public class InterpreteMandatos {
      			
      				switch(comando.getMetodo()){
      				case Comando.MOSTRAR_SALARIO:
-         		   		String message= Repo.mostrarSalario(comando.getInstance());
+         		   		String message= Colaborador.mostrarSalario(comando.getInstance());
          		   		
          		   		System.out.println(message);
          		   		esCargaDeDatos= true;
          		   		break;
      				case Comando.MOSTRAR_VACACIONES:
-         		   		String mensaje= Repo.mostrarVacaciones(comando.getInstance());
+         		   		String mensaje= Colaborador.mostrarVacaciones(comando.getInstance());
          		   		
          		   		System.out.println(mensaje);
          		   		esCargaDeDatos= true;
          		   		break;  
      				case Comando.MOSTRAR_VACACIONES_DISPONIBLES:
-         		   		Repo.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
+     					Colaborador.cantidadVacacionesDisponibles(comando.getInstance(),comando.getFecha());
          		   		esCargaDeDatos= true;
          		   		break;
          		   	case Comando.MOSTRAR_VACACIONES_LIQUIDACION:
-         		   		Repo.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
+         		   	Colaborador.cantidadVacacionesLiquidacion(comando.getInstance(),comando.getFecha());
          		   		esCargaDeDatos= true;
          		   		break;
          		   case Comando.MOSTRAR_RETENCIONES_FUENTE:
-        		   		Repo.mostrarRetencionesFuente(comando.getInstance(),comando.getFecha(),comando.getParametros()[0]);
+         			   	Colaborador.mostrarRetencionesFuente(comando.getInstance(),comando.getFecha(),comando.getParametros()[0]);
         		   		esCargaDeDatos= true;
         		   		break;
          		   default:

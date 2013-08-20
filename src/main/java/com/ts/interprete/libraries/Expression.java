@@ -1,7 +1,6 @@
 package com.ts.interprete.libraries;
 
 import com.ts.libraries.Objecto;
-import com.ts.objects.CommandException;
 
 public class Expression {
 

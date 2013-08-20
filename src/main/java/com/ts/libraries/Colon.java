@@ -8,9 +8,13 @@ public final class Colon extends Moneda{
 
 	}
 	
+	@Override
 	public String show()
 	{
-		return "�"+monto;
+		return "¢"+monto;
+	}	
+	@Override
+	public String getSing() {
+		return "¢";
 	}
-
 }

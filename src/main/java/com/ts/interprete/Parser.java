@@ -1,7 +1,6 @@
 package com.ts.interprete;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -11,6 +10,7 @@ import com.ts.interprete.libraries.CreateComando;
 import com.ts.interprete.libraries.Expression;
 import com.ts.interprete.libraries.ShowComando;
 import com.ts.libraries.Colon;
+import com.ts.libraries.CommandException;
 import com.ts.libraries.DecimalLiteral;
 import com.ts.libraries.Dolar;
 import com.ts.libraries.Fecha;
@@ -19,7 +19,6 @@ import com.ts.libraries.Moneda;
 import com.ts.libraries.NumericLiteral;
 import com.ts.libraries.Objecto;
 import com.ts.interprete.libraries.Comando;
-import com.ts.objects.CommandException;
 
 
 public class Parser {

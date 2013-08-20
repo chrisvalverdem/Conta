@@ -6,11 +6,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.ts.objects.Colaborador;
-import com.ts.objects.Colon;
-import com.ts.objects.CommandException;
-import com.ts.objects.Moneda;
-import com.ts.objects.RetencionFuente;
+import com.ts.db.Repo;
+import com.ts.libraries.Colaborador;
+import com.ts.libraries.Colon;
+import com.ts.libraries.CommandException;
+import com.ts.libraries.Mes;
+import com.ts.libraries.Moneda;
+
 
 public class ComandosNegativos extends TestCase{
 	InterpreteMandatos interpreteMandatos;
@@ -30,25 +32,25 @@ public class ComandosNegativos extends TestCase{
 		//wrong month
 		String comando ="08/06/2013 16:45, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/1988/1998, 08/07/2013, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		Colaborador colaborador= Repo.getColaborador("1-1111-1111");
+		Colaborador colaborador= Colaborador.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong year
 		comando ="08/06/2013 16:15, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/12, 08/07/12, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-1111-1111");
+		colaborador= Colaborador.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong monto
 		comando ="08/06/2013 11:45, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, true, 8445-1544, 0, 1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-1111-1111");
+		colaborador= Colaborador.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		//wrong estado civil
 		comando ="08/07/2013 16:45, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, casado, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Repo.getColaborador("1-1111-1111");
+		colaborador= Colaborador.getColaborador("1-1111-1111");
 		Assert.assertNull(colaborador);
 		
 		Assert.assertEquals(""+getErrors().size(), "4", "Deberian existir error en agregarColaboradorNegativeTest.");
@@ -67,7 +69,7 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
 		
-		Colaborador colaborador=Repo.getColaborador("2-2222-2223");	
+		Colaborador colaborador=Colaborador.getColaborador("2-2222-2223");	
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(colaborador.getSalario().getClass(),Colon.class);
@@ -121,10 +123,10 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
 		
-		colaborador= Repo.getColaborador("3-6666-6666");
+		colaborador= Colaborador.getColaborador("3-6666-6666");
 
 			try {
-				info= Repo.calculaSalarioNetoPrimeraQuincena("garias");
+				info= Colaborador.calculaSalarioNetoPrimeraQuincena("garias");
 				Assert.assertNotNull(colaborador);
 				Assert.assertEquals(colaborador.getSalario().getMonto(), 2000.0);
 				Assert.assertTrue(info.contains("$2000.0"));
@@ -140,8 +142,10 @@ public class ComandosNegativos extends TestCase{
 		setErrorsFileOutput("pruebaCambiarRangoRentaNegativeErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRentaNegativeTest.txt");
 
-		String comando ="01/08/2013 08:17, Write ts=CREAR_COMPANNIA(310146598,cecropia2)";
+		String comando ="01/08/2013 08:17, Write ts=CREAR_COMPANNIA(310146598,cecropia2, colon)";
 		interpreteMandatos.ejecutaComando(comando);
+		
+		Hacienda.intervalosRenta.clear();
 		
 		//intervalos con , de separador entre digitos
 		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢7,14000,0)";
@@ -185,7 +189,7 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando2);
 		Assert.assertEquals(""+getErrors().size(), "7", "Deberian existir solo un error, por la integridad del intervalo Mayor case 0 y menor case 1");
 		
-		Repo.limpiaRangoRenta("ts");
+		Repo.limpiaRangoRenta();
 		
 		//intervalos Mayor case 1 y menor case 2 diferentes
 		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
@@ -227,12 +231,11 @@ public class ComandosNegativos extends TestCase{
 		
 		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, por que el colaborador no posee retenciones fuente");
 		
-		colaborador=Repo.getColaborador("2-0357-0387");	
+		colaborador=Colaborador.getColaborador("2-0357-0387");	
 		
 		Moneda monto= Sistema.getMoneda("¢4000.0");		
-		RetencionFuente retencionFuente =new RetencionFuente ( "02/2013", monto);
 		
-		colaborador.retenciones.add(retencionFuente);
+		colaborador.retencionesFuentes.put(new Mes(02,2013),monto);
 		
 		String comando3="16/08/2013 15:17, SHOW ybolannios=MOSTRAR_RETENCIONES_FUENTE(08/2013)";
 		interpreteMandatos.ejecutaComando(comando3);
@@ -243,7 +246,6 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando4);	
 		
 		Assert.assertEquals(""+getErrors().size(), "3", "Deberian existir solo un error, por que el periodo consultado es superior a la fecha actual");		
-		
-	}
 
+	}
 }

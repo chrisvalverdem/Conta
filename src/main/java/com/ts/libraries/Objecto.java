@@ -1,7 +1,6 @@
 package com.ts.libraries;
 
 import com.ts.interprete.libraries.Expression;
-import com.ts.objects.CommandException;
 
 public abstract class Objecto {
 

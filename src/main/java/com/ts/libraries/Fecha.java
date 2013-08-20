@@ -1,6 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
 
 public class Fecha extends Objecto{
 	
@@ -65,6 +64,7 @@ public class Fecha extends Objecto{
 		this.segundos = segundos;
 	}
 	
+	@Override
 	public String show()
 	{
 		String result = String.format("%02d", dia)+"/"+String.format("%02d", mes)+"/"+anno;

@@ -1,8 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
-import com.ts.objects.CommandException;
-
 
 public class DecimalLiteral extends Objecto {
 	public double valor;
@@ -12,6 +9,7 @@ public class DecimalLiteral extends Objecto {
 		this.valor = valor;
 	}
 	
+	@Override
 	public String show()
 	{
 		return ""+this.valor;

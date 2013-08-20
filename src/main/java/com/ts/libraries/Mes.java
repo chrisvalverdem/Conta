@@ -17,7 +17,16 @@ public class Mes {
 	public void setAnnno(int annno) {
 		this.annno = annno;
 	}
-	
-	
+	public Mes(int mes, int anno){
+		this.annno=anno;
+		this.mes=mes;
+		
+	}
+	public String getMesAnno(){
+		String temp = ""+ this.mes;
+		temp+= this.annno;
+		
+		return temp;
+	}
 
 }

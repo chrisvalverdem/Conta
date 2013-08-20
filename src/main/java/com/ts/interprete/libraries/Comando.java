@@ -1,7 +1,5 @@
 package com.ts.interprete.libraries;
 
-import com.ts.libraries.Objecto;
-
 public abstract class Comando{
 	
 	protected Expression expression;

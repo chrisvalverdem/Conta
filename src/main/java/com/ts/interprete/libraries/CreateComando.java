@@ -1,7 +1,5 @@
 package com.ts.interprete.libraries;
 
-import com.ts.libraries.Objecto;
-
 public class CreateComando extends Comando{
 	
 	private String nombreInstancia;
@@ -20,6 +18,7 @@ public class CreateComando extends Comando{
 		this.nombreInstancia = nombreInstancia;
 	}
 	
+	@Override
 	public void execute()
 	{
 		expression.objecto.save(nombreInstancia);

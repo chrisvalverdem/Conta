@@ -6,6 +6,7 @@ public class ShowComando extends Comando{
 		super(expression);
 	}
 
+	@Override
 	public void execute()
 	{
 		System.out.println(expression.objecto.show());

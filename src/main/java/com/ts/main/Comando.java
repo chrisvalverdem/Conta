@@ -32,6 +32,8 @@ public class Comando {
     public static final String EXIT="EXIT";
     public static final String LIMPIAR_RANGO_RENTA="LIMPIAR_RANGO_RENTA";
     public static final String ACTUALIZAR_MONTO_CONYUGE_HIJO="ACTUALIZAR_MONTO_CONYUGE_HIJO";
+    public static final String CALCULAR_RETENCION_FUENTE="CALCULAR_RETENCION_FUENTE";
+    public static final String AGREGRAR_COLABORADOR_COMPANNIA="AGREGRAR_COLABORADOR_COMPANNIA";
     
     public static ArrayList<String> listaParaMetodosExcecute = new ArrayList<String>();
     public static ArrayList<String> listaParaMetodosWrite = new ArrayList<String>();
@@ -60,6 +62,8 @@ public class Comando {
 		listaParaMetodosExcecute.add(AUMENTAR_SALARIO);
 		listaParaMetodosExcecute.add(TOMAR_VACACIONES);	
 		listaParaMetodosExcecute.add(ACTUALIZAR_MONTO_CONYUGE_HIJO);		
+		listaParaMetodosExcecute.add(CALCULAR_RETENCION_FUENTE);
+		listaParaMetodosExcecute.add(AGREGRAR_COLABORADOR_COMPANNIA);
 		
 		listaParaMetodosShow.add(MOSTRAR_VACACIONES);		
 		listaParaMetodosShow.add(MOSTRAR_SALARIO);		

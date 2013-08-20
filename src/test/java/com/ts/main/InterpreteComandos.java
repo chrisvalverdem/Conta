@@ -2,13 +2,17 @@ package com.ts.main;
 
 
 import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import com.ts.objects.CommandException;
-import com.ts.objects.Compannia;
-import com.ts.objects.Edificio;
+
+import com.ts.db.Repo;
+import com.ts.libraries.CommandException;
+import com.ts.libraries.Compania;
+import com.ts.libraries.Edificio;
+
 
 public class InterpreteComandos extends TestCase {
 	
@@ -37,16 +41,16 @@ public class InterpreteComandos extends TestCase {
 		Repo.limpiaListas();
 		new InterpreteMandatos(false, outTestDirectory+"pruebaCargaArchivo.txt");
 		
-		Compannia compannia= Repo.getCompannia("123JK456");
-		Edificio edificio= Repo.getEdificio("occidente");
+		Compania compannia= Compania.getCompannia("123JK456");
+		Edificio edificio= Edificio.getEdificio("occidente");
 		
 		Assert.assertNotNull(compannia);
 		Assert.assertEquals(compannia.getNombre(),"ts");
-		Assert.assertEquals(Repo.getTamannoCompannia(), 2);
+		Assert.assertEquals(Compania.getTamannoCompannia(), 2);
 		
 		Assert.assertNotNull(edificio);
 		Assert.assertEquals(edificio.getNombre(),"occidente");
-		Assert.assertEquals(Repo.getTamannoEdificio(), 1);
+		Assert.assertEquals(Edificio.getTamannoEdificio(), 1);
 	
 	}
 	

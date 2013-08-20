@@ -1,7 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
-
 public class RangoRenta extends Object {
 
 	Moneda intervaloInferior;

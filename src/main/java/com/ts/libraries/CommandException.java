@@ -1,4 +1,4 @@
-package com.ts.objects;
+package com.ts.libraries;
 
 public class CommandException extends RuntimeException{
 	/**
