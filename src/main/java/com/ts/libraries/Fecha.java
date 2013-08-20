@@ -1,14 +1,13 @@
 package com.ts.libraries;
 
+import java.io.ObjectInputStream.GetField;
+
 
 public class Fecha extends Objecto{
 	
 	private int dia;
 	private int mes;
 	private int anno;
-	private int hora;
-	private int minutos;
-	private int segundos;
 	
 	public Fecha(int dia, int mes, int anno)
 	{
@@ -19,9 +18,6 @@ public class Fecha extends Objecto{
 	
 	public Fecha(int dia, int mes, int anno, int hora, int minutos, int segundos)
 	{
-		this.hora = hora;
-		this.minutos = minutos;
-		this.segundos = segundos;
 		this.dia = dia;
 		this.mes = mes;
 		this.anno = anno;
@@ -45,35 +41,16 @@ public class Fecha extends Objecto{
 	public void setAnno(int anno) {
 		this.anno = anno;
 	}
-	public int getHora() {
-		return hora;
-	}
-	public void setHora(int hora) {
-		this.hora = hora;
-	}
-	public int getMinutos() {
-		return minutos;
-	}
-	public void setMinutos(int minutos) {
-		this.minutos = minutos;
-	}
-	public int getSegundos() {
-		return segundos;
-	}
-	public void setSegundos(int segundos) {
-		this.segundos = segundos;
-	}
-	
-	@Override
 	public String show()
 	{
 		String result = String.format("%02d", dia)+"/"+String.format("%02d", mes)+"/"+anno;
-		
-		if(hora != 0 && minutos != 0 && segundos != 0)
-		{
-			result += " "+String.format("%02d", hora)+":"+String.format("%02d", minutos)+":"+String.format("%02d", segundos);
-		}
-		
 		return result;
+	}
+
+	public static int cantidadDiasEntreFechas(Fecha fechaIngTem1,
+			Fecha fechacomando) {
+		//(int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24))
+		throw new CommandException("El metodo cantidadDiasEntreFechas no se a implementado para Fecha.");
+
 	}
 }

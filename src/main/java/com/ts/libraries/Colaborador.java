@@ -2,7 +2,6 @@ package com.ts.libraries;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,22 +11,20 @@ import com.ts.main.Hacienda;
 import com.ts.main.Sistema;
 
 public class Colaborador extends Objecto {
-	String nombre;
-	String cedula;
-	Date fechaNacimiento;
-	Date fechaIngresoEmpresa;
-	String estadoCivil;
-	String telefono;
-	int cantidadHijos;
+	Hilera nombre;
+	Hilera cedula;
+	Fecha fechaNacimiento;
+	Fecha fechaIngresoEmpresa;
+	Boolean estadoCivil;
+	Hilera telefono;
+	Numeric cantidadHijos;
 	Moneda salario;	
 	
 	private final static Double porcientoDeduccion= 0.0917;
-	public ArrayList<Date> vacaciones = new ArrayList<Date>();
+	public ArrayList<Fecha> vacaciones = new ArrayList<Fecha>();
 	public HashMap<Mes, Moneda> retencionesFuentes = new HashMap<Mes, Moneda>();
 	
-	public Colaborador(String nombre, String cedula,Date fechaNacimiento,
-			Date fechaIngreso, String estado, String telefono,  int numeroHijos,
-			Moneda salario) {	
+	public Colaborador(Hilera nombre, Hilera cedula, Fecha fechaNacimiento, Fecha fechaIngreso, Boolean estado, Hilera telefono,  Numeric numeroHijos, Dolar salario) {			
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.fechaNacimiento= fechaNacimiento;
@@ -39,67 +36,67 @@ public class Colaborador extends Objecto {
 		
 	}
 
-	public ArrayList<Date> getVacaciones() {
+	public ArrayList<Fecha> getVacaciones() {
 		return vacaciones;
 	}
 
-	public void setVacaciones(Date fecha) {
+	public void setVacaciones(Fecha fecha) {
 		vacaciones.add(fecha);
 	}
 
-	public String getNombre() {
+	public Hilera getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
+	public void setNombre(Hilera nombre) {
 		this.nombre = nombre;
 	}
 
-	public String getCedula() {
+	public Hilera getCedula() {
 		return cedula;
 	}
 
-	public void setCedula(String cedula) {
+	public void setCedula(Hilera cedula) {
 		this.cedula = cedula;
 	}
 
-	public Date getFechaNacimiento() {
+	public Fecha getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(Fecha fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Date getFechaIngresoEmpresa() {
+	public Fecha getFechaIngresoEmpresa() {
 		return fechaIngresoEmpresa;
 	}
 
-	public void setFechaIngresoEmpresa(Date fechaIngresoEmpresa) {
+	public void setFechaIngresoEmpresa(Fecha fechaIngresoEmpresa) {
 		this.fechaIngresoEmpresa = fechaIngresoEmpresa;
 	}
 
-	public String getEstadoCivil() {
+	public Boolean getEstadoCivil() {
 		return estadoCivil;
 	}
 
-	public void setEstadoCivil(String estadoCivil) {
+	public void setEstadoCivil(Boolean estadoCivil) {
 		this.estadoCivil = estadoCivil;
 	}
 
-	public String getTelefono() {
+	public Hilera getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(String telefono) {
+	public void setTelefono(Hilera telefono) {
 		this.telefono = telefono;
 	}
 
-	public int getCantidadHijos() {
+	public Numeric getCantidadHijos() {
 		return cantidadHijos;
 	}
 
-	public void setCantidadHijos(int cantidadHijos) {
+	public void setCantidadHijos(Numeric cantidadHijos) {
 		this.cantidadHijos = cantidadHijos;
 	}
 
@@ -111,20 +108,8 @@ public class Colaborador extends Objecto {
 		this.salario = nuevoSalario;
 	}
 	
-	@Override
-	public void save(String variableInstancia)
-	{
-			boolean existeElColaborador =  Colaborador.get(cedula) != null;
-				
-			if (existeElColaborador)
-			{
-				throw new CommandException("El Colaborador: " + nombre+ " tiene el mismo numero de cedula.");
-			}
-			Repo.save(variableInstancia, this);
-			System.out.println("El Colaborador " + nombre + " se le agrego exitosamente.");
-	}
-	
-	public static Colaborador get(String cedula)
+
+	public static Colaborador get(Hilera cedula)
 	{			
 		ArrayList<Object> lista = Repo.get(Colaborador.class);
 		for(Object exp : lista)
@@ -153,7 +138,7 @@ public class Colaborador extends Objecto {
 		    {
 			    Compania comp = (Compania)value;
 		    		for(Colaborador colabora : Compania.getListaColaboradores()){
-		    			if(cola.getCedula().equalsIgnoreCase(colabora.getCedula())){
+		    			if(cola.getCedula().esIgual(colabora.getCedula())){
 		    				return comp;
 		    			}
 		    		}
@@ -168,7 +153,7 @@ public class Colaborador extends Objecto {
 			return colaborador;
 		}
 		for(Colaborador cola : Compania.listaColaboradores){
-			if(cola.getCedula().equalsIgnoreCase(colaborador.getCedula())){
+			if(cola.getCedula().esIgual(colaborador.getCedula())){
 				throw new CommandException("Colaborador ya se encuentra registrado en la compañia");
 			}	
 		}
@@ -186,8 +171,8 @@ public class Colaborador extends Objecto {
 		Moneda montoHijo=null;
 		Moneda retencion;
 		Moneda salario;
-		int cantidadHijos;
-		String estadoCivil;
+		Numeric cantidadHijos;
+		Boolean estadoCivil;
 		double montoRetencion=0.0;
 		double porcientoAplicado;
 		double excedente;
@@ -214,8 +199,8 @@ public class Colaborador extends Objecto {
 			cantidadHijos= colaborador.getCantidadHijos();
 			estadoCivil= colaborador.getEstadoCivil();
 			
-			if(compannia.getTipoMoneda().equalsIgnoreCase("colon")){
-				if(Moneda.isDolar(compannia.getTipoMoneda())){
+			if(compannia.getTipoMoneda().valor.equalsIgnoreCase("colon")){
+				if(Moneda.isDolar(compannia.getTipoMoneda().valor)){
 					double operacion= (salario.getMonto()* Sistema.tipoCambio);
 					salarioBruto.setMonto(operacion);
 				}else{
@@ -244,7 +229,7 @@ public class Colaborador extends Objecto {
 						temp1=case1.getIntervaloInferior().getMonto();	
 						excedente = temp2- temp1;					   
 						montoRetencion = excedente*porcientoAplicado;						   
-						if(estadoCivil.equalsIgnoreCase("true")){
+						if(estadoCivil.esIgual(new Boolean(true))){
 							montoRetencion=  montoRetencion - montoConyugue.getMonto();
 							  if(montoRetencion < 0){	  
 								  montoRetencion =0.0;
@@ -253,9 +238,9 @@ public class Colaborador extends Objecto {
 						}else{
 							System.out.println("El colaborador " + colaborador.getNombre() + " no registra conyugue");
 						}
-						if(cantidadHijos>0){
-							montoRetencion= montoRetencion - (cantidadHijos * montoHijo.getMonto());
-							System.out.println("Se aplica deduccion por poseer "+cantidadHijos + " hijo(s): " + (cantidadHijos * montoHijo.getMonto()));
+						if(cantidadHijos.valor>0){
+							montoRetencion= montoRetencion - (cantidadHijos.valor * montoHijo.getMonto());
+							System.out.println("Se aplica deduccion por poseer "+cantidadHijos + " hijo(s): " + (cantidadHijos.valor * montoHijo.getMonto()));
 						}
 						System.out.println("La retencion del colaborador " + colaborador.getNombre() +" es de: "+salarioBruto.getSing().toString()+ montoRetencion);
 						retencion = Sistema.getMoneda(salarioBruto.getSing().toString()+ montoRetencion);
@@ -272,7 +257,7 @@ public class Colaborador extends Objecto {
 						   System.out.println("Porciento Aplicado: "+porcientoAplicado); 
 						   excedente = temp4 - temp5;
 						   montoRetencion = excedente*porcientoAplicado;
-						   if(estadoCivil.equalsIgnoreCase("true")){
+						   if(estadoCivil.esIgual(new Boolean(true))){
 							  montoRetencion=  montoRetencion - montoConyugue.getMonto(); 
 							  if(montoRetencion < 0){	  
 								  montoRetencion =0.0;
@@ -281,12 +266,12 @@ public class Colaborador extends Objecto {
 						   }else{
 								System.out.println("El colaborador " + colaborador.getNombre() + " no registra conyugue");
 							}
-						   if(cantidadHijos>0){
-							   montoRetencion= montoRetencion - (cantidadHijos * montoHijo.getMonto());
+						   if(cantidadHijos.valor>0){
+							   montoRetencion= montoRetencion - (cantidadHijos.valor * montoHijo.getMonto());
 								  if(montoRetencion < 0){	  
 									  montoRetencion =0.0;
 								  }
-								  System.out.println("Se aplica deduccion por poseer "+cantidadHijos + " hijo(s): " + (cantidadHijos * montoHijo.getMonto()));
+								  System.out.println("Se aplica deduccion por poseer "+cantidadHijos + " hijo(s): " + (cantidadHijos.valor * montoHijo.getMonto()));
 						   }
 						   System.out.println("La retencion del colaborador " + colaborador.getNombre() +" es de: "+salarioBruto.getSing().toString()+ montoRetencion);
 						   retencion = Sistema.getMoneda(salarioBruto.getSing().toString()+ montoRetencion);
@@ -297,7 +282,7 @@ public class Colaborador extends Objecto {
 					   }else{
 						   throw new CommandException("Salario del colaborador no aplica a ningun rango de renta");
 					   }	
-			}else if(compannia.getTipoMoneda().equalsIgnoreCase("dolar")){
+			}else if(compannia.getTipoMoneda().valor.equalsIgnoreCase("dolar")){
 				throw new CommandException("No se contempla la funcion de calcular retenciones a empresa con tipo de moneda en $"); 
 						}
 			   }else{
@@ -316,7 +301,7 @@ public class Colaborador extends Objecto {
 		    if(esUnColaborador)
 		    {
 		    	Colaborador cola = (Colaborador)value; 
-		    	if(cola.getCedula().equalsIgnoreCase(cedula))
+		    	if(cola.getCedula().esIgual(new Hilera(cedula)))
 		    	{
 		    		return cola;
 		    	}
@@ -455,27 +440,25 @@ public class Colaborador extends Objecto {
 		   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
 	} 
 	
-	public static void AgregarColaborador(String instance, String nombre, String numeroCedula, Date fechaNacimiento,
-			Date fechaIngreso, String estadoCivil, String telefono,  int numeroHijos,
-			Moneda salario) throws CommandException{
+	public void save(Hilera variableInstancia){
 		
-		boolean existeElColaborador = getColaborador(numeroCedula) != null;		
+		boolean existeElColaborador = get(this.getCedula()) != null;		
 
 			if ( existeElColaborador )
 			{
-				throw new CommandException("El colaborador " + nombre + ", ya tiene el numero de cedula "+numeroCedula);
-			}else if(estadoCivil.equalsIgnoreCase("N/A")){
+				throw new CommandException("El colaborador " + nombre + ", ya tiene el numero de cedula "+this.getCedula());
+			}else if(estadoCivil.esIgual(new Hilera("N/A"))){
 				throw new CommandException("No se reconoce el estado civil del colaborador, digite true si esta casado, false en caso contrario");
 			}else if(salario == null){
 				throw new CommandException("No se reconoce tipo de moneda del salario favor digitar $ o ¢ segun corresponda");
 			}
-			Colaborador nuevoColaborador = new Colaborador(nombre, numeroCedula, fechaNacimiento,fechaIngreso, estadoCivil, telefono,  numeroHijos, salario);				
-		    Repo.save(instance, nuevoColaborador);
+						
+		    Repo.save(variableInstancia, this);
 		    
 		    System.out.println("El Colaborador: " + nombre + " se agrego exitosamente.");	
 	}
 	
-	public static void tomarVacaciones(String persona, Date fecha) throws CommandException{
+	public static void tomarVacaciones(String persona, Fecha fecha) throws CommandException{
 		Colaborador colaborador= null;
 			   if(Repo.tablaDeSimbolos.containsKey(persona)){   
 				   colaborador= (Colaborador) Repo.tablaDeSimbolos.get(persona);		    
@@ -490,7 +473,7 @@ public class Colaborador extends Objecto {
 	public static String mostrarVacaciones(String persona) throws CommandException{
 		Colaborador colaboradorEncontrado= null;
 		String mens ="El colaborador presenta las siguientes fechas de vacaciones :" + "\n";
-		ArrayList<Date> fechasAlmacenadas;
+		ArrayList<Fecha> fechasAlmacenadas;
 		int cont =1;
 			   if(Repo.tablaDeSimbolos.containsKey(persona)){   
 				   colaboradorEncontrado= (Colaborador) Repo.tablaDeSimbolos.get(persona);
@@ -498,8 +481,8 @@ public class Colaborador extends Objecto {
 				  if(fechasAlmacenadas.size()<=0){
 					  throw new CommandException("El Colaborador " + persona + " no posee dias de vacaciones.");
 				  }else{
-					   for( Date fecha : fechasAlmacenadas){
-						   mens+= "\t" +cont+". "+ Sistema.getFechaConFormato(fecha) + "\n"; 
+					   for( Fecha fecha : fechasAlmacenadas){
+						   mens+= "\t" +cont+". "+ fecha.show() + "\n"; 
 						   cont++;
 					   }		   
 				  }
@@ -551,32 +534,18 @@ public class Colaborador extends Objecto {
 		}				
 	}	
 	
-	public static String cantidadVacacionesDisponibles(String instancia, String fecha) throws CommandException{
+	public static String cantidadVacacionesDisponibles(Hilera instancia, Fecha fecha) throws CommandException{
 		
 		int vacacionesDisponibles=0;
 		int cantidadVacacionesTomados;
 		String mensaje;	
-		Date fechacomando=null;
+		Fecha fechacomando=null;
 		
-		Calendar cal1 = new GregorianCalendar();
-		Calendar cal2 = new GregorianCalendar();
 				
-		 Colaborador cola=getColaboradorPorInstancea(instancia);
-		 Date fechaIngTem1=cola.getFechaIngresoEmpresa();
-		 cal1.setTime(fechaIngTem1);		 
-		 
-		try {
-			fechacomando = Sistema.getParseFecha(fecha);
-		}
-		catch(CommandException commandException)
-		{
-			commandException.setMessage("Formato de fecha invalido, el formato debe ser: dd/mm/yyyy");
-			System.err.println(commandException.getMessage());
-			
-		}		
-		 cal2.setTime(fechacomando);
-		 
-		 int cantidadDiasLaborados= cantidadDiasEntreFechas(cal1.getTime(), cal2.getTime())+1;		 
+		 Colaborador cola=get(instancia);
+		 Fecha fechaIngTem1=cola.getFechaIngresoEmpresa();
+				 
+		 int cantidadDiasLaborados= Fecha.cantidadDiasEntreFechas(fechaIngTem1, fechacomando)+1;		 
 		 float diviEntresiete=cantidadDiasLaborados/7;		
 		 float diviEntreCincuenta=diviEntresiete/50;		 
 		 float  multEntrediez=diviEntreCincuenta * 10 ;		
@@ -602,32 +571,18 @@ public class Colaborador extends Objecto {
 		return  mensaje;
 		}
 	
-	public static int cantidadDiasEntreFechas(Date d1, Date d2){
-         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-	 }	
-	
-	public static String cantidadVacacionesLiquidacion(String instancia, String fecha) throws CommandException{
+	public static String cantidadVacacionesLiquidacion(Hilera instancia, Fecha fecha) throws CommandException{
 		
 		int vacacionesDisponiblesLiquidacion=0;
 		int cantidadVacacionesTomadosLiquidacion=0;
-		String mensajeliquidacion="";
+		String mensajeliquidacion="";	
 		
-		String [] parseFecha=fecha.split("\\/");		
-		int mesComando=(Integer.parseInt(parseFecha [1]));
-		int annioComando=(Integer.parseInt(parseFecha [2]));			
+		Colaborador cola=get(instancia);
+		Fecha fechaIngTem1=cola.getFechaIngresoEmpresa();		
 		
-		Colaborador cola=getColaboradorPorInstancea(instancia);
-		Date fechaIngTem1=cola.getFechaIngresoEmpresa();		
-		String fechaIngreso=Sistema.getFechaConFormato(fechaIngTem1);							
-		String[] temp = fechaIngreso.split("\\/"); 
 		
-		int annioIngreso=Integer.parseInt(temp[2]);
-		int mesIngreso=Integer.parseInt( temp[1]);
-		int diaIngreso=Integer.parseInt( temp[0]);
-		System.out.println("Fecha de ingreso : " + diaIngreso +""+mesIngreso+""+annioIngreso+ " \n");
-		
-		int x= annioIngreso * 12 + mesIngreso;
-		int y= annioComando * 12 + mesComando;		
+		int x= fechaIngTem1.getAnno() * 12 + fechaIngTem1.getMes();
+		int y= fecha.getAnno() * 12 + fecha.getMes();		
 		
 		vacacionesDisponiblesLiquidacion= y - (x + 1)+1;
 

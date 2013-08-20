@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import com.ts.libraries.CommandException;
 import com.ts.libraries.Compania;
+import com.ts.libraries.Hilera;
 import com.ts.libraries.Moneda;
 import com.ts.libraries.Objecto;
 import com.ts.libraries.RangoRenta;
@@ -17,7 +18,9 @@ public class Repo  {
 	public static HashMap<String, Objecto> tablaDeSimbolos = new HashMap<String, Objecto>();
 	public static ArrayList<Double> intervalosRenta = new ArrayList<Double>();
 	
-	public static void save(String string, Objecto object){
+
+	public static void save(Hilera string, Objecto object)
+	{
 		boolean existeAlgunaInstancea = ! tablaDeSimbolos.isEmpty();
 		if(existeAlgunaInstancea){
 			if(tablaDeSimbolos.containsKey(string)){			
@@ -25,8 +28,9 @@ public class Repo  {
 			}					
 		}	
 		
-		tablaDeSimbolos.put(string, object);
+		tablaDeSimbolos.put(string.valor, object);
 	}
+
 	public static Objecto getData(String key)
 	{
 		return tablaDeSimbolos.get(key);

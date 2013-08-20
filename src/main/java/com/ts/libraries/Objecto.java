@@ -8,11 +8,11 @@ public abstract class Objecto {
 		throw new CommandException("El metodo show no a sido implementado para "+this.getClass().getName());
 	}
 	
-	public void save(String variableInstancia) {
+	public void save(Hilera variableInstancia) {
 		throw new CommandException("El metodo save no a sido implementado para "+this.getClass().getName());
 	}
 	
-	public boolean esIgual(Expression expression) {
+	public boolean esIgual(Objecto objecto) {
 		throw new CommandException("El metodo esIgual no a sido implementado para "+this.getClass().getName());
 	}
 }

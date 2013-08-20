@@ -5,7 +5,9 @@ public class Token {
 	private TokenType type;
 	private String valor;
 	 public static enum TokenType {
-		 	monto("[$]|[ï¿½]"),
+		 	boolTrue("true"),
+		 	boolFalse("false"),
+		 	monto("[$]|[¢]"),
 		 	fecha("[0-3]?[0-9]/[0-1]?[0-9]/[0-2][0-9][0-9][0-9]"),
 		 	hora("[0-2]?[0-9]:[0-6]?[0-9]:[0-6]?[0-9]"),
 		 	decimal("-?[0-9]+[.][0-9]+"), 

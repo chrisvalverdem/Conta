@@ -6,28 +6,28 @@ import com.ts.db.Repo;
 
 public class Edificio extends Objecto{
 	
-	String nombre;
-	String direccion;
+	Hilera nombre;
+	Hilera direccion;
 
-	public Edificio(String nombre, String direccion) {		
+	public Edificio(Hilera nombre, Hilera direccion) {		
 		this.nombre = nombre;
 		this.direccion = direccion;		
 	}
 	
-	public String getNombre() {
+	public Hilera getNombre() {
 		return nombre;
 	}
-	public void setNombre(String nombre) {
+	public void setNombre(Hilera nombre) {
 		this.nombre = nombre;
 	}
-	public String getDireccion() {
+	public Hilera getDireccion() {
 		return direccion;
 	}
-	public void setDireccion(String direccion) {
+	public void setDireccion(Hilera direccion) {
 		this.direccion = direccion;
 	}		
-	@Override
-	public void save(String variableInstancia)
+
+	public void save(Hilera variableInstancia)
 	{
 			boolean existeElEdificio =  Edificio.get(nombre) != null;
 				
@@ -38,7 +38,7 @@ public class Edificio extends Objecto{
 			Repo.save(variableInstancia, this);
 			System.out.println("El edificio " + nombre + " se le agrego exitosamente.");
 	}
-	public static Edificio get(String nombre)
+	public static Edificio get(Hilera nombre)
 	{			
 		ArrayList<Object> lista = Repo.get(Edificio.class);
 		for(Object exp : lista)
@@ -68,18 +68,18 @@ public class Edificio extends Objecto{
 		}	
 		return total;
 	}
-	public static Edificio getEdificio(String nombre){			
+	public static Edificio getEdificio(Hilera nombre){			
 		String key;
 		Objecto value;
 		Iterator<String> iterator = Repo.tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value = Repo.tablaDeSimbolos.get(key);
-		    boolean esUnEdificio = value instanceof Edificio; 
+		    boolean esUnEdificio = value.getClass()== Edificio.class; 
 		    if(esUnEdificio)
 		    {
 		    	Edificio edi = (Edificio)value; 
-		    	if(edi.getNombre().equals(nombre))
+		    	if(edi.getNombre().esIgual(nombre))
 		    	{
 		    		return edi;
 		    	}
@@ -87,7 +87,7 @@ public class Edificio extends Objecto{
 		}	
 		return null;
 	}
-	public static void AgregarEdificio(String instance, String nombre, String direccion) throws CommandException{			
+	public void AgregarEdificio(Hilera instance) throws CommandException{			
 		boolean existeElEdificio =  getEdificio(nombre) != null;
 			
 		if (existeElEdificio)
@@ -95,7 +95,7 @@ public class Edificio extends Objecto{
 			throw new CommandException("El Edificio: " + nombre+ " ya existe.");
 		}
 		Edificio edificio = new Edificio(nombre,direccion);
-		Repo.tablaDeSimbolos.put(instance, edificio);
+		Repo.save(instance, this);
 		 System.out.println("El edificio " + nombre + " se le agrego exitosamente.");
 	}	
 }

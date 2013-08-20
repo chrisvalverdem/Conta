@@ -9,14 +9,16 @@ import com.ts.interprete.Token.TokenType;
 import com.ts.interprete.libraries.CreateComando;
 import com.ts.interprete.libraries.Expression;
 import com.ts.interprete.libraries.ShowComando;
+import com.ts.libraries.Boolean;
 import com.ts.libraries.Colon;
 import com.ts.libraries.CommandException;
-import com.ts.libraries.DecimalLiteral;
+import com.ts.libraries.Decimal;
 import com.ts.libraries.Dolar;
 import com.ts.libraries.Fecha;
-import com.ts.libraries.Literal;
+import com.ts.libraries.FechaHora;
+import com.ts.libraries.Hilera;
 import com.ts.libraries.Moneda;
-import com.ts.libraries.NumericLiteral;
+import com.ts.libraries.Numeric;
 import com.ts.libraries.Objecto;
 import com.ts.interprete.libraries.Comando;
 
@@ -38,8 +40,7 @@ public class Parser {
 	
 	protected Comando comandoProcess() throws Exception
 	{
-		//TODO retorna un comando que no hereda de expression.
-		Fecha fecha = paserFechaHora();
+		FechaHora fecha = paserFechaHora();
 		
 		boolean esUnComandoShow = lexer.getToken().getType() == TokenType.show;
 		boolean esUnComandoCreate= lexer.getToken().getType() == TokenType.variable && lexer.sgtToken().getType() == TokenType.igual ;
@@ -64,7 +65,7 @@ public class Parser {
 		lexer.accept(TokenType.igual);
 		String claseVarible = lexer.getToken().getValor();
 		lexer.accept();
-		ArrayList<Objecto> params = parseparametros();
+		ArrayList<Objecto> params = parseParametros();
 	
 		Class clase = Class.forName(Objecto.class.getPackage().getName()+"."+claseVarible);
 
@@ -80,11 +81,11 @@ public class Parser {
 			index++;
 		}
 		
-		Constructor constructor = clase.getConstructors()[0];/*clase.getConstructor(firmaConstructor)*/;
+		Constructor constructor =/* clase.getConstructors()[0];*/clase.getConstructor(firmaConstructor);
 		Objecto objecto = (Objecto)constructor.newInstance(firmaConstructorValores);
 		Expression exp = new Expression(objecto);
 		
-		return new CreateComando(nombreVarible, exp);
+		return new CreateComando(new Hilera(nombreVarible), exp);
 	}
 
 	private ShowComando paserComandoShow() throws Exception {
@@ -109,21 +110,20 @@ public class Parser {
 		}
 		String key = lexer.getToken().getValor();
 		Objecto objecto = Repo.getData(key);
-		lexer.accept();	
+		lexer.accept(TokenType.variable);	
 		Method method ;
 		Objecto resultado = null; 
 		
-		while(lexer.sgtToken().getType() == TokenType.punto)
+		while(lexer.getToken().getType() == TokenType.punto)
 		{
-			lexer.accept(TokenType.punto);	
+			lexer.accept(TokenType.punto);
 			String methodName = lexer.getToken().getValor();
-			lexer.accept();
-			boolean tieneParametros = lexer.sgtToken().getType() != TokenType.rParentesis;
-			lexer.accept(TokenType.lParentesis);
+			lexer.accept(TokenType.variable);
+			boolean tieneParametros = lexer.sgtToken().getType() != TokenType.rParentesis;	
 						
 			if( tieneParametros )
 			{
-				ArrayList<Objecto> params = parseparametros();
+				ArrayList<Objecto> params = parseParametros();
 
 				Class[] firma = new Class[params.size()];
 				Object[] firmaValores = new Objecto[params.size()];
@@ -149,24 +149,26 @@ public class Parser {
 		return resultado;
 	}
 
-	private ArrayList<Objecto> parseparametros() throws Exception {
+	private ArrayList<Objecto> parseParametros() throws Exception {
 		ArrayList<Objecto> params = new ArrayList<Objecto>();
 		Objecto content;
+		lexer.accept(TokenType.lParentesis);
+		
 		while(lexer.sgtToken().getType() == TokenType.coma)
 		{
-			content = subProcess();
+			content = parseLiteral();
 			params.add(content);
-			lexer.accept();
 			lexer.accept(TokenType.coma);
 
 		}
-		content = subProcess();
+		content = parseLiteral();
 		params.add(content);
-		lexer.accept(TokenType.lParentesis);
+		lexer.accept(TokenType.rParentesis);
 		return params;
 	}
 
-	private Fecha paserFechaHora() {
+	
+	private Fecha paserFecha() {
 		if(lexer.getToken().getType() != TokenType.fecha)
 		{
 			throw new CommandException("Se esperaba una fecha.");
@@ -177,31 +179,42 @@ public class Parser {
 		int dia = Integer.parseInt(tiempo[0]);
 		int mes = Integer.parseInt(tiempo[1]);
 		int anno = Integer.parseInt(tiempo[2]);
+		
+		//TODO validaciones de fecha. validar dia, mes anno biciesto.
+	
+		lexer.accept(TokenType.fecha);
+		
+		return new Fecha(dia, mes, anno);
+	}
+	
+	private FechaHora paserFechaHora() {
+		Fecha fecha = paserFecha();
+				
+		int dia = fecha.getDia();
+		int mes = fecha.getMes();
+		int anno = fecha.getAnno();
 		int hora = 0;
 		int minuto = 0;
 		int segundo = 0;
 		
-		//TODO validaciones de fecha. validar dia, mes anno biciesto.
-		lexer.accept(TokenType.fecha);
-		boolean tieneHora = ! (lexer.sgtToken() != null && lexer.sgtToken().getType() == TokenType.hora);
-		
+		boolean tieneHora = ! (lexer.getToken() != null && lexer.getToken().getType() == TokenType.hora);
+				
 		if(tieneHora)
 		{
 			throw new CommandException("Se esperaba una hora.");
 		}
 		
-		lexer.accept();
-		tiempo = lexer.getToken().getValor().split(":");
+		String []tiempo = lexer.getToken().getValor().split(":");
 		hora = Integer.parseInt(tiempo[0]);
 		minuto = Integer.parseInt(tiempo[1]);
 		segundo = Integer.parseInt(tiempo[2]);
 		lexer.accept(TokenType.hora);
 		//TODO validaciones de fecha. validar dia, mes anno biciesto.
 	
-		return new Fecha(dia, mes, anno, hora, minuto, segundo);
+		return new FechaHora(dia, mes, anno, hora, minuto, segundo);
 	}
 
-	private Objecto subProcess() throws Exception
+	private Objecto parseLiteral() throws Exception
 	{
 		boolean sonParametros= lexer.getToken().getType() == TokenType.lParentesis;
 		boolean esUnNumero = lexer.getToken().getType() == TokenType.numero;
@@ -209,49 +222,86 @@ public class Parser {
 		boolean esUnLiteral = lexer.getToken().getType() == TokenType.literal;
 		boolean esUnMonto = lexer.getToken().getType() == TokenType.monto;
 		boolean esUnaFecha = lexer.getToken().getType() == TokenType.fecha;
+		boolean esUnaFechaHora = esUnaFecha && lexer.sgtToken().getType() == TokenType.hora;
+		boolean esUnBoolean = lexer.getToken().getType() == TokenType.boolFalse || lexer.getToken().getType() == TokenType.boolTrue;
 		
-		if( esUnaFecha )
+		if( esUnaFechaHora )
 		{
-			return paserFechaHora();
-			
+			return paserFechaHora();		
+		}
+		else if( esUnaFecha )
+		{
+			return paserFecha();		
 		}
 		else if( esUnMonto )
 		{
-			String economia = lexer.getToken().getValor();
-			lexer.accept();
-			Double cantidad = Double.parseDouble(lexer.getToken().getValor());
-			Moneda moneda;
-			
-			if(Moneda.isColon(economia))
-			{
-				moneda = new Colon(cantidad);
-			}
-			else if(Moneda.isDolar(economia))
-			{
-				moneda = new Dolar(cantidad);
-			}
-			else
-			{
-				throw new CommandException("Economia no soportada;");
-			}
-			
-			return moneda;
+			return parserMonto();
 		}
 		else if( esUnNumero )
 		{
-			return new NumericLiteral(Integer.parseInt(lexer.getToken().getValor()));
+			return parserNumero();
 		}
 		else if( esUnDecimal )
 		{
-			return new DecimalLiteral(Double.parseDouble(lexer.getToken().getValor()));
+			return parserDecimal();
 		}
 		else if( esUnLiteral )
 		{
-			return  new Literal(lexer.getToken().getValor());
+			return  parserLiteral();
+		}
+		else if( esUnBoolean )
+		{
+			return  parserBoolean();
 		}
 		else
 		{
-			throw new CommandException("El comando no existe.");
+			throw new CommandException("El tipo de dato no existe.");
 		}
+	}
+
+	private Boolean parserBoolean() {
+		Boolean literal = new Boolean(java.lang.Boolean.parseBoolean(lexer.getToken().getValor()));
+		lexer.accept();
+		return literal;
+	}
+
+	private Hilera parserLiteral() {
+		Hilera literal = new Hilera(lexer.getToken().getValor());
+		lexer.accept();
+		return literal;
+	}
+
+	private Decimal parserDecimal() {
+		Decimal decimalLiteral = new Decimal(Double.parseDouble(lexer.getToken().getValor()));
+		lexer.accept();
+		return decimalLiteral;
+	}
+
+	private Numeric parserNumero() {
+		Numeric numericLiteral = new Numeric(Integer.parseInt(lexer.getToken().getValor()));
+		lexer.accept();
+		return numericLiteral;
+	}
+
+	private Moneda parserMonto() {
+		String economia = lexer.getToken().getValor();
+		lexer.accept();
+		Double cantidad = Double.parseDouble(lexer.getToken().getValor());
+		Moneda moneda;
+		
+		if(Moneda.isColon(economia))
+		{
+			moneda = new Colon(cantidad);
+		}
+		else if(Moneda.isDolar(economia))
+		{
+			moneda = new Dolar(cantidad);
+		}
+		else
+		{
+			throw new CommandException("Economia no soportada;");
+		}
+		lexer.accept();
+		return moneda;
 	}
 }

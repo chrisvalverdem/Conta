@@ -1,11 +1,11 @@
 package com.ts.libraries;
 
 
-public class Literal extends Objecto{
+public class Hilera extends Objecto{
 
 	public String valor;
 	
-	public Literal(String valor) {
+	public Hilera(String valor) {
 		this.valor = valor;
 	}
 	
@@ -15,7 +15,7 @@ public class Literal extends Objecto{
 		return this.valor;
 	}
 
-	public boolean esIgual(Literal literal) {
+	public boolean esIgual(Hilera literal) {
 		return valor.equals(literal.valor);
 	}
 	
@@ -24,7 +24,7 @@ public class Literal extends Objecto{
 		return valor;
 	}
 	
-	public boolean equals(Literal literal) {
+	public boolean equals(Hilera literal) {
 		return literal.esIgual(literal);
 	}
 }

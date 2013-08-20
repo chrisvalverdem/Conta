@@ -6,64 +6,60 @@ import com.ts.db.Repo;
 
 public class Compania extends Objecto{
 	
-	String nombre;
-	String cedulaJuridica;
-    String tipoMoneda;  
+	Hilera nombre;
+	Hilera cedulaJuridica;
+	Hilera tipoMoneda;  
     public static ArrayList<Colaborador> listaColaboradores= new ArrayList<Colaborador>();
+    public static ArrayList<RangoRenta> intervalosRenta = new ArrayList<RangoRenta>();
   
-    public Compania(String cedulaJuridica, String nombre,String tipoMoneda) {
+    public Compania(Hilera cedulaJuridica, Hilera nombre, Hilera tipoMoneda) {
     	this.cedulaJuridica=cedulaJuridica;  
     	this.nombre = nombre;    
     	this.tipoMoneda = tipoMoneda;
 	}    
    
-    public String getTipoMoneda() {
+    public Hilera getTipoMoneda() {
 		return tipoMoneda;
 	}
 
-	public void setTipoMoneda(String tipoMoneda) {
+	public void setTipoMoneda(Hilera tipoMoneda) {
 		this.tipoMoneda = tipoMoneda;
 	}
 
-	public String getNombre() {
+    public Hilera getNombre() {
 		return nombre;
 	}
-    public void setNombre(String nombre) {
+    public void setNombre(Hilera nombre) {
 		this.nombre = nombre;
 	}	
-	public String getCedulaJuridica() {
+	public Hilera getCedulaJuridica() {
 		return cedulaJuridica;
 	}
-	public void setCedulaJuridica(String cedulaJuridica) {
+	public void setCedulaJuridica(Hilera cedulaJuridica) {
 		this.cedulaJuridica = cedulaJuridica;
 	}	   
-	@Override
-	public void save(String variableInstancia)
-	{
-		boolean revisarSiLaCompanniaYaExiste = get(cedulaJuridica) != null;
-		
-		if(revisarSiLaCompanniaYaExiste){
-			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		
-		}	
-		
-		Repo.save(variableInstancia, this );
-		System.out.println("La Compannia: " + nombre + " se agrego exitosamente");
+	public ArrayList<RangoRenta> getIntervalosRenta() {
+		return intervalosRenta;
+	}
+	public void setIntervalosRenta(ArrayList<RangoRenta> intervalosRenta) {
+		Compania.intervalosRenta = intervalosRenta;
 	}
 	
-	public static Compania get(String cedula)	{			
+	public Compania get(Hilera cedula)
+	{			
 		ArrayList<Object> lista = Repo.get(Compania.class);
 		for(Object exp : lista)
 		{
 			Compania comp = (Compania)exp;
-			if(comp.getCedulaJuridica().equals(cedula))
+			if(comp.getCedulaJuridica().esIgual(cedula))
 	    	{
 	    		return comp;
 	    	}
 		}	
 		return null;
 	}
-	public static void AgregarCompannia(String instance, String cedulaJuridica,String nombre, String tipoMoneda) throws CommandException {
-		boolean revisarSiLaCompanniaYaExiste = getCompannia(cedulaJuridica) != null;
+	public void save(Hilera instance) throws CommandException {
+		boolean revisarSiLaCompanniaYaExiste = get(cedulaJuridica) != null;
 		
 		if(revisarSiLaCompanniaYaExiste){
 			throw new CommandException("La Compannia " + nombre+ " tiene el mismo numero de cedula juridica.");		

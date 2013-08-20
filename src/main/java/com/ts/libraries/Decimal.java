@@ -1,11 +1,10 @@
 package com.ts.libraries;
 
 
-public class NumericLiteral extends Objecto {
+public class Decimal extends Objecto {
+	public double valor;
 	
-	public int valor;
-	
-	public NumericLiteral(int valor)
+	public Decimal(double valor)
 	{
 		this.valor = valor;
 	}

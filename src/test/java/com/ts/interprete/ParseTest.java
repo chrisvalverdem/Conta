@@ -1,54 +1,88 @@
 package com.ts.interprete;
 
+<<<<<<< Updated upstream
+=======
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.ts.db.Repo;
+import com.ts.interprete.Token.TokenType;
+import com.ts.interprete.libraries.Comando;
+import com.ts.interprete.libraries.CreateComando;
+import com.ts.interprete.libraries.Expression;
+import com.ts.interprete.libraries.ShowComando;
+import com.ts.libraries.Colaborador;
+import com.ts.libraries.Compania;
+import com.ts.libraries.Hilera;
+
+>>>>>>> Stashed changes
 public class ParseTest {
 	/*
 	@Test
-	public void showTest()
+	public void showTest() throws Exception
 	{
 		Parser paser;
-		Expression result;
+		Comando result;
 		
-		paser = new Parser("show 1");
-		result = paser.process();
-		Assert.assertEquals("1", result.toShow());
+		/*paser = new Parser("01/01/2013 09:45:10 show 1;");
+		result = paser.comandoProcess();
+		Assert.assertEquals("1", result.getExpression().objecto.show());
 
-		paser = new Parser("show \"Hola Mmundo\"");
-		result = paser.process();
-		Assert.assertEquals("Hola Mmundo", result.toShow());
+		paser = new Parser("01/01/2013 09:45:10 show \"Hola Mmundo\";");
+		result = paser.comandoProcess();
+		Assert.assertEquals("Hola Mmundo", result.getExpression().objecto.show());
 		
-		paser = new Parser("show 'Hola Mmundo'");
-		result = paser.process();
-		Assert.assertEquals("Hola Mmundo", result.toShow());
+		paser = new Parser("01/01/2013 09:45:10 show 'Hola Mmundo';");
+		result = paser.comandoProcess();
+		Assert.assertEquals("Hola Mmundo", result.getExpression().objecto.show());
 		
-		paser = new Parser("show $45.34");
-		result = paser.process();
-		Assert.assertEquals("$45.34", result.toShow());
+		paser = new Parser("01/01/2013 09:45:10 show $45.34;");
+		result = paser.comandoProcess();
+		Assert.assertEquals("$45.34", result.getExpression().objecto.show());
 		
-		paser = new Parser("show 1/1/2013");
-		result = paser.process();
-		Assert.assertEquals("01/01/2013", result.toShow());
+		paser = new Parser("01/01/2013 09:45:10 show 1/1/2013;");
+		result = paser.comandoProcess();
+		Assert.assertEquals("01/01/2013", result.getExpression().objecto.show());
 		
-		paser = new Parser("show 1/1/2013 9:45:10");
-		result = paser.process();
-		Assert.assertEquals("01/01/2013 09:45:10", result.toShow());
+		paser = new Parser("01/01/2013 09:45:10 show 1/1/2013 9:45:10;");
+		result = paser.comandoProcess();
+		Assert.assertEquals("01/01/2013 09:45:10", result.getExpression().objecto.show());*/
 		
 	}
 	
 	@Test
-	public void createColaradorTest()
+	public void createColaradorTest() throws Exception
 	{
 		Parser paser;
-		Variable result;
-			
-		paser = new Parser("cguillen = Colaborador(\"cristian\", 12, 12)");
-		result = (Variable)paser.process();
-		Assert.assertEquals("Colaborador", result.getComando());
-		Assert.assertEquals("cguillen", result.getNombreInstancia());
-		Assert.assertEquals(""+result.getParams().size(), "3" );
-		Assert.assertEquals(result.getParams().get(0).toShow(), "cristian");
-		Assert.assertEquals(result.getParams().get(1).toShow(), "12");
-		Assert.assertEquals(result.getParams().get(2).toShow(), "12");
+		Comando result;
 		
+		paser = new Parser("01/01/2013 09:45:10 ts = Compania(\"j456\", \"el nombre de prueba\");");
+		result = (CreateComando)paser.comandoProcess();
+		result.execute();
+		
+		Assert.assertEquals("j456", ((Compania)result.getExpression().objecto).getCedulaJuridica().valor);
+		Assert.assertEquals("el nombre de prueba", ((Compania)result.getExpression().objecto).getNombre().valor);
+		Assert.assertEquals(""+Repo.get(Compania.class).size(), ""+1);
+		
+		paser = new Parser("01/01/2013 09:45:10 cecropia = Compania(\"233243\", \"Cecropia\");");
+		result = (CreateComando)paser.comandoProcess();
+		result.execute();
+		
+		Assert.assertEquals("233243", ((Compania)result.getExpression().objecto).getCedulaJuridica().valor);
+		Assert.assertEquals("Cecropia", ((Compania)result.getExpression().objecto).getNombre().valor);
+		Assert.assertEquals(Repo.get(Compania.class).size(), 2);
+		
+		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
+		result = (ShowComando)paser.comandoProcess();
+		result.execute();
+		
+		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
+		result = (ShowComando)paser.comandoProcess();
+		result.execute();
+		
+		paser = new Parser("03/07/2013 20:53:10  cecropia = Colaborador('Jahzeel', '1-1111-1111', 15/12/1988, 08/07/2013, true, '8445-1544', 0, $1000)");
+		result = (CreateComando)paser.comandoProcess();
+		result.execute();		
 	}
 */
 }
