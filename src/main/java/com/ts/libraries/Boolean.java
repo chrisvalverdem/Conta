@@ -8,4 +8,9 @@ public class Boolean extends Objecto{
 		this.valor = valor;
 	}
 	
+	public boolean esIgual(Objecto bool)
+	{
+		return this.valor == ((Boolean)bool).valor;
+	}
+	
 }
