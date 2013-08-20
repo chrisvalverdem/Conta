@@ -175,7 +175,7 @@ public class InterpreteMandatos {
 		  	return new Comando(fecha, hora, instance, comando, metodo, parametros);
 	} 	
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		new InterpreteMandatos();
 	} 	
 	

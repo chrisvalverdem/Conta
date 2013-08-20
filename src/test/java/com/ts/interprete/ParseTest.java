@@ -1,7 +1,5 @@
 package com.ts.interprete;
 
-<<<<<<< Updated upstream
-=======
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,41 +13,8 @@ import com.ts.libraries.Colaborador;
 import com.ts.libraries.Compania;
 import com.ts.libraries.Hilera;
 
->>>>>>> Stashed changes
 public class ParseTest {
-	/*
-	@Test
-	public void showTest() throws Exception
-	{
-		Parser paser;
-		Comando result;
 		
-		/*paser = new Parser("01/01/2013 09:45:10 show 1;");
-		result = paser.comandoProcess();
-		Assert.assertEquals("1", result.getExpression().objecto.show());
-
-		paser = new Parser("01/01/2013 09:45:10 show \"Hola Mmundo\";");
-		result = paser.comandoProcess();
-		Assert.assertEquals("Hola Mmundo", result.getExpression().objecto.show());
-		
-		paser = new Parser("01/01/2013 09:45:10 show 'Hola Mmundo';");
-		result = paser.comandoProcess();
-		Assert.assertEquals("Hola Mmundo", result.getExpression().objecto.show());
-		
-		paser = new Parser("01/01/2013 09:45:10 show $45.34;");
-		result = paser.comandoProcess();
-		Assert.assertEquals("$45.34", result.getExpression().objecto.show());
-		
-		paser = new Parser("01/01/2013 09:45:10 show 1/1/2013;");
-		result = paser.comandoProcess();
-		Assert.assertEquals("01/01/2013", result.getExpression().objecto.show());
-		
-		paser = new Parser("01/01/2013 09:45:10 show 1/1/2013 9:45:10;");
-		result = paser.comandoProcess();
-		Assert.assertEquals("01/01/2013 09:45:10", result.getExpression().objecto.show());*/
-		
-	}
-	
 	@Test
 	public void createColaradorTest() throws Exception
 	{
@@ -84,5 +49,5 @@ public class ParseTest {
 		result = (CreateComando)paser.comandoProcess();
 		result.execute();		
 	}
-*/
+
 }
