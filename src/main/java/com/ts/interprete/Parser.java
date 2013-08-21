@@ -41,11 +41,11 @@ public class Parser {
 	
 	protected Comando comandoProcess() throws Exception
 	{
-		FechaHora fecha = paserFechaHora();
+		paserFechaHora();
 		
 		boolean esUnComandoShow = lexer.getToken().getType() == TokenType.show;
-		boolean esUnComandoCreate= lexer.getToken().getType() == TokenType.variable && lexer.sgtToken().getType() == TokenType.igual ;
-		boolean esUnComandoCall= lexer.getToken().getType() == TokenType.variable && lexer.sgtToken().getType() == TokenType.punto ;
+		boolean esUnComandoCreate= lexer.getToken().getType() == TokenType.id && lexer.sgtToken().getType() == TokenType.igual ;
+		boolean esUnComandoCall= lexer.getToken().getType() == TokenType.id && lexer.sgtToken().getType() == TokenType.punto ;
 		
 		if( esUnComandoShow )
 		{
@@ -79,9 +79,9 @@ public class Parser {
 		lexer.accept();
 		ArrayList<Objecto> params = parseParametros();
 	
-		Class clase = Class.forName(Objecto.class.getPackage().getName()+"."+claseVarible);
+		Class<?> clase = Class.forName(Objecto.class.getPackage().getName()+"."+claseVarible);
 
-		Class[] firmaConstructor = new Class[params.size()];
+		Class<?>[] firmaConstructor = new Class[params.size()];
 		Object[] firmaConstructorValores = new Object[params.size()];
 		
 		int index =0;
@@ -93,7 +93,7 @@ public class Parser {
 			index++;
 		}
 		
-		Constructor constructor = clase.getConstructor(firmaConstructor);
+		Constructor<?> constructor = clase.getConstructor(firmaConstructor);
 		Objecto objecto = (Objecto)constructor.newInstance(firmaConstructorValores);
 		Expression exp = new Expression(objecto);
 		
@@ -112,7 +112,7 @@ public class Parser {
 	}
 	private Objecto paserVariable() throws Exception {
 		
-		if(lexer.getToken().getType() != TokenType.variable)
+		if(lexer.getToken().getType() != TokenType.id)
 		{
 			throw new CommandException("Se esperaba un nombre de variable.");
 		}
@@ -122,7 +122,7 @@ public class Parser {
 		}
 		String key = lexer.getToken().getValor();
 		Objecto objecto = Repo.getData(key);
-		lexer.accept(TokenType.variable);	
+		lexer.accept(TokenType.id);	
 		Method method ;
 		Objecto resultado = null; 
 		
@@ -130,21 +130,20 @@ public class Parser {
 		{
 			lexer.accept(TokenType.punto);
 			String methodName = lexer.getToken().getValor();
-			lexer.accept(TokenType.variable);
+			lexer.accept(TokenType.id);
 			boolean tieneParametros = lexer.sgtToken().getType() != TokenType.rParentesis;	
 						
 			if( tieneParametros )
 			{
 				ArrayList<Objecto> params = parseParametros();
 
-				Class[] firma = new Class[params.size()];
+				Class<?>[] firma = new Class[params.size()];
 				Object[] firmaValores = new Objecto[params.size()];
 				int index =0;
 				for( Objecto parameter: params )
 				{
 					firma[index] = parameter.getClass();
 					firmaValores[index] = parameter;
-					System.out.println(firma[index].getName()+"   "+firmaValores[index].getClass());
 					index++;
 				}
 				
@@ -153,9 +152,7 @@ public class Parser {
 			}
 			else
 			{
-				method = objecto.
-						getClass().
-						getMethod(methodName);
+				method = objecto.getClass().getMethod(methodName);
 				resultado = (Objecto) method.invoke(objecto);
 			}
 		}
@@ -230,7 +227,6 @@ public class Parser {
 
 	private Objecto parseLiteral() throws Exception
 	{
-		boolean sonParametros= lexer.getToken().getType() == TokenType.lParentesis;
 		boolean esUnNumero = lexer.getToken().getType() == TokenType.numero;
 		boolean esUnDecimal = lexer.getToken().getType() == TokenType.decimal;
 		boolean esUnLiteral = lexer.getToken().getType() == TokenType.literal;

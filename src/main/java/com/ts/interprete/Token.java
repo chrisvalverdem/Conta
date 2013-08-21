@@ -4,7 +4,7 @@ public class Token {
 
 	private TokenType type;
 	private String valor;
-	 public static enum TokenType {
+	public static enum TokenType {
 		 	boolTrue("true"),
 		 	boolFalse("false"),
 		 	monto("[$]|[¢]"),
@@ -25,7 +25,7 @@ public class Token {
 	        show("show"),
 	        spacio("[ \t\f\r\n]+", true),
 	        literal("\"(.*?)\"|\'(.*?)\'"),
-	        variable("[\\w]+");//TODO este ultimo es un id, y es un objeto de conta, para usarlo de variable de instancia
+	        id("[\\w]+");
 	        
 	        public String pattern;
 	        public boolean skip= false ;

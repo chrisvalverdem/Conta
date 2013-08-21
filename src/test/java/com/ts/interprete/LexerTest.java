@@ -89,13 +89,13 @@ public class LexerTest {
 	{
 		lexer = new Lexer("cguillen.getNombre();");
 		Assert.assertEquals("cguillen", lexer.getToken().getValor());
-		Assert.assertEquals(TokenType.variable.name(), lexer.getToken().getType().name());
+		Assert.assertEquals(TokenType.id.name(), lexer.getToken().getType().name());
 		lexer.accept();
 		Assert.assertEquals(".", lexer.getToken().getValor());
 		Assert.assertEquals(TokenType.punto.name(), lexer.getToken().getType().name());
 		lexer.accept();
 		Assert.assertEquals("getNombre", lexer.getToken().getValor());
-		Assert.assertEquals(TokenType.variable.name(), lexer.getToken().getType().name());
+		Assert.assertEquals(TokenType.id.name(), lexer.getToken().getType().name());
 		lexer.accept();
 		Assert.assertEquals("(", lexer.getToken().getValor());
 		Assert.assertEquals(TokenType.lParentesis.name(), lexer.getToken().getType().name());
@@ -133,13 +133,13 @@ public class LexerTest {
 	{
 		lexer = new Lexer("cguillen = colaborador(\"cristian\", 12);");
 		Assert.assertEquals("cguillen", lexer.getToken().getValor());
-		Assert.assertEquals(TokenType.variable.name(), lexer.getToken().getType().name());
+		Assert.assertEquals(TokenType.id.name(), lexer.getToken().getType().name());
 		lexer.accept();
 		Assert.assertEquals("=", lexer.getToken().getValor());
 		Assert.assertEquals(TokenType.igual.name(), lexer.getToken().getType().name());
 		lexer.accept();
 		Assert.assertEquals("colaborador", lexer.getToken().getValor());
-		Assert.assertEquals(TokenType.variable.name(), lexer.getToken().getType().name());
+		Assert.assertEquals(TokenType.id.name(), lexer.getToken().getType().name());
 		lexer.accept();
 		Assert.assertEquals("(", lexer.getToken().getValor());
 		Assert.assertEquals(TokenType.lParentesis.name(), lexer.getToken().getType().name());
