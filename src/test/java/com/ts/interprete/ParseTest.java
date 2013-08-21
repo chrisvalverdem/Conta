@@ -50,7 +50,7 @@ public class ParseTest {
 		result = (CreateComando)paser.comandoProcess();
 		result.execute();	
 		
-		paser = new Parser("03/07/2013 20:53:10  jLopez.tomarVacaciones(15/12/1988);");
+		paser = new Parser("03/07/2013 20:53:10  jLopez.agregarVacaciones(15/12/1988);");
 		result = (CallComando)paser.comandoProcess();
 		result.execute();
 		
