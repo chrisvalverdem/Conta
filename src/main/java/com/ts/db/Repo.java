@@ -15,7 +15,7 @@ import com.ts.main.Sistema;
 
 public class Repo  {
 	
-	public static HashMap<String, Objecto> tablaDeSimbolos = new HashMap<String, Objecto>();
+	public static HashMap<Hilera, Objecto> tablaDeSimbolos = new HashMap<Hilera, Objecto>();
 	public static ArrayList<Double> intervalosRenta = new ArrayList<Double>();
 	
 
@@ -28,14 +28,14 @@ public class Repo  {
 			}					
 		}	
 		
-		tablaDeSimbolos.put(string.valor, object);
+		tablaDeSimbolos.put(string, object);
 	}
 
 	public static Objecto getData(String key)
 	{
 		return tablaDeSimbolos.get(key);
 	}
-	public static HashMap<String, Objecto> getData()
+	public static HashMap<Hilera, Objecto> getData()
 	{
 		return tablaDeSimbolos;
 	}
@@ -44,9 +44,9 @@ public class Repo  {
 	}
 	public static ArrayList<Object> get(Class<?> clase)
 	{			
-		String key;
+		Hilera key;
 		Object value;
-		Iterator<String> iterator = Repo.getData().keySet().iterator();
+		Iterator<Hilera> iterator = Repo.getData().keySet().iterator();
 		ArrayList<Object> resultado = new ArrayList<Object>();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
@@ -152,16 +152,16 @@ public class Repo  {
 		return new RangoRenta(intervaloMenor, intervaloMayor, porciento, identificador);
 	}
  
-	public static void cambioRangoRenta(String instancia, RangoRenta rango) throws CommandException {
-		String key;
+	public static void cambioRangoRenta(Hilera instancia, RangoRenta rango) throws CommandException {
+		Hilera key;
 		Objecto value;
-		Iterator<String> iterator = tablaDeSimbolos.keySet().iterator();	
+		Iterator<Hilera> iterator = tablaDeSimbolos.keySet().iterator();	
 		while (iterator.hasNext()){
 		    key = iterator.next();
 		    value = tablaDeSimbolos.get(key);
 		    boolean esUnaCompannia = value instanceof Compania; 
 		    if(esUnaCompannia){
-		    	if(key.equalsIgnoreCase(instancia)){	  
+		    	if(key.esIgual(instancia)){	  
 			    	switch(rango.getIdentificador().toLowerCase()){
 			    	case "case0":
 			    		Hacienda.intervalosRenta.add(0, rango);

@@ -54,9 +54,9 @@ public class Edificio extends Objecto{
 	}
 	public static int getTamannoEdificio(){
 		int total = 0;
-		String key;
+		Hilera key;
 		Objecto value;
-		Iterator<String> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value = Repo.tablaDeSimbolos.get(key);
@@ -69,9 +69,9 @@ public class Edificio extends Objecto{
 		return total;
 	}
 	public static Edificio getEdificio(Hilera nombre){			
-		String key;
+		Hilera key;
 		Objecto value;
-		Iterator<String> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value = Repo.tablaDeSimbolos.get(key);

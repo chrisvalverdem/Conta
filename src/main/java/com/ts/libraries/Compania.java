@@ -68,20 +68,20 @@ public class Compania extends Objecto{
 			Repo.save(instance, nuevaCompannia );
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
-	public static Compania getCompanniaPorInstancea(String instancia) throws CommandException{		
-		String key;
+	public static Compania getCompanniaPorInstancea(Hilera instancia) throws CommandException{		
+		Hilera key;
 		Objecto value;
 		boolean esxisteInstancea=false;
 		Compania compa =null;
 
-		Iterator<String> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value = Repo.tablaDeSimbolos.get(key);
 		    boolean esUnaCompannia = value instanceof Compania; 
 		    if(esUnaCompannia)
 		    {		    	
-		    	if(key.equalsIgnoreCase(instancia))
+		    	if(key.esIgual(instancia))
 		    	{
 		    		esxisteInstancea=true;
 		    		compa = (Compania)value;
@@ -103,9 +103,9 @@ public class Compania extends Objecto{
 	}
 	public static int getTamannoCompannia(){
 		int total = 0;
-		String key;
+		Hilera key;
 		Objecto value;
-		Iterator<String> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value =  Repo.tablaDeSimbolos.get(key);
@@ -117,10 +117,10 @@ public class Compania extends Objecto{
 		}	
 		return total;
 	}
-	public static Compania getCompannia(String cedulaJuridica) throws CommandException {
-		String key;
+	public static Compania getCompannia(Hilera cedulaJuridica) throws CommandException {
+		Hilera key;
 		Objecto value;
-		Iterator<String> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
 		    value = Repo.tablaDeSimbolos.get(key);
@@ -136,7 +136,7 @@ public class Compania extends Objecto{
 		}	
 		return null;			
 	}
-	public static void agregaColaborardorCompannia(String instancia, String persona) throws CommandException{
+	public static void agregaColaborardorCompannia(Hilera instancia, Hilera persona) throws CommandException{
 		Compania compania = getCompanniaPorInstancea(instancia);
 		Colaborador colaborador = Colaborador.getColaboradorEnCompannia(compania, persona);
 		

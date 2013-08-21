@@ -10,7 +10,7 @@ public class Boolean extends Objecto{
 	
 	public boolean esIgual(Objecto bool)
 	{
-		return this.valor == ((Boolean)bool).valor;
+		return bool instanceof Boolean && this.valor == ((Boolean)bool).valor;
 	}
 	
 }

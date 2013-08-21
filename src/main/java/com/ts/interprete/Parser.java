@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.ts.db.Repo;
 import com.ts.interprete.Token.TokenType;
+import com.ts.interprete.libraries.CallComando;
 import com.ts.interprete.libraries.CreateComando;
 import com.ts.interprete.libraries.Expression;
 import com.ts.interprete.libraries.ShowComando;
@@ -44,6 +45,7 @@ public class Parser {
 		
 		boolean esUnComandoShow = lexer.getToken().getType() == TokenType.show;
 		boolean esUnComandoCreate= lexer.getToken().getType() == TokenType.variable && lexer.sgtToken().getType() == TokenType.igual ;
+		boolean esUnComandoCall= lexer.getToken().getType() == TokenType.variable && lexer.sgtToken().getType() == TokenType.punto ;
 		
 		if( esUnComandoShow )
 		{
@@ -53,12 +55,22 @@ public class Parser {
 		{
 			return parseCommandCreate();
 		}
+		else if( esUnComandoCall )
+		{
+			return parseCommandCall();
+		}
 		else
 		{
 			throw new CommandException("El comando no existe.");
 		}
 	}
 	
+	private Comando parseCommandCall() throws Exception {	
+		Objecto objecto = paserVariable();
+		Expression exp = new Expression(objecto);
+		return new CallComando(exp);
+	}
+
 	private CreateComando parseCommandCreate() throws Exception {
 		String nombreVarible = lexer.getToken().getValor();
 		lexer.accept();
@@ -81,7 +93,7 @@ public class Parser {
 			index++;
 		}
 		
-		Constructor constructor =/* clase.getConstructors()[0];*/clase.getConstructor(firmaConstructor);
+		Constructor constructor = clase.getConstructor(firmaConstructor);
 		Objecto objecto = (Objecto)constructor.newInstance(firmaConstructorValores);
 		Expression exp = new Expression(objecto);
 		
@@ -109,7 +121,7 @@ public class Parser {
 			throw new CommandException("Se esperaba un metodo.");
 		}
 		String key = lexer.getToken().getValor();
-		Objecto objecto = Repo.getData(key);
+		Objecto objecto = Repo.tablaDeSimbolos.get(new Hilera(key));
 		lexer.accept(TokenType.variable);	
 		Method method ;
 		Objecto resultado = null; 
@@ -141,7 +153,9 @@ public class Parser {
 			}
 			else
 			{
-				method = objecto.getClass().getMethod(methodName);
+				method = objecto.
+						getClass().
+						getMethod(methodName);
 				resultado = (Objecto) method.invoke(objecto);
 			}
 		}

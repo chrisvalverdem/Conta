@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 
 import com.ts.db.Repo;
 import com.ts.interprete.Token.TokenType;
+import com.ts.interprete.libraries.CallComando;
 import com.ts.interprete.libraries.Comando;
 import com.ts.interprete.libraries.CreateComando;
 import com.ts.interprete.libraries.Expression;
@@ -21,7 +22,7 @@ public class ParseTest {
 		Parser paser;
 		Comando result;
 		
-		paser = new Parser("01/01/2013 09:45:10 ts = Compania(\"j456\", \"el nombre de prueba\");");
+		paser = new Parser("01/01/2013 09:45:10 ts = Compania(\"j456\", \"el nombre de prueba\", '$');");
 		result = (CreateComando)paser.comandoProcess();
 		result.execute();
 		
@@ -29,7 +30,7 @@ public class ParseTest {
 		Assert.assertEquals("el nombre de prueba", ((Compania)result.getExpression().objecto).getNombre().valor);
 		Assert.assertEquals(""+Repo.get(Compania.class).size(), ""+1);
 		
-		paser = new Parser("01/01/2013 09:45:10 cecropia = Compania(\"233243\", \"Cecropia\");");
+		paser = new Parser("01/01/2013 09:45:10 cecropia = Compania(\"233243\", \"Cecropia\", '$');");
 		result = (CreateComando)paser.comandoProcess();
 		result.execute();
 		
@@ -37,17 +38,23 @@ public class ParseTest {
 		Assert.assertEquals("Cecropia", ((Compania)result.getExpression().objecto).getNombre().valor);
 		Assert.assertEquals(Repo.get(Compania.class).size(), 2);
 		
-		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
+	/*	paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
 		result = (ShowComando)paser.comandoProcess();
 		result.execute();
 		
 		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
 		result = (ShowComando)paser.comandoProcess();
-		result.execute();
+		result.execute();*/
 		
-		paser = new Parser("03/07/2013 20:53:10  cecropia = Colaborador('Jahzeel', '1-1111-1111', 15/12/1988, 08/07/2013, true, '8445-1544', 0, $1000)");
+		paser = new Parser("03/07/2013 20:53:10  jLopez = Colaborador('Jahzeel', '1-1111-1111', 15/12/1988, 08/07/2013, true, '8445-1544', 0, $1000)");
 		result = (CreateComando)paser.comandoProcess();
-		result.execute();		
+		result.execute();	
+		
+		paser = new Parser("03/07/2013 20:53:10  jLopez.tomarVacaciones(15/12/1988);");
+		result = (CallComando)paser.comandoProcess();
+		result.execute();
+		
+		
 	}
 
 }
