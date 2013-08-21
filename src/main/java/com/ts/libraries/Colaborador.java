@@ -28,7 +28,7 @@ public class Colaborador extends Objecto {
 	public HashMap<Mes, Moneda> salariosNetosPrimeraQuincena = new HashMap<Mes, Moneda>();
 	public HashMap<Mes, Moneda> salariosNetosSegundaQuincena = new HashMap<Mes, Moneda>();
 	
-	public Colaborador(Hilera nombre, Hilera cedula, Fecha fechaNacimiento, Fecha fechaIngreso, Boolean estado, Hilera telefono,  Numeric numeroHijos, Dolar salario) {			
+	public Colaborador(Hilera nombre, Hilera cedula, Fecha fechaNacimiento, Fecha fechaIngreso, Boolean estado, Hilera telefono,  Numeric numeroHijos, Moneda salario) {			
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.fechaNacimiento= fechaNacimiento;

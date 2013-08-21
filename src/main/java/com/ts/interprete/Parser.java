@@ -2,6 +2,7 @@ package com.ts.interprete;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import com.ts.db.Repo;
@@ -93,7 +94,22 @@ public class Parser {
 			index++;
 		}
 		
-		Constructor<?> constructor = clase.getConstructor(firmaConstructor);
+		int contructorAUsar = 0;
+		for(Constructor<?> constructor : clase.getConstructors())
+		{
+			boolean tieneElMismoNumeroDeArgumentos = constructor.getGenericParameterTypes().length == firmaConstructor.length;
+			if( tieneElMismoNumeroDeArgumentos )
+			{
+				break;
+			}
+			else
+			{
+				contructorAUsar ++;
+			}
+			//TODO Falta que se busque el contructor por la foirma usando las clases
+		}
+		
+		Constructor<?> constructor = clase.getConstructors()[contructorAUsar];// Constructor(firmaConstructor);
 		Objecto objecto = (Objecto)constructor.newInstance(firmaConstructorValores);
 		Expression exp = new Expression(objecto);
 		
@@ -124,7 +140,7 @@ public class Parser {
 		String key = lexer.getToken().getValor();
 		Objecto objecto = Repo.getData(key);
 		lexer.accept(TokenType.id);	
-		Method method ;
+		Method methodABuscar ;
 		Objecto resultado = null; 
 		
 		while(lexer.getToken().getType() == TokenType.punto)
@@ -148,13 +164,27 @@ public class Parser {
 					index++;
 				}
 				
-				method = objecto.getClass().getMethod (methodName, firma);
-				resultado = (Objecto) method.invoke(objecto, firmaValores);
+				int methodAUsar = 0;
+				for(Method method : objecto.getClass().getMethods())
+				{
+					boolean tieneElMismoNumeroDeArgumentos = method.getGenericParameterTypes().length == index;
+					if( tieneElMismoNumeroDeArgumentos )
+					{
+						break;
+					}
+					else
+					{
+						methodAUsar ++;
+					}
+					//TODO Falta que se busque el contructor por la forma usando las clases
+				}
+				methodABuscar =/* objecto.getClass().getMethods()[methodAUsar];*/ objecto.getClass().getMethod(methodName, firma);
+				resultado = (Objecto) methodABuscar.invoke(objecto, firmaValores);
 			}
 			else
 			{
-				method = objecto.getClass().getMethod(methodName);
-				resultado = (Objecto) method.invoke(objecto);
+				methodABuscar = objecto.getClass().getMethod(methodName);
+				resultado = (Objecto) methodABuscar.invoke(objecto);
 			}
 		}
 
