@@ -125,12 +125,12 @@ public class Colaborador extends Objecto {
 	}
 	
 	private static Compania getCommpanniaConBaseEnColaborador(Colaborador cola) throws CommandException{
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData().get(key);
 
 		    boolean esUnaCompannia = value instanceof Compania;
  
@@ -191,9 +191,9 @@ public class Colaborador extends Objecto {
 		}else{
 			throw new CommandException("No se reconocen montos de los intervalos de renta favor ingresarlos primero");
 		}
-		if(Repo.tablaDeSimbolos.containsKey(instancia)){ 
+		if(Repo.getData().containsKey(instancia.valor)){ 
 			
-			colaborador= (Colaborador) Repo.tablaDeSimbolos.get(instancia);
+			colaborador= (Colaborador) Repo.getData(instancia);
 			compannia= getCommpanniaConBaseEnColaborador(colaborador);		
 			salario= colaborador.getSalario();
 			cantidadHijos= colaborador.getCantidadHijos();
@@ -217,7 +217,7 @@ public class Colaborador extends Objecto {
 						System.out.println("La retencion del colaborador " + colaborador.getNombre() +" es de: "+salarioBruto.getSing().toString()+ montoRetencion);
 						retencion = Sistema.getMoneda(salarioBruto.getSing().toString()+ montoRetencion);
 						colaborador.retencionesFuentes.put(fecha, retencion);
-						Repo.tablaDeSimbolos.put(instancia, colaborador);
+						Repo.save(instancia, colaborador);
 						
 						System.out.println("Se calculo la retencion de manera exitosa");   					
 					}else if(salarioBruto.getMonto()> case1.getIntervaloInferior().getMonto() && salarioBruto.getMonto() < case1.getIntervaloSuperior().getMonto()){
@@ -245,7 +245,7 @@ public class Colaborador extends Objecto {
 						System.out.println("La retencion del colaborador " + colaborador.getNombre() +" es de: "+salarioBruto.getSing().toString()+ montoRetencion);
 						retencion = Sistema.getMoneda(salarioBruto.getSing().toString()+ montoRetencion);
 						colaborador.retencionesFuentes.put(fecha, retencion);
-						Repo.tablaDeSimbolos.put(instancia, colaborador);
+						Repo.save(instancia, colaborador);
 						
 						System.out.println("Se calculo la retencion de manera exitosa"); 
 					   }else if(salarioBruto.getMonto()> case2.getIntervaloInferior().getMonto() && salarioBruto.getMonto() < case2.getIntervaloSuperior().getMonto()){
@@ -276,7 +276,7 @@ public class Colaborador extends Objecto {
 						   System.out.println("La retencion del colaborador " + colaborador.getNombre() +" es de: "+salarioBruto.getSing().toString()+ montoRetencion);
 						   retencion = Sistema.getMoneda(salarioBruto.getSing().toString()+ montoRetencion);
 						   colaborador.retencionesFuentes.put(fecha, retencion);
-						   Repo.tablaDeSimbolos.put(instancia, colaborador);
+						   Repo.save(instancia, colaborador);
 						   
 						   System.out.println("Se calculo la retencion de manera exitosa");   
 					   }else{
@@ -291,12 +291,12 @@ public class Colaborador extends Objecto {
 	}
 	
 	public static Colaborador getColaborador(Hilera cedula){			
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnColaborador = value instanceof Colaborador; 
 		    if(esUnColaborador)
 		    {
@@ -311,20 +311,20 @@ public class Colaborador extends Objecto {
 	}
 	
 	public static Colaborador getColaboradorPorInstancea(Hilera instancia) throws CommandException{		
-		Hilera key;
+		String key;
 		Objecto value;
 		boolean esxisteInstancea=false;
 		Colaborador cola=null;
 		
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnColaborador = value instanceof Colaborador; 
 		    
 		    if(esUnColaborador)
 		    {		    	
-		    	if(key.esIgual(instancia))
+		    	if(key.equals(instancia))
 		    	{
 		    		esxisteInstancea=true;
 		    		cola = (Colaborador)value; 
@@ -339,12 +339,12 @@ public class Colaborador extends Objecto {
 	
 	public static int getTamannoColaborador(){
 		int total = 0;
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnColaborador= value instanceof Colaborador; 
 		    if(esUnColaborador)
 		    {
@@ -413,8 +413,8 @@ public class Colaborador extends Objecto {
 	public static String mostrarSalario(String persona) throws CommandException{
 	Colaborador colaboradorEncontrado= null;
 	
-	   if(Repo.tablaDeSimbolos.containsKey(persona)){   
-		   colaboradorEncontrado= (Colaborador) Repo.tablaDeSimbolos.get(persona);
+	   if(Repo.getData().containsKey(persona)){   
+		   colaboradorEncontrado= (Colaborador) Repo.getData(persona);
 		   return("El Colaborador: " + colaboradorEncontrado.getNombre() + " posee un salario de " + colaboradorEncontrado.getSalario().getSing() +colaboradorEncontrado.getSalario().getMonto());
 	   }else{
 		   throw new CommandException("El Colaborador " + persona + " no existe.");
@@ -423,8 +423,8 @@ public class Colaborador extends Objecto {
 	
 	public static void aumentarSalario(Hilera persona, Moneda nuevoSalario) throws CommandException{
 		Colaborador colaborador= null;
-			   if(Repo.tablaDeSimbolos.containsKey(persona)){   
-				   colaborador= (Colaborador) Repo.tablaDeSimbolos.get(persona);
+			   if(Repo.getData().containsKey(persona)){   
+				   colaborador= (Colaborador) Repo.getData(persona);
 		
 				   if(!(colaborador.getSalario().getClass().equals(nuevoSalario.getClass()))){
 						   throw new CommandException("No se reconocen operaciones entre montos de diferente tipo de moneda");  
@@ -436,7 +436,7 @@ public class Colaborador extends Objecto {
 				   throw new CommandException("El Colaborador " + persona + " no existe.Imposible modificar Salario");
 			   } 
 		   colaborador.setSalario(nuevoSalario);
-		   Repo.tablaDeSimbolos.put(persona, colaborador);
+		   Repo.save(persona, colaborador);
 		   System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
 	} 
 	
@@ -467,8 +467,8 @@ public class Colaborador extends Objecto {
 		String mens ="El colaborador presenta las siguientes fechas de vacaciones :" + "\n";
 		ArrayList<Fecha> fechasAlmacenadas;
 		int cont =1;
-			   if(Repo.tablaDeSimbolos.containsKey(persona)){   
-				   colaboradorEncontrado= (Colaborador) Repo.tablaDeSimbolos.get(persona);
+			   if(Repo.getData().containsKey(persona)){   
+				   colaboradorEncontrado= (Colaborador) Repo.getData(persona);
 				   fechasAlmacenadas = colaboradorEncontrado.getVacaciones();
 				  if(fechasAlmacenadas.size()<=0){
 					  throw new CommandException("El Colaborador " + persona + " no posee dias de vacaciones.");
@@ -493,8 +493,8 @@ public class Colaborador extends Objecto {
 		String salario="";
 		String deduc="";
 		String net="";
-			   if(Repo.tablaDeSimbolos.containsKey(persona)){   
-				   colaborador= (Colaborador) Repo.tablaDeSimbolos.get(persona);
+			   if(Repo.getData().containsKey(persona)){   
+				   colaborador= (Colaborador) Repo.getData(persona);
 				   salarioInicial= colaborador.getSalario();
 				   monto= salarioInicial.getMonto();
 				   deducciones = monto * porcientoDeduccion;
@@ -518,9 +518,9 @@ public class Colaborador extends Objecto {
 	
 	protected static void validarInstaciaEnLaTablaDeSimbolos(String instancia) throws CommandException  {
 		
-		boolean existeAlgunaInstancea = ! Repo.tablaDeSimbolos.isEmpty();
+		boolean existeAlgunaInstancea = ! Repo.getData().isEmpty();
 		if(existeAlgunaInstancea){
-			if(Repo.tablaDeSimbolos.containsKey(instancia)){			
+			if(Repo.getData().containsKey(instancia)){			
 				throw new CommandException("La instancia " + instancia+ " ya existe, cambiela por una diferente.");				
 			}					
 		}				

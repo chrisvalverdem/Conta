@@ -24,7 +24,4 @@ public class Hilera extends Objecto{
 		return valor;
 	}
 	
-	public boolean equals(Hilera literal) {
-		return literal.esIgual(literal);
-	}
 }

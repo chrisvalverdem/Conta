@@ -121,7 +121,7 @@ public class Parser {
 			throw new CommandException("Se esperaba un metodo.");
 		}
 		String key = lexer.getToken().getValor();
-		Objecto objecto = Repo.tablaDeSimbolos.get(new Hilera(key));
+		Objecto objecto = Repo.getData(key);
 		lexer.accept(TokenType.variable);	
 		Method method ;
 		Objecto resultado = null; 

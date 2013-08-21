@@ -69,19 +69,19 @@ public class Compania extends Objecto{
 			System.out.println("La Compañia: " + nombre + " se agrego exitosamente");	
 	}
 	public static Compania getCompanniaPorInstancea(Hilera instancia) throws CommandException{		
-		Hilera key;
+		String key;
 		Objecto value;
 		boolean esxisteInstancea=false;
 		Compania compa =null;
 
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnaCompannia = value instanceof Compania; 
 		    if(esUnaCompannia)
 		    {		    	
-		    	if(key.esIgual(instancia))
+		    	if(key.equals((instancia.valor)))
 		    	{
 		    		esxisteInstancea=true;
 		    		compa = (Compania)value;
@@ -103,12 +103,12 @@ public class Compania extends Objecto{
 	}
 	public static int getTamannoCompannia(){
 		int total = 0;
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value =  Repo.tablaDeSimbolos.get(key);
+		    value =  Repo.getData(key);
 		    boolean esUnaCompannia = value instanceof Compania; 
 		    if(esUnaCompannia)
 		    {
@@ -118,12 +118,12 @@ public class Compania extends Objecto{
 		return total;
 	}
 	public static Compania getCompannia(Hilera cedulaJuridica) throws CommandException {
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnaCompannia = value instanceof Compania; 
 		    if(esUnaCompannia)
 		    {

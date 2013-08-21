@@ -38,13 +38,13 @@ public class ParseTest {
 		Assert.assertEquals("Cecropia", ((Compania)result.getExpression().objecto).getNombre().valor);
 		Assert.assertEquals(Repo.get(Compania.class).size(), 2);
 		
-	/*	paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
+		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
 		result = (ShowComando)paser.comandoProcess();
 		result.execute();
 		
 		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");
 		result = (ShowComando)paser.comandoProcess();
-		result.execute();*/
+		result.execute();
 		
 		paser = new Parser("03/07/2013 20:53:10  jLopez = Colaborador('Jahzeel', '1-1111-1111', 15/12/1988, 08/07/2013, true, '8445-1544', 0, $1000)");
 		result = (CreateComando)paser.comandoProcess();

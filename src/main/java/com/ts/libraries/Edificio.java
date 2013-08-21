@@ -54,12 +54,12 @@ public class Edificio extends Objecto{
 	}
 	public static int getTamannoEdificio(){
 		int total = 0;
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnEdificio = value instanceof Edificio; 
 		    if(esUnEdificio)
 		    {
@@ -69,12 +69,12 @@ public class Edificio extends Objecto{
 		return total;
 	}
 	public static Edificio getEdificio(Hilera nombre){			
-		Hilera key;
+		String key;
 		Objecto value;
-		Iterator<Hilera> iterator = Repo.tablaDeSimbolos.keySet().iterator();
+		Iterator<String> iterator = Repo.getData().keySet().iterator();
 		while (iterator.hasNext()) {
 		    key = iterator.next();
-		    value = Repo.tablaDeSimbolos.get(key);
+		    value = Repo.getData(key);
 		    boolean esUnEdificio = value.getClass()== Edificio.class; 
 		    if(esUnEdificio)
 		    {
