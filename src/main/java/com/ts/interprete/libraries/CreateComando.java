@@ -22,7 +22,7 @@ public class CreateComando extends Comando{
 	@Override
 	public void execute()
 	{
-		expression.objecto.save(nombreInstancia);
+		expression.getObjecto().save(nombreInstancia);
 	}
 	
 	

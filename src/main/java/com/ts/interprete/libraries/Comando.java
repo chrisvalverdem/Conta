@@ -14,8 +14,6 @@ public abstract class Comando{
 
 	}
 	
-	
-	
 	public Expression getExpression() {
 		return expression;
 	}

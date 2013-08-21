@@ -9,7 +9,7 @@ public class ShowComando extends Comando{
 	@Override
 	public void execute()
 	{
-		System.out.println(expression.objecto.show());
+		System.out.println(expression.getObjecto().show());
 	}
 
 }

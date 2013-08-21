@@ -2,12 +2,17 @@ package com.ts.interprete;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import com.ts.db.Repo;
+import com.ts.interprete.Token.TokenType;
 import com.ts.interprete.libraries.CallComando;
 import com.ts.interprete.libraries.Comando;
 import com.ts.interprete.libraries.CreateComando;
+import com.ts.interprete.libraries.Expression;
 import com.ts.interprete.libraries.ShowComando;
+import com.ts.libraries.Colaborador;
 import com.ts.libraries.Compania;
+import com.ts.libraries.Hilera;
 
 public class ParseTest {
 		
@@ -21,16 +26,16 @@ public class ParseTest {
 		result = (CreateComando)paser.comandoProcess();
 		result.execute();
 		
-		Assert.assertEquals("j456", ((Compania)result.getExpression().objecto).getCedulaJuridica().valor);
-		Assert.assertEquals("el nombre de prueba", ((Compania)result.getExpression().objecto).getNombre().valor);
+		Assert.assertEquals("j456", ((Compania)result.getExpression().getObjecto()).getCedulaJuridica().valor);
+		Assert.assertEquals("el nombre de prueba", ((Compania)result.getExpression().getObjecto()).getNombre().valor);
 		Assert.assertEquals(""+Repo.get(Compania.class).size(), ""+1);
 		
 		paser = new Parser("01/01/2013 09:45:10 cecropia = Compania(\"233243\", \"Cecropia\", '$');");
 		result = (CreateComando)paser.comandoProcess();
 		result.execute();
 		
-		Assert.assertEquals("233243", ((Compania)result.getExpression().objecto).getCedulaJuridica().valor);
-		Assert.assertEquals("Cecropia", ((Compania)result.getExpression().objecto).getNombre().valor);
+		Assert.assertEquals("233243", ((Compania)result.getExpression().getObjecto()).getCedulaJuridica().valor);
+		Assert.assertEquals("Cecropia", ((Compania)result.getExpression().getObjecto()).getNombre().valor);
 		Assert.assertEquals(Repo.get(Compania.class).size(), 2);
 		
 		paser = new Parser("01/01/2013 09:45:10 show ts.getNombre();");

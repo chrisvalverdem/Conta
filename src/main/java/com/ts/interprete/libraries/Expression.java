@@ -4,7 +4,7 @@ import com.ts.libraries.Objecto;
 
 public class Expression {
 
-	public Objecto objecto;
+	private Objecto objecto;
 
 	public Expression(Objecto objecto) {
 		this.objecto = objecto;
@@ -13,8 +13,12 @@ public class Expression {
 	public Expression() {
 		this.objecto = null;
 	}
-	
-	
 
+	public Objecto getObjecto() {
+		return objecto;
+	}
 
+	public void setObjecto(Objecto objecto) {
+		this.objecto = objecto;
+	}
 }
