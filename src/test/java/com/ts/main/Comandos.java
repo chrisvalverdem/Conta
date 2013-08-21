@@ -519,10 +519,10 @@ public class Comandos  extends TestCase{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaMostrarRetencionesFuenteTest.txt");			
 		Colaborador colaborador;
 		
-		String comando1 ="10/08/2013 15:17, WRITE ybolannios= CREAR_COLABORADOR(Yoselyn Bolannios, 2-0357-0387, 15/12/1988, 08/07/1988, true, 8445-1544, 0, ¢600000)";
+		String comando1 ="10/08/2013 15:17:05  ybolannios= Colaborador('Yoselyn Bolannios', '2-0357-038', 15/12/1988, 08/07/1988, true, '8445-1544', 0, ¢600000)";
 		interpreteMandatos.ejecutaComando(comando1);	
 				
-		colaborador= Colaborador.get(new Hilera("2-0357-0387"));	
+		colaborador= Colaborador.getColaborador(new Hilera("2-0357-0387"));	
 
 		Assert.assertNotNull(colaborador);		
 		Assert.assertEquals(colaborador.getTamannoColaborador(), 27);
