@@ -74,20 +74,20 @@ public class Comandos  extends TestCase{
 		setErrorsFileOutput("agregarColaboradorTestErrores.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorTest.txt");
 		
-		String comando ="03/07/2013 20:53, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $1000)";
+		String comando ="03/07/2013 20:53:10  jahzeel= Colaborador('jahzeel', '1-1111-1111', 15/12/1988, 08/07/2013, true, '8445-1544', 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		Colaborador colaborador= Colaborador.get(new Hilera("1-1111-1111"));
+		Colaborador colaborador= Colaborador.getColaborador(new Hilera("1-1111-1111"));
 		
 		Assert.assertNotNull(colaborador);
-		Assert.assertEquals(colaborador.getNombre(), "Jahzeel");
+		Assert.assertEquals(colaborador.getNombre().toString().trim(), "jahzeel");
 		Assert.assertEquals(colaborador.getTamannoColaborador(), 1);
 		
-		comando ="04/07/2013 22:14, Write Cguillen= CREAR_COLABORADOR(Cristian Guillen, 1-2222-1111, 15/12/1988, 08/07/2013, true, 8445-1544, 0, $2000)";
+		comando ="04/07/2013 22:14:21  Cguillen= Colaborador('Cristian Guillen', '1-2222-1111', 15/12/1988, 08/07/2013, true, '8445-1544', 0, $2000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Colaborador.get(new Hilera("1-2222-1111"));
+		colaborador= Colaborador.getColaborador(new Hilera("1-2222-1111"));
 		
 		Assert.assertNotNull(colaborador);
-		Assert.assertEquals(colaborador.getNombre(), "Cristian Guillen");
+		Assert.assertEquals(colaborador.getNombre().toString().trim(), "Cristian Guillen");
 		Assert.assertEquals(colaborador.getTamannoColaborador(), 2);	
 	}	
 	
@@ -138,8 +138,8 @@ public class Comandos  extends TestCase{
 		Colaborador colaborador;
 		Fecha fecha;
 		
-		String comando12 ="04/08/2013 10:30, Write fchinchilla= CREAR_COLABORADOR(Fernanda Chinchilla, 1-4444-4444, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando21 ="04/08/2013 15:30, Execute fchinchilla.TOMAR_VACACIONES(07/08/2013)";
+		String comando12 ="04/08/2013 10:30:09  fchinchilla= CREAR_COLABORADOR(Fernanda Chinchilla, 1-4444-4444, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
+		String comando21 ="04/08/2013 15:30:08  fchinchilla.TOMAR_VACACIONES(07/08/2013)";
 		
 		interpreteMandatos.ejecutaComando(comando12);
 		interpreteMandatos.ejecutaComando(comando21);
@@ -213,13 +213,13 @@ public class Comandos  extends TestCase{
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCalculaSalarioNetoIQTest.txt");
 		Colaborador colaborador;
 		
-		String comando1= "08/02/2012 12:00, WRITE mcastillo= CREAR_COLABORADOR(Mayela Castillo, 3-6666-6666, 15/12/1988, 08/07/1988, true, 8445-1544, 1, ¢850000)";
-		String comando2= "08/02/2009 08:17, WRITE solutions3=CREAR_COMPANNIA(301PJKX8987,solutions3,colon)";
-		String comando3= "08/02/2012 10:53, EXECUTE solutions3.AGREGRAR_COLABORADOR_COMPANNIA(mcastillo)";
-		String comando4= "01/08/2013 08:17, EXECUTE mcastillo=ACTUALIZAR_MONTO_CONYUGE_HIJO(¢2000,¢1500)";		
-		String comando5= "01/08/2013 08:17, EXECUTE solutions3.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
-		String comando6= "01/08/2013 08:18, EXECUTE solutions3.ESTABLECER_RANGO_RENTA(¢714000,¢1085000,10)";
-		String comando7= "01/08/2013 08:19, EXECUTE solutions3.ESTABLECER_RANGO_RENTA(¢1085000,¢9999999,15)";				
+		String comando1= "08/02/2012 12:00:21 WRITE mcastillo= CREAR_COLABORADOR(Mayela Castillo, 3-6666-6666, 15/12/1988, 08/07/1988, true, 8445-1544, 1, ¢850000)";
+		String comando2= "08/02/2009 08:17:26 WRITE solutions3=CREAR_COMPANNIA(301PJKX8987,solutions3,colon)";
+		String comando3= "08/02/2012 10:53:15 EXECUTE solutions3.AGREGRAR_COLABORADOR_COMPANNIA(mcastillo)";
+		String comando4= "01/08/2013 08:17:11 EXECUTE mcastillo=ACTUALIZAR_MONTO_CONYUGE_HIJO(¢2000,¢1500)";		
+		String comando5= "01/08/2013 08:17:26 EXECUTE solutions3.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
+		String comando6= "01/08/2013 08:18:12 EXECUTE solutions3.ESTABLECER_RANGO_RENTA(¢714000,¢1085000,10)";
+		String comando7= "01/08/2013 08:19:09 EXECUTE solutions3.ESTABLECER_RANGO_RENTA(¢1085000,¢9999999,15)";				
 		
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
