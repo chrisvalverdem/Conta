@@ -412,11 +412,9 @@ public class Colaborador extends Objecto {
 		   throw new CommandException("El Colaborador " + persona + " no existe.");
 	   }				
 }
-	public void aumentarSalario(Hilera variableInstancia, Moneda nuevoSalario) throws CommandException{
-		Colaborador colaborador= (Colaborador) Repo.getData(variableInstancia);
-		colaborador.setSalario(nuevoSalario);
-		Repo.save(variableInstancia, colaborador);
-		System.out.println("El Colaborador: " + colaborador.getNombre() + " se le aumento exitosamente su salario");
+	public void aumentarSalario(Moneda nuevoSalario) throws CommandException{
+		setSalario(nuevoSalario);
+		System.out.println("El Colaborador: " + getNombre() + " se le aumento exitosamente su salario");
 	} 
 	
 	public void save(Hilera variableInstancia){

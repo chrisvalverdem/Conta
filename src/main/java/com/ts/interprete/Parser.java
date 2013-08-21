@@ -167,8 +167,9 @@ public class Parser {
 				int methodAUsar = 0;
 				for(Method method : objecto.getClass().getMethods())
 				{
-					boolean tieneElMismoNumeroDeArgumentos = method.getGenericParameterTypes().length == index;
-					if( tieneElMismoNumeroDeArgumentos )
+					boolean esElMismoNombre = method.getName().equals(methodName);
+					boolean tieneElMismoNumeroDeArgumentos = method.getGenericParameterTypes().length == params.size();
+					if( esElMismoNombre && tieneElMismoNumeroDeArgumentos )
 					{
 						break;
 					}
@@ -178,7 +179,8 @@ public class Parser {
 					}
 					//TODO Falta que se busque el contructor por la forma usando las clases
 				}
-				methodABuscar =/* objecto.getClass().getMethods()[methodAUsar];*/ objecto.getClass().getMethod(methodName, firma);
+				System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqq   "+methodAUsar+"       "+params.size());
+				methodABuscar = objecto.getClass().getMethods()[methodAUsar];// objecto.getClass().getMethod(methodName, firma);
 				resultado = (Objecto) methodABuscar.invoke(objecto, firmaValores);
 			}
 			else
