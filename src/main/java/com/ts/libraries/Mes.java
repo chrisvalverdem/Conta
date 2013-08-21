@@ -11,7 +11,7 @@ public class Mes {
 	public void setMes(int mes) {
 		this.mes = mes;
 	}
-	public int getAnnno() {
+	public int getAnno() {
 		return annno;
 	}
 	public void setAnnno(int annno) {
@@ -22,11 +22,11 @@ public class Mes {
 		this.mes=mes;
 		
 	}
-	public String getMesAnno(){
+	public Numeric getMesAnno(){
 		String temp = ""+ this.mes;
 		temp+= this.annno;
 		
-		return temp;
+		return new Numeric(Integer.parseInt(temp));
 	}
 
 }

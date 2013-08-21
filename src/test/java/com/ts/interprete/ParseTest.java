@@ -2,17 +2,12 @@ package com.ts.interprete;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import com.ts.db.Repo;
-import com.ts.interprete.Token.TokenType;
 import com.ts.interprete.libraries.CallComando;
 import com.ts.interprete.libraries.Comando;
 import com.ts.interprete.libraries.CreateComando;
-import com.ts.interprete.libraries.Expression;
 import com.ts.interprete.libraries.ShowComando;
-import com.ts.libraries.Colaborador;
 import com.ts.libraries.Compania;
-import com.ts.libraries.Hilera;
 
 public class ParseTest {
 		

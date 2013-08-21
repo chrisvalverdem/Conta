@@ -4,25 +4,24 @@ public class RangoRenta extends Object {
 
 	Moneda intervaloInferior;
 	Moneda intervaloSuperior;
-	double intervaloPorciento;
-	String identificador;
+	Decimal intervaloPorciento;
+	Hilera identificador;
 	
-	public String getIdentificador() {
-		return identificador;
-	}
-
-	public void setIdentificador(String identificador) {
-		this.identificador = identificador;
-	}
-
-	public RangoRenta(Moneda inf, Moneda sup, double porcent, String ident){
+	public RangoRenta(Moneda inf, Moneda sup, Decimal porcent, Hilera ident){
 		
 		this.intervaloInferior= inf;
 		this.intervaloSuperior= sup;
 		this.intervaloPorciento= porcent;
 		this.identificador= ident;
 	}
+	
+	public Hilera getIdentificador() {
+		return identificador;
+	}
 
+	public void setIdentificador(Hilera identificador) {
+		this.identificador = identificador;
+	}
 	public Moneda getIntervaloInferior() {
 		return intervaloInferior;
 	}
@@ -39,11 +38,11 @@ public class RangoRenta extends Object {
 		this.intervaloSuperior = intervaloSuperior;
 	}
 
-	public double getIntervaloPorciento() {
+	public Decimal getIntervaloPorciento() {
 		return intervaloPorciento;
 	}
 
-	public void setIntervaloPorciento(double intervaloPorciento) {
+	public void setIntervaloPorciento(Decimal intervaloPorciento) {
 		this.intervaloPorciento = intervaloPorciento;
 	}
 	

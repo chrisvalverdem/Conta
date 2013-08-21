@@ -7,7 +7,9 @@ import java.util.Date;
 
 import com.ts.libraries.Colon;
 import com.ts.libraries.CommandException;
+import com.ts.libraries.Decimal;
 import com.ts.libraries.Dolar;
+import com.ts.libraries.Hilera;
 import com.ts.libraries.Mes;
 import com.ts.libraries.Moneda;
 
@@ -173,12 +175,6 @@ public class Sistema {
 		 return fecha;
 	 }	
 	
-	 public static String getFechaConFormato(Date fecha){
-		 SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
-		 String result = "";
-		 result= formatFecha.format(fecha);
-		 return result;
-	}
 	 public static Date getParseFechaHora(String dato) throws CommandException{
 		 Date fecha;
 	  try {
@@ -221,15 +217,15 @@ public class Sistema {
 		 return fecha;
 	 }
 	 
-	 public static Moneda getMoneda(String dato) throws CommandException{
+	 public static Moneda getMoneda(Hilera param1) throws CommandException{
 	 		Moneda salario=null;
-	 		double monto;
+	 		Decimal monto =null;
 	 		
-	 		monto= Double.parseDouble(dato.substring(1, dato.length()));
+	 		monto= new Decimal(Double.parseDouble(param1.getValor().substring(1, param1.getValor().length())));
 	 		
-			if(dato.contains("¢")){
+			if(param1.getValor().contains("¢")){
 				salario= new Colon(monto);
-			}else if(dato.contains("$")){
+			}else if(param1.getValor().contains("$")){
 				salario= new Dolar(monto);
 			}else{
 				throw new CommandException("Solo se aceptan montos en $ o ¢, Favor revisarlo monto digitado");

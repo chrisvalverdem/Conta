@@ -3,7 +3,7 @@ package com.ts.libraries;
 public final class Colon extends Moneda{
 
 	
-	public Colon(double monto) {
+	public Colon(Decimal monto) {
 		super(monto);
 
 	}

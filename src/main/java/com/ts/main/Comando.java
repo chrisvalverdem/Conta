@@ -24,7 +24,10 @@ public class Comando {
     public static final String MOSTRAR_VACACIONES_DISPONIBLES="MOSTRAR_VACACIONES_DISPONIBLES";
     public static final String MOSTRAR_VACACIONES_LIQUIDACION="MOSTRAR_VACACIONES_LIQUIDACION";
     public static final String MOSTRAR_RETENCIONES_FUENTE="MOSTRAR_RETENCIONES_FUENTE";
-    public static final String CALCULAR_SALARIO_NETO_IQ="CALCULAR_SALARIO_NETO_IQ";    
+    public static final String MOSTRAR_SALARIO_NETO_IQ="MOSTRAR_SALARIO_NETO_IQ";
+    public static final String MOSTRAR_SALARIO_NETO_IIQ="MOSTRAR_SALARIO_NETO_IIQ";    
+    public static final String CALCULAR_SALARIO_NETO_IQ="CALCULAR_SALARIO_NETO_IQ";
+    public static final String CALCULAR_SALARIO_NETO_IIQ="CALCULAR_SALARIO_NETO_IIQ";   
     public static final String ESTABLECER_RANGO_RENTA = "ESTABLECER_RANGO_RENTA";    
     public static final String AUMENTAR_SALARIO="AUMENTAR_SALARIO";
     public static final String TOMAR_VACACIONES="TOMAR_VACACIONES";
@@ -64,13 +67,16 @@ public class Comando {
 		listaParaMetodosExcecute.add(ACTUALIZAR_MONTO_CONYUGE_HIJO);		
 		listaParaMetodosExcecute.add(CALCULAR_RETENCION_FUENTE);
 		listaParaMetodosExcecute.add(AGREGRAR_COLABORADOR_COMPANNIA);
-		
+		listaParaMetodosExcecute.add(CALCULAR_SALARIO_NETO_IIQ);
+		listaParaMetodosExcecute.add(CALCULAR_SALARIO_NETO_IQ);
+			
 		listaParaMetodosShow.add(MOSTRAR_VACACIONES);		
 		listaParaMetodosShow.add(MOSTRAR_SALARIO);		
 		listaParaMetodosShow.add(MOSTRAR_VACACIONES_DISPONIBLES);		
 		listaParaMetodosShow.add(MOSTRAR_VACACIONES_LIQUIDACION);
 		listaParaMetodosShow.add(MOSTRAR_RETENCIONES_FUENTE);
-		
+		listaParaMetodosShow.add(MOSTRAR_SALARIO_NETO_IQ);
+		listaParaMetodosShow.add(MOSTRAR_SALARIO_NETO_IIQ);
 	}
 
 	public String getMetodo() {

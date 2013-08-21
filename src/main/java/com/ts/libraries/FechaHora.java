@@ -1,7 +1,5 @@
 package com.ts.libraries;
 
-import com.ts.interprete.libraries.Expression;
-
 public class FechaHora extends Objecto{
 	
 	private int dia;

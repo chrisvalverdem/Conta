@@ -23,5 +23,13 @@ public class Hilera extends Objecto{
 	public String toString() {
 		return valor;
 	}
+
+	public String getValor() {
+		return valor;
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
 	
 }

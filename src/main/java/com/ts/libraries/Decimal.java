@@ -15,4 +15,12 @@ public class Decimal extends Objecto {
 		return ""+this.valor;
 	}
 
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
 }

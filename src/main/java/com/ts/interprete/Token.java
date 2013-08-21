@@ -7,7 +7,7 @@ public class Token {
 	 public static enum TokenType {
 		 	boolTrue("true"),
 		 	boolFalse("false"),
-		 	monto("[$]|[¢]"),
+		 	monto("[$]|[ï¿½]"),
 		 	fecha("[0-3]?[0-9]/[0-1]?[0-9]/[0-2][0-9][0-9][0-9]"),
 		 	hora("[0-2]?[0-9]:[0-6]?[0-9]:[0-6]?[0-9]"),
 		 	decimal("-?[0-9]+[.][0-9]+"), 

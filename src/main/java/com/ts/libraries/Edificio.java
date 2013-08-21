@@ -90,12 +90,11 @@ public class Edificio extends Objecto{
 	public void AgregarEdificio(Hilera instance) throws CommandException{			
 		boolean existeElEdificio =  getEdificio(nombre) != null;
 			
-		if (existeElEdificio)
-		{
+		if (existeElEdificio)		{
 			throw new CommandException("El Edificio: " + nombre+ " ya existe.");
 		}
 		Edificio edificio = new Edificio(nombre,direccion);
-		Repo.save(instance, this);
-		 System.out.println("El edificio " + nombre + " se le agrego exitosamente.");
+		Repo.save(instance, edificio);
+		System.out.println("El edificio " + nombre + " se le agrego exitosamente.");
 	}	
 }

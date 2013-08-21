@@ -13,4 +13,11 @@ public class Boolean extends Objecto{
 		return bool instanceof Boolean && this.valor == ((Boolean)bool).valor;
 	}
 	
+	public boolean esIgual(boolean valor) {
+		if(valor == this.valor){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
