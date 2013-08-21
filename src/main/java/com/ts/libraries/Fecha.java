@@ -1,6 +1,7 @@
 package com.ts.libraries;
-
-import java.io.ObjectInputStream.GetField;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Fecha extends Objecto{
@@ -46,10 +47,30 @@ public class Fecha extends Objecto{
 		String result = String.format("%02d", dia)+"/"+String.format("%02d", mes)+"/"+anno;
 		return result;
 	}
-
-	public static int cantidadDiasEntreFechas(Fecha fechaIngTem1, Fecha fechacomando) {
-		//(int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24))
-		throw new CommandException("El metodo cantidadDiasEntreFechas no se a implementado para Fecha.");
-
-	}
+	
+	 public Numeric cantidadDiasEntreFechas(Date d1, Date d2){
+	     int result=(int)(d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
+	     return new Numeric(result+1);           
+	    }
+	 
+	 public Date covertFechaADate(Fecha fecha){
+	    
+	    Date fechaTipoDate=null;
+	    
+	    int diaTemp=fecha.getDia();
+	    int mesTemp=fecha.getMes();
+	    int anioTemp=fecha.getAnno();
+	     
+	    String fechaTemp=diaTemp+"/"+mesTemp+"/"+anioTemp;
+	    SimpleDateFormat formatFecha = new SimpleDateFormat("dd/MM/yyyy");
+	     
+	    try {
+	     fechaTipoDate = formatFecha.parse(fechaTemp);
+	    }
+	    catch (ParseException e){
+	     throw new CommandException("Formato de fecha invalido, el formato debe ser: dd/mm/yyyy");
+	    }
+	    return fechaTipoDate;
+	    
+	   }
 }
