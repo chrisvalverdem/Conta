@@ -110,6 +110,7 @@ public class Parser {
 		Expression exp = new Expression(objecto);
 		return new ShowComando(exp);
 	}
+
 	private Objecto paserVariable() throws Exception {
 		
 		if(lexer.getToken().getType() != TokenType.id)
@@ -220,7 +221,6 @@ public class Parser {
 		minuto = Integer.parseInt(tiempo[1]);
 		segundo = Integer.parseInt(tiempo[2]);
 		lexer.accept(TokenType.hora);
-		//TODO validaciones de fecha. validar dia, mes anno biciesto.
 	
 		return new FechaHora(dia, mes, anno, hora, minuto, segundo);
 	}
@@ -294,18 +294,18 @@ public class Parser {
 	}
 
 	private Moneda parserMonto() {
-		String economia = lexer.getToken().getValor();
+		Hilera economia = new Hilera(lexer.getToken().getValor());
 		lexer.accept();
 		Double cantidad = Double.parseDouble(lexer.getToken().getValor());
 		Moneda moneda;
 		
 		if(Moneda.isColon(economia))
 		{
-			moneda = new Colon(cantidad);
+			moneda = new Colon(new Decimal(cantidad));
 		}
 		else if(Moneda.isDolar(economia))
 		{
-			moneda = new Dolar(cantidad);
+			moneda = new Dolar(new Decimal(cantidad));
 		}
 		else
 		{

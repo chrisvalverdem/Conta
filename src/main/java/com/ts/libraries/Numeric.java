@@ -16,4 +16,12 @@ public class Numeric extends Objecto {
 		return ""+this.valor;
 	}
 
+	public int getValor() {
+		return valor;
+	}
+
+	public void setValor(int valor) {
+		this.valor = valor;
+	}
+
 }

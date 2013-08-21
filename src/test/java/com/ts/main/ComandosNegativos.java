@@ -1,15 +1,14 @@
 package com.ts.main;
 
 import java.io.IOException;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.ts.db.Repo;
 import com.ts.libraries.Colaborador;
 import com.ts.libraries.Colon;
-import com.ts.libraries.CommandException;
+import com.ts.libraries.Compania;
+import com.ts.libraries.Hilera;
 import com.ts.libraries.Mes;
 import com.ts.libraries.Moneda;
 
@@ -24,7 +23,7 @@ public class ComandosNegativos extends TestCase{
 	}
 		
 	@Test
-	public void agregarColaboradorNegativeTest() throws IOException
+	public void agregarColaboradorNegativeTest() throws Exception
 	{
 		setErrorsFileOutput("agregarColaboradorNegativeTestErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"agregarColaboradorNegativeTest.txt");
@@ -32,32 +31,32 @@ public class ComandosNegativos extends TestCase{
 		//wrong month
 		String comando ="08/06/2013 16:45, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/1988/1998, 08/07/2013, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		Colaborador colaborador= Colaborador.getColaborador("1-1111-1111");
+		Colaborador colaborador= Colaborador.getColaborador(new Hilera("1-1111-1111"));
 		Assert.assertNull(colaborador);
 		
 		//wrong year
 		comando ="08/06/2013 16:15, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/12, 08/07/12, true, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Colaborador.getColaborador("1-1111-1111");
+		colaborador= Colaborador.getColaborador(new Hilera("1-1111-1111"));
 		Assert.assertNull(colaborador);
 		
 		//wrong monto
 		comando ="08/06/2013 11:45, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, true, 8445-1544, 0, 1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Colaborador.getColaborador("1-1111-1111");
+		colaborador= Colaborador.getColaborador(new Hilera("1-1111-1111"));
 		Assert.assertNull(colaborador);
 		
 		//wrong estado civil
 		comando ="08/07/2013 16:45, Write jahzeel= CREAR_COLABORADOR(Jahzeel, 1-1111-1111, 15/11/1988, 08/07/1988, casado, 8445-1544, 0, $1000)";
 		interpreteMandatos.ejecutaComando(comando);
-		colaborador= Colaborador.getColaborador("1-1111-1111");
+		colaborador= Colaborador.getColaborador(new Hilera("1-1111-1111"));
 		Assert.assertNull(colaborador);
 		
 		Assert.assertEquals(""+getErrors().size(), "4", "Deberian existir error en agregarColaboradorNegativeTest.");
 	}
 	
 	@Test
-	public void aumentaSalarioNegativeTestCase() throws IOException
+	public void aumentaSalarioNegativeTestCase() throws Exception
 	{
 		setErrorsFileOutput("aumentaSalarioNegativeTestCaseError.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"aumentaSalarioNegativeTestCaseError.txt");
@@ -69,7 +68,7 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando1);
 		interpreteMandatos.ejecutaComando(comando2);
 		
-		Colaborador colaborador=Colaborador.getColaborador("2-2222-2223");	
+		Colaborador colaborador=Colaborador.getColaborador(new Hilera("2-2222-2223"));	
 
 		Assert.assertNotNull(colaborador);
 		Assert.assertEquals(colaborador.getSalario().getClass(),Colon.class);
@@ -91,7 +90,7 @@ public class ComandosNegativos extends TestCase{
 	}
 	
 	@Test
-	public void pruebaAgregaVacacionesNegativeTest() throws IOException {
+	public void pruebaAgregaVacacionesNegativeTest() throws Exception {
 		setErrorsFileOutput("pruebaAgregaVacacionesNegativeTestErrores.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaAgregaVacacionesNegativeTest.txt");
 		
@@ -106,39 +105,7 @@ public class ComandosNegativos extends TestCase{
 	}
 	
 	@Test
-	public void pruebaCalculaSalarioNetoIQNegativeTest() throws IOException{
-		setErrorsFileOutput("pruebaCalculaSalarioNetoIQNegativeTestErrors.txt");
-		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCalculaSalarioNetoIQNegativeTest.txt");
-		Colaborador colaborador;
-		String info;
-		
-		//no existe
-
-		String comando= "11/06/2013 16:45, garias.calculaSalarioNetoPrimeraQuincena()";
-		interpreteMandatos.ejecutaComando(comando);
-		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, por un colaborador que no existe");
-
-		String comando1 ="11/06/2013 16:45, Write garias= CREAR_COLABORADOR(Gabriel Arias, 3-6666-6666, 15/12/1988, 08/07/1988, true, 8445-1544, 0, $1000)";
-		String comando2 ="02/06/2013 16:45, Execute garias.AUMENTAR_SALARIO($2000)";
-		interpreteMandatos.ejecutaComando(comando1);
-		interpreteMandatos.ejecutaComando(comando2);
-		
-		colaborador= Colaborador.getColaborador("3-6666-6666");
-
-			try {
-				info= Colaborador.calculaSalarioNetoPrimeraQuincena("garias");
-				Assert.assertNotNull(colaborador);
-				Assert.assertEquals(colaborador.getSalario().getMonto(), 2000.0);
-				Assert.assertTrue(info.contains("$2000.0"));
-				Assert.assertTrue(info.contains("$183.4"));
-				Assert.assertTrue(info.contains("$1816.6"));	
-			} catch (CommandException e) {
-
-			}
-	}
-	
-	@Test
-	public void pruebaCambiarRangoRentaNegativeTest() throws IOException, CommandException{
+	public void pruebaCambiarRangoRentaNegativeTest() throws Exception{
 		setErrorsFileOutput("pruebaCambiarRangoRentaNegativeErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaCambiarRangoRentaNegativeTest.txt");
 
@@ -189,7 +156,7 @@ public class ComandosNegativos extends TestCase{
 		interpreteMandatos.ejecutaComando(comando2);
 		Assert.assertEquals(""+getErrors().size(), "7", "Deberian existir solo un error, por la integridad del intervalo Mayor case 0 y menor case 1");
 		
-		Repo.limpiaRangoRenta();
+		Compania.limpiaRangoRenta();
 		
 		//intervalos Mayor case 1 y menor case 2 diferentes
 		comando = "01/08/2013 08:18, Execute ts.ESTABLECER_RANGO_RENTA(¢1,¢714000,0)";
@@ -202,7 +169,7 @@ public class ComandosNegativos extends TestCase{
 	}
 	
 	@Test
-	public void pruebaActualizarMontoConyugeHijoNegativeTest() throws IOException {
+	public void pruebaActualizarMontoConyugeHijoNegativeTest() throws Exception {
 		setErrorsFileOutput("pruebaActualizarMontoConyugeHijooErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaActualizarMontoConyugeHijoTest.txt");			
 		
@@ -218,7 +185,7 @@ public class ComandosNegativos extends TestCase{
 	}	
 	
 	@Test
-	public void pruebaMostrarRetencionesFuenteRentaNegativeErrors() throws IOException {
+	public void pruebaMostrarRetencionesFuenteRentaNegativeErrors() throws Exception {
 		setErrorsFileOutput("pruebaMostrarRetencionesFuenteRentaNegativeErrors.txt");
 		interpreteMandatos = new InterpreteMandatos(false, outTestDirectory+"pruebaMostrarRetencionesFuenteRentaNegativeErrors.txt");			
 		Colaborador colaborador=null;
@@ -231,9 +198,9 @@ public class ComandosNegativos extends TestCase{
 		
 		Assert.assertEquals(""+getErrors().size(), "1", "Deberian existir solo un error, por que el colaborador no posee retenciones fuente");
 		
-		colaborador=Colaborador.getColaborador("2-0357-0387");	
+		colaborador=Colaborador.getColaborador(new Hilera("2-0357-0387"));	
 		
-		Moneda monto= Sistema.getMoneda("¢4000.0");		
+		Moneda monto= Sistema.getMoneda( new Hilera("¢4000.0"));		
 		
 		colaborador.retencionesFuentes.put(new Mes(02,2013),monto);
 		

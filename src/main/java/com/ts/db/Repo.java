@@ -3,15 +3,9 @@ package com.ts.db;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import com.ts.libraries.CommandException;
-import com.ts.libraries.Compania;
 import com.ts.libraries.Hilera;
-import com.ts.libraries.Moneda;
 import com.ts.libraries.Objecto;
-import com.ts.libraries.RangoRenta;
-import com.ts.main.Hacienda;
-import com.ts.main.Sistema;
 
 public class Repo  {
 	
@@ -26,12 +20,12 @@ public class Repo  {
 			}					
 		}	
 		
-		tablaDeSimbolos.put(string.valor, object);
+		tablaDeSimbolos.put(string.getValor(), object);
 	}
 
 	public static Objecto getData(Hilera key)
 	{
-		return tablaDeSimbolos.get(key.valor);
+		return tablaDeSimbolos.get(key.getValor());
 	}
 	public static Objecto getData(String key)
 	{

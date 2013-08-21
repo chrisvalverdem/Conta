@@ -47,8 +47,7 @@ public class Fecha extends Objecto{
 		return result;
 	}
 
-	public static int cantidadDiasEntreFechas(Fecha fechaIngTem1,
-			Fecha fechacomando) {
+	public static int cantidadDiasEntreFechas(Fecha fechaIngTem1, Fecha fechacomando) {
 		//(int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24))
 		throw new CommandException("El metodo cantidadDiasEntreFechas no se a implementado para Fecha.");
 

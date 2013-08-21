@@ -2,7 +2,7 @@ package com.ts.libraries;
 
 public final class Dolar extends Moneda{
 
-	public Dolar(double monto) {
+	public Dolar(Decimal monto) {
 		super(monto);		
 	}
 	

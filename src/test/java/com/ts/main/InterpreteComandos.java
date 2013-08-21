@@ -1,17 +1,13 @@
 package com.ts.main;
 
-
-import java.io.IOException;
-
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.ts.db.Repo;
-import com.ts.libraries.CommandException;
 import com.ts.libraries.Compania;
 import com.ts.libraries.Edificio;
+import com.ts.libraries.Hilera;
 
 
 public class InterpreteComandos extends TestCase {
@@ -32,7 +28,7 @@ public class InterpreteComandos extends TestCase {
 	}
 
 	@Test
-	public void pruebaCargaArchivo() throws IOException, CommandException{
+	public void pruebaCargaArchivo() throws Exception{
 		setErrorsFileOutput("pruebaCargaArchivoErrores.txt");
 		InterpreteMandatos interprete = new InterpreteMandatos(false, outTestDirectory+"pruebaCargaArchivo.txt");
 		interprete.ejecutaComando("22/07/2013 08:20, Write tsoccidente.CREAR_EDIFICIO(occidente)");
@@ -41,8 +37,8 @@ public class InterpreteComandos extends TestCase {
 		Repo.limpiaListas();
 		new InterpreteMandatos(false, outTestDirectory+"pruebaCargaArchivo.txt");
 		
-		Compania compannia= Compania.getCompannia("123JK456");
-		Edificio edificio= Edificio.getEdificio("occidente");
+		Compania compannia= Compania.get(new Hilera("123JK456"));
+		Edificio edificio= Edificio.getEdificio(new Hilera("occidente"));
 		
 		Assert.assertNotNull(compannia);
 		Assert.assertEquals(compannia.getNombre(),"ts");
@@ -51,42 +47,5 @@ public class InterpreteComandos extends TestCase {
 		Assert.assertNotNull(edificio);
 		Assert.assertEquals(edificio.getNombre(),"occidente");
 		Assert.assertEquals(Edificio.getTamannoEdificio(), 1);
-	
 	}
-	
-	@Test
-	public void pruebaParseComandos() throws IOException, CommandException{
-		setErrorsFileOutput("pruebaParseComandosErrores.txt");
-		InterpreteMandatos interprete = new InterpreteMandatos(false, outTestDirectory+"pruebaParseComandos.txt");
-		Comando comando =interprete.interpreteCadena("23/07/2013 13:20, Write ts1=CREAR_COMPANNIA(123456789, cecropia)");
-		Comando comando2 =interprete.interpreteCadena("23/07/2013 13:30, Write juan.CREAR_COLABORADOR(juan, 123456)");
-		
-		Assert.assertEquals(comando.getMetodo(),"CREAR_COMPANNIA");		
-		Assert.assertEquals(comando.getInstance(),"ts1");
-		Assert.assertEquals(comando.getParametros()[0],"123456789");
-		Assert.assertEquals(comando.getParametros()[1],"cecropia");
-		
-		
-		Assert.assertEquals(comando2.getMetodo(),"CREAR_COLABORADOR");		
-		Assert.assertEquals(comando2.getInstance(),"juan");
-		Assert.assertEquals(comando2.getParametros()[0],"juan");
-		Assert.assertEquals(comando2.getParametros()[1],"123456");
-			
-		
-		
-	}
-	@Test
-	public void pruebaParseEspacios() throws IOException, CommandException{
-		setErrorsFileOutput("pruebaParseEspaciosErrores.txt");
-		InterpreteMandatos interprete = new InterpreteMandatos(false, outTestDirectory+"pruebaParseEspacios.txt");
-		Comando comando =interprete.interpreteCadena("24/07/2013 14:30, Write ts2  =  CREAR_COMPANNIA  (  987654321  ,   solutions   )");	
-		
-		Assert.assertEquals(comando.getMetodo(),"CREAR_COMPANNIA");		
-		Assert.assertEquals(comando.getInstance(),"ts2");
-		Assert.assertEquals(comando.getParametros()[0],"987654321");
-		Assert.assertEquals(comando.getParametros()[1],"solutions");
-		
-	}
-	
-	
 }
