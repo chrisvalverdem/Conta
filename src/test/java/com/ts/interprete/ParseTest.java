@@ -63,6 +63,14 @@ public class ParseTest {
 		result.execute();
 			
 		
+		paser = new Parser("05/08/2013 11:11:16 marias= Colaborador('Maria Arias', '2-2222-2223', 15/12/1988, 08/07/1988, true, '8445-1544', 0, ¢850000);");
+		result = (CreateComando)paser.comandoProcess();
+		result.execute();
+			
+		paser = new Parser("05/08/2013 13:22:21 marias.aumentarSalario(¢850000);");
+		result = (CallComando)paser.comandoProcess();
+		result.execute();
+		
 		
 	}
 

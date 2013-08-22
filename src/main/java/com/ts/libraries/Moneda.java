@@ -19,7 +19,7 @@ public abstract class Moneda extends Objecto{
 
 	public static boolean isColon(Hilera economia)
 	{
-		return "Â¢".equals(economia.getValor());
+		return "¢".equals(economia.getValor());
 	}
 	
 	public static boolean isDolar(Hilera economia)

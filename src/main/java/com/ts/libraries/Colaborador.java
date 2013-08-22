@@ -39,18 +39,6 @@ public class Colaborador extends Objecto {
 		this.salario = salario;		
 		
 	}
-	
-	public Colaborador(Hilera nombre, Hilera cedula, Fecha fechaNacimiento, Fecha fechaIngreso, Boolean estado, Hilera telefono,  Numeric numeroHijos, Colon salario) {			
-		this.nombre = nombre;
-		this.cedula = cedula;
-		this.fechaNacimiento= fechaNacimiento;
-		this.fechaIngresoEmpresa= fechaIngreso;
-		this.estadoCivil= estado;
-		this.telefono= telefono;
-		this.cantidadHijos= numeroHijos;
-		this.salario = salario;		
-		
-	}
 
 	public ArrayList<Fecha> getVacaciones() {
 		return vacaciones;
